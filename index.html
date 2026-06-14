@@ -10,6 +10,7 @@
 </head>
 <body>
 
+<!-- WELCOME SCREEN -->
 <div id="welcome-screen">
   <div class="welcome-bg"></div>
   <div class="feather-container">
@@ -94,8 +95,10 @@
   </div>
 </div>
 
+<!-- MAIN SITE -->
 <div id="main-site" class="hidden">
 
+  <!-- NAV -->
   <nav id="navbar">
     <div class="nav-logo"><span class="nav-chakra">☸</span> SS</div>
     <ul class="nav-links">
@@ -116,6 +119,7 @@
     </div>
   </nav>
 
+  <!-- HERO -->
   <section id="hero">
     <div class="hero-chakra-bg">
       <svg viewBox="0 0 400 400" class="bg-chakra-svg">
@@ -150,6 +154,7 @@
     </div>
   </section>
 
+  <!-- ABOUT -->
   <section id="about" class="section">
     <div class="section-label">01 · About</div>
     <h2 class="section-title" id="about-title">About Me</h2>
@@ -186,36 +191,42 @@
     </div>
   </section>
 
+  <!-- SKILLS -->
   <section id="skills" class="section dark-section">
     <div class="section-label">02 · Skills</div>
     <h2 class="section-title" id="skills-title">Skills & Expertise</h2>
     <div class="skills-grid" id="skills-container"></div>
   </section>
 
+  <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <div class="section-label">03 · Experience</div>
     <h2 class="section-title" id="exp-title">Work Experience</h2>
     <div class="timeline" id="experience-container"></div>
   </section>
 
+  <!-- ACHIEVEMENTS -->
   <section id="achievements" class="section dark-section">
     <div class="section-label">04 · Achievements</div>
     <h2 class="section-title">Achievements</h2>
     <div class="achievements-grid" id="achievements-container"></div>
   </section>
 
+  <!-- CERTIFICATIONS -->
   <section id="certifications" class="section">
     <div class="section-label">05 · Certifications</div>
     <h2 class="section-title">Certifications</h2>
     <div class="certs-grid" id="certs-container"></div>
   </section>
 
+  <!-- PROJECTS -->
   <section id="projects" class="section dark-section">
     <div class="section-label">06 · Projects</div>
     <h2 class="section-title" id="projects-title">Projects</h2>
     <div class="projects-grid" id="projects-container"></div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact" class="section">
     <div class="section-label">07 · Contact</div>
     <h2 class="section-title">Get In Touch</h2>
@@ -259,6 +270,7 @@
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-chakra">☸</div>
     <p class="footer-copy">© <span id="year"></span> Sourabh Satish Shet. All Rights Reserved.</p>
@@ -266,8 +278,20 @@
     <p class="footer-sub">Designed & Developed with 🦚 by Sourabh</p>
   </footer>
 
+  <!-- Narada Chatbot (Now correctly inside main-site so it hides on Welcome Screen) -->
+  <div id="narada-bot" class="narada-chat">
+    <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
+    <div id="chat-body" class="chat-body hidden">
+      <div class="chat-messages" id="msg-container">
+        <div class="bot-msg" style="color:var(--gold-dark); margin:5px; padding:8px; background:rgba(201,168,76,0.1); border-radius:8px;"><b>Narada:</b> Hari Om! I am Narada, your virtual guide to Sourabh's portfolio. How can I assist you?</div>
+      </div>
+      <input type="text" id="chat-input" placeholder="Ask about expertise..." onkeypress="handleChat(event)">
+    </div>
+  </div>
+
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="admin-overlay" class="hidden">
   <div class="admin-panel">
     <div class="admin-header">
@@ -278,7 +302,7 @@
       <p>Enter admin password to edit your portfolio</p>
       <input type="password" id="admin-pass" placeholder="Password" />
       <button onclick="checkAdminPass()">Login</button>
-      </div>
+    </div>
     <div class="admin-content hidden" id="admin-content">
       <div class="admin-tabs">
         <button class="tab-btn active" onclick="switchTab('skills-tab', this)">Skills</button>
@@ -288,6 +312,7 @@
         <button class="tab-btn" onclick="switchTab('about-tab', this)">About</button>
       </div>
 
+      <!-- Skills Tab -->
       <div id="skills-tab" class="tab-content active">
         <h3>Manage Skills</h3>
         <div id="skills-admin-list"></div>
@@ -299,6 +324,7 @@
         </div>
       </div>
 
+      <!-- Projects Tab -->
       <div id="projects-tab" class="tab-content">
         <h3>Manage Projects</h3>
         <div id="projects-admin-list"></div>
@@ -312,6 +338,7 @@
         </div>
       </div>
 
+      <!-- Certs Tab -->
       <div id="certs-tab" class="tab-content">
         <h3>Manage Certifications</h3>
         <div id="certs-admin-list"></div>
@@ -324,6 +351,7 @@
         </div>
       </div>
 
+      <!-- Achievements Tab -->
       <div id="ach-tab" class="tab-content">
         <h3>Manage Achievements</h3>
         <div id="achievements-admin-list"></div>
@@ -335,6 +363,7 @@
         </div>
       </div>
 
+      <!-- About Tab -->
       <div id="about-tab" class="tab-content">
         <h3>Edit About Text</h3>
         <textarea id="about-edit-p1" rows="4" style="width:100%;margin-bottom:10px;"></textarea>
@@ -350,16 +379,7 @@
   </div>
 </div>
 
-<div id="narada-bot" class="narada-chat">
-  <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
-  <div id="chat-body" class="chat-body hidden">
-    <div class="chat-messages" id="msg-container">
-      <div class="bot-msg" style="color:var(--gold); margin:5px;"><b>Narada:</b> Hari Om! I am Narada, your virtual guide to Sourabh's portfolio. How can I assist you?</div>
-    </div>
-    <input type="text" id="chat-input" placeholder="Ask about expertise..." onkeypress="handleChat(event)">
-  </div>
-</div>
-
+<!-- TOAST -->
 <div id="toast" class="toast hidden"></div>
 
 <script src="app.js"></script>
