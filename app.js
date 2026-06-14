@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════
-   CLOUD DATABASE KEYS (GET THESE FROM JSONBIN.IO)
+   CLOUD DATABASE KEYS (JSONBIN.IO)
 ════════════════════════════════════════════ */
-const BIN_ID = 'PASTE_YOUR_BIN_ID_HERE';
-const API_KEY = 'PASTE_YOUR_API_KEY_HERE';
+const BIN_ID = '6a2ec098f5f4af5e29f09151';
+const API_KEY = '$2a$10$76S0uA91ii630.kougvn0Oij8LlyGoqivPhNQ.vgV8aSbZ4Emj5na';
 
 /* ═══════════════════════════════════════════
    DEFAULT DATA & STATE
@@ -46,20 +46,13 @@ const DEFAULT_DATA = {
 };
 
 let siteData = {};
-
-// EDIT STATE TRACKER
+let isTranslated = false;
 let editState = { skill: -1, exp: -1, ach: -1, cert: -1, proj: -1 };
 
 /* ═══════════════════════════════════════════
    CLOUD INITIALIZATION & DATA
 ════════════════════════════════════════════ */
 async function loadData() {
-  if (BIN_ID === 'PASTE_YOUR_BIN_ID_HERE') {
-    console.warn("Using default data. Please add JSONBin keys to sync across devices.");
-    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-    return;
-  }
-
   try {
     const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
       headers: { 'X-Master-Key': API_KEY }
@@ -67,8 +60,15 @@ async function loadData() {
     
     if (response.ok) {
       const data = await response.json();
-      siteData = data.record;
-      // Failsafes to prevent crashes
+      
+      // Prevent crashing if cloud database is completely empty
+      if (Object.keys(data.record).length === 0) {
+        siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      } else {
+        siteData = data.record;
+      }
+      
+      // Failsafes to guarantee the structures exist
       if(!Array.isArray(siteData.skills)) siteData.skills = [...DEFAULT_DATA.skills];
       if(!Array.isArray(siteData.experience)) siteData.experience = [...DEFAULT_DATA.experience];
       if(!Array.isArray(siteData.achievements)) siteData.achievements = [...DEFAULT_DATA.achievements];
@@ -85,8 +85,6 @@ async function loadData() {
 }
 
 async function saveData() {
-  if (BIN_ID === 'PASTE_YOUR_BIN_ID_HERE') return; // Skips if no key added
-
   try {
     await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
       method: 'PUT',
@@ -98,7 +96,7 @@ async function saveData() {
     });
   } catch (e) {
     console.error("Failed to save to cloud", e);
-    showToast('⚠️ Cloud save failed. Check connection.');
+    showToast('⚠️ Cloud save failed. Check internet connection.');
   }
 }
 
@@ -118,7 +116,7 @@ function enterSite() {
 document.body.style.overflow = 'hidden';
 
 async function initSite() {
-  await loadData(); // Wait for cloud data to download
+  await loadData(); 
   renderAllUI();
   
   const yr = document.getElementById('year');
@@ -136,10 +134,15 @@ async function initSite() {
    RENDER EXACT ORIGINAL UI
 ════════════════════════════════════════════ */
 function renderAllUI() {
-  const p1 = document.getElementById('about-p1');
-  const p2 = document.getElementById('about-p2');
-  if(p1) p1.textContent = siteData.about.p1;
-  if(p2) p2.textContent = siteData.about.p2;
+  if (!isTranslated) {
+    const p1 = document.getElementById('about-p1');
+    const p2 = document.getElementById('about-p2');
+    if(p1) p1.textContent = siteData.about.p1;
+    if(p2) p2.textContent = siteData.about.p2;
+  } else {
+    toggleTranslation(); 
+    toggleTranslation(); 
+  }
 
   const sc = document.getElementById('skills-container');
   if(sc) sc.innerHTML = siteData.skills.map(cat => `
@@ -193,7 +196,7 @@ function renderAllUI() {
 }
 
 /* ═══════════════════════════════════════════
-   SCROLL REVEAL & NAV
+   SCROLL REVEAL, NAV, TRANSLATE & MUSIC
 ════════════════════════════════════════════ */
 function initReveal() {
   const obs = new IntersectionObserver((entries) => {
@@ -216,8 +219,51 @@ function toggleNav() {
   if(links) links.classList.toggle('open'); 
 }
 
+function toggleMusic() {
+  const music = document.getElementById('bg-music');
+  const btn = document.querySelector('.music-btn');
+  if (!music) return showToast('⚠️ Audio file not found. Ensure namo_bhagavate.mp3 is in your folder.');
+
+  if (music.paused) {
+    music.play();
+    if(btn) { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--midnight)'; }
+    showToast('🪈 Playing Om Namo Bhagavate Vasudevaya');
+  } else {
+    music.pause();
+    if(btn) { btn.style.background = 'transparent'; btn.style.color = 'var(--gold)'; }
+    showToast('⏸ Music Paused');
+  }
+}
+
+function toggleTranslation() {
+  isTranslated = !isTranslated;
+  const tBtn = document.querySelector('.translate-btn');
+  if(tBtn) {
+    tBtn.style.background = isTranslated ? 'var(--gold)' : 'transparent';
+    tBtn.style.color = isTranslated ? 'var(--midnight)' : 'var(--gold)';
+  }
+
+  const elementsToTranslate = {
+    'hero-name': { en: 'Sourabh Satish Shet', sk: 'सौरभ सतीश शेट' },
+    'hero-title': { en: 'Pricing & Quotation Specialist', sk: 'मूल्य-उद्धरण विशेषज्ञः' },
+    'hero-location': { en: '📍 Yelahanka, Bangalore · Electronics Components Supply Chain', sk: '📍 येलहंका, बंगळूरु · इलेक्ट्रॉनिक्स आपूर्ति श्रृंखला' },
+    'about-title': { en: 'About Me', sk: 'मम परिचयः' },
+    'skills-title': { en: 'Skills & Expertise', sk: 'कौशल्यानि' },
+    'exp-title': { en: 'Work Experience', sk: 'कार्यानुभवः' },
+    'projects-title': { en: 'Projects', sk: 'परियोजनाः' },
+    'about-p1': { en: siteData.about.p1, sk: 'विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः। B.Tech इलेक्ट्रॉनिक्स एवं संचार अभियांत्रिकी १+ वर्षस्य अनुभवेन सह।' },
+    'about-p2': { en: siteData.about.p2, sk: 'IQS अनुप्रयोगेन एवं बहुविध स्रोत-पोर्टल्स द्वारा दैनिक कार्यप्रवाहस्य प्रबंधनम्। BOM विश्लेषण, मूल्य-अनुकूलन, एवं आपूर्ति श्रृंखला प्रबंधने कुशलः।' }
+  };
+
+  for (const [id, texts] of Object.entries(elementsToTranslate)) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = isTranslated ? texts.sk : texts.en;
+  }
+  showToast(isTranslated ? '🕉 संस्कृत भाषायाम् अनुवादितम्' : '🌐 Switched back to English');
+}
+
 /* ═══════════════════════════════════════════
-   ADMIN PANEL: CLOUD SYNC LOGIC
+   ADMIN PANEL & CLOUD SYNC LOGIC
 ════════════════════════════════════════════ */
 function openAdmin() { 
   const ov = document.getElementById('admin-overlay');
@@ -234,9 +280,7 @@ function checkAdminPass() {
     document.getElementById('admin-login').style.display = 'none';
     document.getElementById('admin-content').style.display = 'block';
     loadAdminUI();
-  } else { 
-    showToast('❌ Wrong password!'); 
-  }
+  } else { showToast('❌ Wrong password!'); }
 }
 
 function switchTab(tabId, btn) {
@@ -247,10 +291,7 @@ function switchTab(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   
   const target = document.getElementById(tabId);
-  if(target) {
-    target.style.display = 'block';
-    target.classList.add('active');
-  }
+  if(target) { target.style.display = 'block'; target.classList.add('active'); }
   if(btn) btn.classList.add('active');
 }
 
@@ -286,8 +327,8 @@ function loadAdminUI() {
 }
 
 async function syncAndSave() {
-  showToast('⏳ Syncing to cloud...');
-  await saveData(); // Uploads to JSONBin
+  showToast('⏳ Syncing to Cloud...');
+  await saveData();
   renderAllUI();
   loadAdminUI();
   showToast('✅ Cloud Sync Complete!');
@@ -322,9 +363,7 @@ function saveSkill() {
     siteData.skills[editState.skill].items = i;
     editState.skill = -1;
     document.getElementById('btn-skill').textContent = "+ Save Skill";
-  } else {
-    siteData.skills.push({icon:'🔹', title:t, items:i});
-  }
+  } else { siteData.skills.push({icon:'🔹', title:t, items:i}); }
   document.getElementById('new-skill-cat').value=''; document.getElementById('new-skill-items').value=''; 
   syncAndSave();
 }
@@ -354,9 +393,7 @@ function saveExperience() {
     siteData.experience[editState.exp] = {role: r, company: c, period: p, location: l, points: pts};
     editState.exp = -1;
     document.getElementById('btn-exp').textContent = "+ Save Experience";
-  } else {
-    siteData.experience.push({role: r, company: c, period: p, location: l, points: pts}); 
-  }
+  } else { siteData.experience.push({role: r, company: c, period: p, location: l, points: pts}); }
   document.getElementById('new-exp-role').value=''; document.getElementById('new-exp-company').value=''; document.getElementById('new-exp-period').value=''; document.getElementById('new-exp-location').value=''; document.getElementById('new-exp-points').value=''; 
   syncAndSave();
 }
@@ -381,9 +418,7 @@ function saveAchievement() {
     siteData.achievements[editState.ach].desc = d;
     editState.ach = -1;
     document.getElementById('btn-ach').textContent = "+ Save Achievement";
-  } else {
-    siteData.achievements.push({icon:'✨', title:t, desc:d}); 
-  }
+  } else { siteData.achievements.push({icon:'✨', title:t, desc:d}); }
   document.getElementById('new-ach-title').value=''; document.getElementById('new-ach-desc').value=''; 
   syncAndSave();
 }
@@ -411,9 +446,7 @@ function saveCertification() {
     siteData.certifications[editState.cert].year = y;
     editState.cert = -1;
     document.getElementById('btn-cert').textContent = "+ Save Certification";
-  } else {
-    siteData.certifications.push({icon:'🎓', title:t, org:o, year:y}); 
-  }
+  } else { siteData.certifications.push({icon:'🎓', title:t, org:o, year:y}); }
   document.getElementById('new-cert-title').value=''; document.getElementById('new-cert-org').value=''; document.getElementById('new-cert-year').value='';
   syncAndSave();
 }
@@ -441,9 +474,7 @@ function saveProject() {
     siteData.projects[editState.proj] = {title:t, desc:d, tags:tg, link:l};
     editState.proj = -1;
     document.getElementById('btn-proj').textContent = "+ Save Project";
-  } else {
-    siteData.projects.push({title:t, desc:d, tags:tg, link:l}); 
-  }
+  } else { siteData.projects.push({title:t, desc:d, tags:tg, link:l}); }
   document.getElementById('new-proj-title').value=''; document.getElementById('new-proj-desc').value=''; document.getElementById('new-proj-tags').value=''; document.getElementById('new-proj-link').value=''; 
   syncAndSave();
 }
@@ -514,12 +545,10 @@ function handleChat(e) {
 /* ═══════════════════════════════════════════
    TOAST
 ════════════════════════════════════════════ */
-let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
   if(!t) return;
   t.textContent = msg; 
   t.style.display = 'block';
-  clearTimeout(toastTimer); 
-  toastTimer = setTimeout(() => t.style.display = 'none', 3000);
+  setTimeout(() => t.style.display = 'none', 3000);
 }
