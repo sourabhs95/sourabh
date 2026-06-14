@@ -114,7 +114,8 @@
       <button class="translate-btn" onclick="toggleTranslation()" title="Translate to Sanskrit">
         <span class="translate-icon">🕉</span> Sanskrit
       </button>
-      <button class="admin-btn" onclick="openAdmin()">⚙ Admin</button>
+      <!-- REPLACED ADMIN TEXT WITH CHAKRA LOGO -->
+      <button class="admin-btn" onclick="openAdmin()" title="Admin Panel" style="font-size: 18px; padding: 6px 14px;">☸</button>
       <button class="nav-toggle" onclick="toggleNav()">☰</button>
     </div>
   </nav>
@@ -278,7 +279,7 @@
     <p class="footer-sub">Designed & Developed with 🦚 by Sourabh</p>
   </footer>
 
-  <!-- Narada Chatbot (Now correctly inside main-site so it hides on Welcome Screen) -->
+  <!-- Narada Chatbot -->
   <div id="narada-bot" class="narada-chat">
     <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
     <div id="chat-body" class="chat-body hidden">
@@ -306,6 +307,7 @@
     <div class="admin-content hidden" id="admin-content">
       <div class="admin-tabs">
         <button class="tab-btn active" onclick="switchTab('skills-tab', this)">Skills</button>
+        <button class="tab-btn" onclick="switchTab('exp-tab', this)">Experience</button>
         <button class="tab-btn" onclick="switchTab('projects-tab', this)">Projects</button>
         <button class="tab-btn" onclick="switchTab('certs-tab', this)">Certs</button>
         <button class="tab-btn" onclick="switchTab('ach-tab', this)">Achieve</button>
@@ -321,6 +323,21 @@
           <input type="text" id="new-skill-cat" placeholder="Category name" />
           <textarea id="new-skill-items" placeholder="Skill 1, Skill 2, Skill 3"></textarea>
           <button onclick="addSkillCategory()">+ Add Category</button>
+        </div>
+      </div>
+
+      <!-- Experience Tab -->
+      <div id="exp-tab" class="tab-content">
+        <h3>Manage Experience</h3>
+        <div id="exp-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Role</h4>
+          <input type="text" id="new-exp-role" placeholder="Job Title (e.g., Specialist I)" />
+          <input type="text" id="new-exp-company" placeholder="Company Name" />
+          <input type="text" id="new-exp-period" placeholder="Period (e.g., Sept 2024 - Present)" />
+          <input type="text" id="new-exp-location" placeholder="Location" />
+          <textarea id="new-exp-points" placeholder="Bullet points (Separate with a comma)"></textarea>
+          <button onclick="addExperience()">+ Add Experience</button>
         </div>
       </div>
 
@@ -372,7 +389,7 @@
       </div>
 
       <div class="admin-actions">
-        <button class="save-all-btn" onclick="saveAll()">💾 Save All Changes</button>
+        <button class="save-all-btn" onclick="saveAll()">💾 Save & Close Admin Panel</button>
         <button class="reset-btn" onclick="resetAll()">↺ Reset to Default</button>
       </div>
     </div>
