@@ -116,6 +116,11 @@ function initSite() {
   renderAchievements();
   renderCertifications();
   renderProjects();
+  
+  // Set About Details
+  document.getElementById('about-p1').textContent = siteData.about.p1;
+  document.getElementById('about-p2').textContent = siteData.about.p2;
+
   document.getElementById('year').textContent = new Date().getFullYear();
   initReveal();
   initNavScroll();
@@ -245,7 +250,7 @@ function toggleTranslation() {
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL LOGIC 
+   ADMIN PANEL LOGIC (WITH AUTO-SAVE)
 ════════════════════════════════════════════ */
 function openAdmin() { document.getElementById('admin-overlay').classList.remove('hidden'); }
 function closeAdmin() { document.getElementById('admin-overlay').classList.add('hidden'); }
@@ -262,7 +267,12 @@ function checkAdminPass() {
 function loadAdminData() {
   const sl = document.getElementById('skills-admin-list');
   sl.innerHTML = siteData.skills.map((cat, ci) => `
-    <div class="admin-item"><span>${cat.icon} ${cat.title} (${cat.items.length} skills)</span><button class="admin-item-del" onclick="deleteSkillCat(${ci})">🗑</button></div>
+    <div class="admin-item"><span>${cat.icon} ${cat.title}</span><button class="admin-item-del" onclick="deleteSkillCat(${ci})">🗑</button></div>
+  `).join('');
+
+  const ex = document.getElementById('exp-admin-list');
+  ex.innerHTML = siteData.experience.map((e, ei) => `
+    <div class="admin-item"><span>${e.role} at ${e.company}</span><button class="admin-item-del" onclick="deleteExperience(${ei})">🗑</button></div>
   `).join('');
 
   const pl = document.getElementById('projects-admin-list');
@@ -272,7 +282,7 @@ function loadAdminData() {
 
   const cl = document.getElementById('certs-admin-list');
   cl.innerHTML = siteData.certifications.map((c, ci) => `
-    <div class="admin-item"><span>${c.icon} ${c.title} — ${c.org}</span><button class="admin-item-del" onclick="deleteCert(${ci})">🗑</button></div>
+    <div class="admin-item"><span>${c.icon} ${c.title}</span><button class="admin-item-del" onclick="deleteCert(${ci})">🗑</button></div>
   `).join('');
 
   const al = document.getElementById('achievements-admin-list');
@@ -291,71 +301,94 @@ function switchTab(tabId, btn) {
   btn.classList.add('active');
 }
 
+/* Add/Delete Functions Trigger Auto-Save */
 function addSkillCategory() {
   const cat = document.getElementById('new-skill-cat').value.trim();
   const items = document.getElementById('new-skill-items').value.split(',').map(s => s.trim()).filter(Boolean);
-  if (!cat || items.length === 0) { showToast('⚠ Fill category & skills'); return; }
+  if (!cat || items.length === 0) return showToast('⚠ Fill category & skills');
   siteData.skills.push({ icon: '🔹', title: cat, items });
   document.getElementById('new-skill-cat').value = ''; document.getElementById('new-skill-items').value = '';
-  loadAdminData(); showToast('✅ Skill category added!');
+  loadAdminData(); saveAll(true); showToast('✅ Skill category added!');
 }
-function deleteSkillCat(i) { siteData.skills.splice(i, 1); loadAdminData(); showToast('🗑 Skill category removed'); }
+function deleteSkillCat(i) { siteData.skills.splice(i, 1); loadAdminData(); saveAll(true); showToast('🗑 Skill category removed'); }
+
+function addExperience() {
+  const role = document.getElementById('new-exp-role').value.trim();
+  const company = document.getElementById('new-exp-company').value.trim();
+  const period = document.getElementById('new-exp-period').value.trim();
+  const location = document.getElementById('new-exp-location').value.trim();
+  const points = document.getElementById('new-exp-points').value.split(',').map(s => s.trim()).filter(Boolean);
+  if (!role || !company) return showToast('⚠ Role & Company required');
+  siteData.experience.push({ role, company, period, location, points });
+  document.getElementById('new-exp-role').value = ''; document.getElementById('new-exp-company').value = '';
+  document.getElementById('new-exp-period').value = ''; document.getElementById('new-exp-location').value = ''; document.getElementById('new-exp-points').value = '';
+  loadAdminData(); saveAll(true); showToast('✅ Experience added!');
+}
+function deleteExperience(i) { siteData.experience.splice(i, 1); loadAdminData(); saveAll(true); showToast('🗑 Experience removed'); }
 
 function addProject() {
   const title = document.getElementById('new-proj-title').value.trim();
   const desc = document.getElementById('new-proj-desc').value.trim();
   const tags = document.getElementById('new-proj-tags').value.split(',').map(s => s.trim()).filter(Boolean);
   const link = document.getElementById('new-proj-link').value.trim();
-  if (!title || !desc) { showToast('⚠ Title and description required'); return; }
+  if (!title || !desc) return showToast('⚠ Title & description required');
   siteData.projects.push({ title, desc, tags, link });
   document.getElementById('new-proj-title').value = ''; document.getElementById('new-proj-desc').value = '';
   document.getElementById('new-proj-tags').value = ''; document.getElementById('new-proj-link').value = '';
-  loadAdminData(); showToast('✅ Project added!');
+  loadAdminData(); saveAll(true); showToast('✅ Project added!');
 }
-function deleteProject(i) { siteData.projects.splice(i, 1); loadAdminData(); showToast('🗑 Project removed'); }
+function deleteProject(i) { siteData.projects.splice(i, 1); loadAdminData(); saveAll(true); showToast('🗑 Project removed'); }
 
 function addCertification() {
   const title = document.getElementById('new-cert-title').value.trim();
   const org = document.getElementById('new-cert-org').value.trim();
   const year = document.getElementById('new-cert-year').value.trim();
-  if (!title || !org) { showToast('⚠ Fill cert title and org'); return; }
+  if (!title || !org) return showToast('⚠ Fill cert title & org');
   siteData.certifications.push({ icon: '🎓', title, org, year });
   document.getElementById('new-cert-title').value = ''; document.getElementById('new-cert-org').value = ''; document.getElementById('new-cert-year').value = '';
-  loadAdminData(); showToast('✅ Certification added!');
+  loadAdminData(); saveAll(true); showToast('✅ Certification added!');
 }
-function deleteCert(i) { siteData.certifications.splice(i, 1); loadAdminData(); showToast('🗑 Certification removed'); }
+function deleteCert(i) { siteData.certifications.splice(i, 1); loadAdminData(); saveAll(true); showToast('🗑 Certification removed'); }
 
 function addAchievement() {
   const title = document.getElementById('new-ach-title').value.trim();
   const desc = document.getElementById('new-ach-desc').value.trim();
-  if (!title || !desc) { showToast('⚠ Fill title and desc'); return; }
+  if (!title || !desc) return showToast('⚠ Fill title & desc');
   siteData.achievements.push({ icon: '✨', title, desc });
   document.getElementById('new-ach-title').value = ''; document.getElementById('new-ach-desc').value = '';
-  loadAdminData(); showToast('✅ Achievement added!');
+  loadAdminData(); saveAll(true); showToast('✅ Achievement added!');
 }
-function deleteAchievement(i) { siteData.achievements.splice(i, 1); loadAdminData(); showToast('🗑 Achievement removed'); }
+function deleteAchievement(i) { siteData.achievements.splice(i, 1); loadAdminData(); saveAll(true); showToast('🗑 Achievement removed'); }
 
 function saveAbout() {
   siteData.about.p1 = document.getElementById('about-edit-p1').value;
   siteData.about.p2 = document.getElementById('about-edit-p2').value;
-  document.getElementById('about-p1').textContent = siteData.about.p1;
-  document.getElementById('about-p2').textContent = siteData.about.p2;
+  saveAll(true);
   showToast('✅ About text saved!');
 }
 
-function saveAll() {
-  siteData.about.p1 = document.getElementById('about-edit-p1').value;
-  siteData.about.p2 = document.getElementById('about-edit-p2').value;
-  document.getElementById('about-p1').textContent = siteData.about.p1;
-  document.getElementById('about-p2').textContent = siteData.about.p2;
+function saveAll(silent = false) {
+  // Grab about values dynamically when saving
+  const abtP1 = document.getElementById('about-edit-p1');
+  const abtP2 = document.getElementById('about-edit-p2');
+  if (abtP1 && abtP2) {
+    siteData.about.p1 = abtP1.value;
+    siteData.about.p2 = abtP2.value;
+    document.getElementById('about-p1').textContent = siteData.about.p1;
+    document.getElementById('about-p2').textContent = siteData.about.p2;
+  }
 
   saveData();
   renderSkills();
+  renderExperience();
   renderProjects();
   renderCertifications();
   renderAchievements(); 
-  closeAdmin();
-  showToast('💾 All changes saved successfully!');
+  
+  if (!silent) {
+    closeAdmin();
+    showToast('💾 All changes saved successfully!');
+  }
 }
 
 function resetAll() {
@@ -363,7 +396,7 @@ function resetAll() {
     localStorage.removeItem('sourabh_portfolio');
     siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
     loadAdminData();
-    renderSkills(); renderProjects(); renderCertifications(); renderAchievements();
+    saveAll(true);
     showToast('↺ Reset to default data');
   }
 }
