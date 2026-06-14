@@ -65,14 +65,27 @@ let isTranslated = false;
 let siteData = loadData();
 
 /* ═══════════════════════════════════════════
-   LOAD / SAVE DATA
+   LOAD / SAVE DATA (Fixes Admin breaking)
 ════════════════════════════════════════════ */
 function loadData() {
   try {
     const saved = localStorage.getItem('sourabh_portfolio');
-    return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+    if (saved) {
+      let parsed = JSON.parse(saved);
+      // Fallback merge: if an array like achievements is missing from old saves, add it back
+      return {
+        skills: parsed.skills || [...DEFAULT_DATA.skills],
+        experience: parsed.experience || [...DEFAULT_DATA.experience],
+        achievements: parsed.achievements || [...DEFAULT_DATA.achievements],
+        certifications: parsed.certifications || [...DEFAULT_DATA.certifications],
+        projects: parsed.projects || [...DEFAULT_DATA.projects],
+        about: parsed.about || {...DEFAULT_DATA.about}
+      };
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_DATA));
   } catch { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
 }
+
 function saveData() {
   localStorage.setItem('sourabh_portfolio', JSON.stringify(siteData));
 }
@@ -228,7 +241,7 @@ function toggleTranslation() {
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL LOGIC (FIXED)
+   ADMIN PANEL LOGIC 
 ════════════════════════════════════════════ */
 function openAdmin() { document.getElementById('admin-overlay').classList.remove('hidden'); }
 function closeAdmin() { document.getElementById('admin-overlay').classList.add('hidden'); }
@@ -337,6 +350,12 @@ function saveAbout() {
 }
 
 function saveAll() {
+  // Always sync About section variables just in case
+  siteData.about.p1 = document.getElementById('about-edit-p1').value;
+  siteData.about.p2 = document.getElementById('about-edit-p2').value;
+  document.getElementById('about-p1').textContent = siteData.about.p1;
+  document.getElementById('about-p2').textContent = siteData.about.p2;
+
   saveData(); // Commit to LocalStorage
   renderSkills();
   renderProjects();
@@ -372,7 +391,7 @@ function handleChat(e) {
     // User message
     container.innerHTML += `<div style="text-align:right; margin:8px 0; color:#555; padding:8px; background:#f0f0f0; border-radius:8px; display:inline-block; float:right; clear:both;">${input.value}</div>`;
     
-    // Simple logic response based on siteData
+    // Simple logic response
     let reply = "I am pondering this... ask me about Pricing, Experience, Skills, or Projects.";
     if (msg.includes('skill')) reply = "Sourabh specializes in: " + siteData.skills.map(s => s.title).join(', ') + ".";
     else if (msg.includes('experience') || msg.includes('work')) reply = `He currently works at ${siteData.experience[0].company} as a ${siteData.experience[0].role}.`;
