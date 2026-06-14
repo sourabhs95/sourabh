@@ -14,18 +14,18 @@ const DEFAULT_DATA = {
   ],
   experience: [
     { company: 'Mouser Electronics (TTI Inc)', role: 'Specialist I – Quote Management', period: 'September 2024 – Present', location: 'Bengaluru, India', points: [
-        'Processed high-volume RFQs daily from multiple sourcing portals.',
-        'Configured customer RFQs in IQS tool.',
-        'Performed BOM scrubbing and data validation.',
-        'Calculated competitive pricing margins.',
-        'Managed supply chain parameters including lead time and MOQ.',
+        'Processed high-volume RFQs daily from multiple sourcing portals including Global and Matrix platforms.',
+        'Configured customer RFQs in IQS tool by setting quote parameters and technical specifications.',
+        'Performed BOM scrubbing and data validation to identify unresolved part numbers.',
+        'Calculated competitive pricing margins by applying customer-specific rule sets.',
+        'Managed supply chain parameters including lead time analysis and MOQ.',
         'Awarded Rising Star Award (2025) and Star Performer of Q1 2026.'
       ] }
   ],
   achievements: [
-    { icon: '⭐', title: 'Rising Star Award 2025', desc: 'Awarded at Mouser Electronics for exceptional performance in quote processing.' },
-    { icon: '🏆', title: 'Star Performer Q1 2026', desc: 'Recognized for consistently meeting critical turnaround deadlines.' },
-    { icon: '🎯', title: 'SPOC for Complex BOM Scrubbing', desc: 'Served as the go-to point of contact for complex workflows.' }
+    { icon: '⭐', title: 'Rising Star Award 2025', desc: 'Awarded at Mouser Electronics for exceptional performance in quote processing accuracy and efficiency.' },
+    { icon: '🏆', title: 'Star Performer Q1 2026', desc: 'Recognized for consistently meeting critical turnaround deadlines and delivering high-quality quotations.' },
+    { icon: '🎯', title: 'SPOC for Complex BOM Scrubbing', desc: 'Served as the go-to Single Point of Contact for complex BOM scrubbing processes.' }
   ],
   certifications: [
     { icon: '📊', title: 'Business Analytics with Excel & Power BI', org: 'Simplilearn', year: '2024' },
@@ -33,9 +33,9 @@ const DEFAULT_DATA = {
     { icon: '🔵', title: 'Power BI Analytics', org: 'J2J Institute', year: '2024' }
   ],
   projects: [
-    { title: 'BOM Scrubbing Automation', desc: 'Developed a systematic approach for scrubbing Bills of Materials (BOMs).', tags: ['Excel', 'IQS', 'Process Improvement'], link: '' },
-    { title: 'Pricing Margin Optimization', desc: 'Analyzed and applied customer-specific pricing rule sets.', tags: ['Pricing Analysis', 'Excel', 'Data Analytics'], link: '' },
-    { title: 'Supply Chain Data Dashboard', desc: 'Built Power BI dashboards to visualize lead times and MOQ trends.', tags: ['Power BI', 'Data Analytics', 'Supply Chain'], link: '' }
+    { title: 'BOM Scrubbing Automation', desc: 'Developed a systematic approach for scrubbing Bills of Materials (BOMs), streamlining the identification and resolution of unresolved part numbers.', tags: ['Excel', 'IQS', 'Process Improvement'], link: '' },
+    { title: 'Pricing Margin Optimization', desc: 'Analyzed and applied customer-specific pricing rule sets to consistently deliver competitive margins while maintaining profitability.', tags: ['Pricing Analysis', 'Excel', 'Data Analytics'], link: '' },
+    { title: 'Supply Chain Data Dashboard', desc: 'Built Power BI dashboards to visualize lead times, country of origin data, and MOQ trends.', tags: ['Power BI', 'Data Analytics', 'Supply Chain'], link: '' }
   ]
 };
 
@@ -57,14 +57,15 @@ let siteData = {};
 ════════════════════════════════════════════ */
 function loadData() {
   try {
-    const saved = localStorage.getItem('sourabh_v4_data');
+    // V5 forces a fresh start to fix browser cache bugs
+    const saved = localStorage.getItem('sourabh_v5_data');
     if (saved) {
       siteData = JSON.parse(saved);
-      if(!siteData.skills) siteData.skills = [...DEFAULT_DATA.skills];
-      if(!siteData.experience) siteData.experience = [...DEFAULT_DATA.experience];
-      if(!siteData.achievements) siteData.achievements = [...DEFAULT_DATA.achievements];
-      if(!siteData.certifications) siteData.certifications = [...DEFAULT_DATA.certifications];
-      if(!siteData.projects) siteData.projects = [...DEFAULT_DATA.projects];
+      if(!Array.isArray(siteData.skills)) siteData.skills = [...DEFAULT_DATA.skills];
+      if(!Array.isArray(siteData.experience)) siteData.experience = [...DEFAULT_DATA.experience];
+      if(!Array.isArray(siteData.achievements)) siteData.achievements = [...DEFAULT_DATA.achievements];
+      if(!Array.isArray(siteData.certifications)) siteData.certifications = [...DEFAULT_DATA.certifications];
+      if(!Array.isArray(siteData.projects)) siteData.projects = [...DEFAULT_DATA.projects];
       if(!siteData.about) siteData.about = {...DEFAULT_DATA.about};
     } else {
       siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
@@ -75,50 +76,74 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('sourabh_v4_data', JSON.stringify(siteData));
+  localStorage.setItem('sourabh_v5_data', JSON.stringify(siteData));
 }
 
 function enterSite() {
   const ws = document.getElementById('welcome-screen');
   const ms = document.getElementById('main-site');
-  ws.style.opacity = '0';
-  ws.style.transform = 'scale(1.05)';
-  ws.style.transition = 'all 0.8s cubic-bezier(0.4,0,0.2,1)';
-  setTimeout(() => {
-    ws.classList.add('hidden');
-    ms.classList.remove('hidden');
-    document.body.style.overflow = 'auto';
+  if(ws) {
+    ws.style.opacity = '0';
+    ws.style.transform = 'scale(1.05)';
+    ws.style.transition = 'all 0.8s cubic-bezier(0.4,0,0.2,1)';
+    setTimeout(() => {
+      ws.classList.add('hidden');
+      if(ms) ms.classList.remove('hidden');
+      document.body.style.overflow = 'auto';
+      initSite();
+    }, 800);
+  } else {
     initSite();
-  }, 800);
+  }
 }
 document.body.style.overflow = 'hidden';
 
 function initSite() {
+  // FORCE CHAKRA LOGO VIA JS TO FIX HTML CACHING
+  const adminBtn = document.querySelector('.admin-btn');
+  if (adminBtn) {
+    adminBtn.innerHTML = '☸';
+    adminBtn.style.fontSize = '20px';
+    adminBtn.style.padding = '4px 14px';
+    adminBtn.style.background = 'transparent';
+    adminBtn.style.border = '1px solid var(--gold)';
+    adminBtn.style.borderRadius = '20px';
+    adminBtn.style.color = 'var(--gold)';
+  }
+
   loadData();
   renderAllUI();
-  document.getElementById('year').textContent = new Date().getFullYear();
+  
+  const yr = document.getElementById('year');
+  if(yr) yr.textContent = new Date().getFullYear();
+  
   initReveal();
   initNavScroll();
-  setTimeout(() => { document.getElementById('chat-body').classList.remove('hidden'); }, 1500);
+  setTimeout(() => { 
+    const cb = document.getElementById('chat-body');
+    if(cb) cb.classList.remove('hidden'); 
+  }, 1500);
 }
 
 /* ═══════════════════════════════════════════
    RENDER EXACT ORIGINAL UI
 ════════════════════════════════════════════ */
 function renderAllUI() {
-  document.getElementById('about-p1').textContent = siteData.about.p1;
-  document.getElementById('about-p2').textContent = siteData.about.p2;
+  const p1 = document.getElementById('about-p1');
+  const p2 = document.getElementById('about-p2');
+  if(p1) p1.textContent = siteData.about.p1;
+  if(p2) p2.textContent = siteData.about.p2;
 
   const sc = document.getElementById('skills-container');
   if(sc) sc.innerHTML = siteData.skills.map(cat => `
-    <div class="skill-category reveal">
-      <div class="skill-cat-title"><span class="skill-cat-icon">${cat.icon}</span>${cat.title}</div>
+    <div class="skill-category reveal visible">
+      <div class="skill-cat-title"><span class="skill-cat-icon">${cat.icon || '🔹'}</span>${cat.title}</div>
       <div class="skill-tags">${cat.items.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
     </div>`).join('');
 
   const ec = document.getElementById('experience-container');
   if(ec) ec.innerHTML = siteData.experience.map(exp => `
-    <div class="timeline-item reveal">
+    <div class="timeline-item reveal visible">
       <div class="timeline-header">
         <div class="timeline-company">${exp.company}</div>
         <div class="timeline-role">${exp.role}</div>
@@ -129,16 +154,16 @@ function renderAllUI() {
 
   const ac = document.getElementById('achievements-container');
   if(ac) ac.innerHTML = siteData.achievements.map(a => `
-    <div class="achievement-card reveal">
-      <div class="achievement-icon">${a.icon}</div>
+    <div class="achievement-card reveal visible">
+      <div class="achievement-icon">${a.icon || '✨'}</div>
       <div class="achievement-title">${a.title}</div>
       <div class="achievement-desc">${a.desc}</div>
     </div>`).join('');
 
   const cc = document.getElementById('certs-container');
   if(cc) cc.innerHTML = siteData.certifications.map(c => `
-    <div class="cert-card reveal">
-      <span class="cert-icon">${c.icon}</span>
+    <div class="cert-card reveal visible">
+      <span class="cert-icon">${c.icon || '🎓'}</span>
       <div>
         <div class="cert-title">${c.title}</div>
         <div class="cert-org">${c.org}</div>
@@ -151,15 +176,13 @@ function renderAllUI() {
     const tags = p.tags && p.tags.length ? p.tags.map(t => `<span class="project-tag">${t}</span>`).join('') : '';
     const link = p.link ? `<a href="${p.link}" class="project-link" target="_blank">View Project →</a>` : '';
     return `
-      <div class="project-card reveal">
+      <div class="project-card reveal visible">
         <div class="project-title">${p.title}</div>
         <div class="project-desc">${p.desc}</div>
         <div class="project-tags">${tags}</div>
         ${link}
       </div>`;
   }).join('');
-  
-  triggerReveal();
 }
 
 /* ═══════════════════════════════════════════
@@ -171,27 +194,25 @@ function initReveal() {
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
-function triggerReveal() {
-  setTimeout(() => {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
-  }, 100);
-}
 
 function initNavScroll() {
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
+    if(!nav) return;
     if (window.scrollY > 50) nav.style.padding = '8px 48px';
     else nav.style.padding = '14px 48px';
   });
 }
-function toggleNav() { document.querySelector('.nav-links').classList.toggle('open'); }
+function toggleNav() { 
+  const links = document.querySelector('.nav-links');
+  if(links) links.classList.toggle('open'); 
+}
 
 function toggleTranslation() {
   isTranslated = !isTranslated;
-  document.querySelector('.translate-btn').classList.toggle('active', isTranslated);
+  const tBtn = document.querySelector('.translate-btn');
+  if(tBtn) tBtn.classList.toggle('active', isTranslated);
+  
   const swaps = [
     { id: 'hero-name', en: 'Sourabh Satish Shet', sk: SANSKRIT['Sourabh Satish Shet'] },
     { id: 'hero-title', en: 'Pricing & Quotation Specialist', sk: SANSKRIT['Pricing & Quotation Specialist'] },
@@ -210,88 +231,158 @@ function toggleTranslation() {
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL
+   ADMIN PANEL: INSTANT SYNC LOGIC
 ════════════════════════════════════════════ */
-function openAdmin() { document.getElementById('admin-overlay').classList.remove('hidden'); }
-function closeAdmin() { document.getElementById('admin-overlay').classList.add('hidden'); }
+function openAdmin() { 
+  const ov = document.getElementById('admin-overlay');
+  if(ov) ov.classList.remove('hidden'); 
+}
+function closeAdmin() { 
+  const ov = document.getElementById('admin-overlay');
+  if(ov) ov.classList.add('hidden'); 
+}
 
 function checkAdminPass() {
-  if (document.getElementById('admin-pass').value === 'sourabh@2025') {
+  const pass = document.getElementById('admin-pass');
+  if (pass && pass.value === 'sourabh@2025') {
     document.getElementById('admin-login').classList.add('hidden');
     document.getElementById('admin-content').classList.remove('hidden');
     loadAdminUI();
-  } else { showToast('❌ Wrong password!'); }
+  } else { 
+    showToast('❌ Wrong password!'); 
+  }
 }
 
 function switchTab(tabId, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId).classList.remove('hidden');
+  const t = document.getElementById(tabId);
+  if(t) t.classList.remove('hidden');
   if(btn) btn.classList.add('active');
 }
 
 function loadAdminUI() {
-  document.getElementById('about-edit-p1').value = siteData.about.p1;
-  document.getElementById('about-edit-p2').value = siteData.about.p2;
+  const ap1 = document.getElementById('about-edit-p1');
+  const ap2 = document.getElementById('about-edit-p2');
+  if(ap1) ap1.value = siteData.about.p1;
+  if(ap2) ap2.value = siteData.about.p2;
 
   const mkList = (arr, tKey, dFunc) => arr.map((item, i) => `<div class="admin-item"><span>${item[tKey]}</span><button class="admin-item-del" onclick="${dFunc}(${i})">🗑</button></div>`).join('');
   
-  document.getElementById('skills-admin-list').innerHTML = mkList(siteData.skills, 'title', 'delSkill');
-  document.getElementById('exp-admin-list').innerHTML = mkList(siteData.experience, 'role', 'delExp');
-  document.getElementById('achievements-admin-list').innerHTML = mkList(siteData.achievements, 'title', 'delAch');
-  document.getElementById('certs-admin-list').innerHTML = mkList(siteData.certifications, 'title', 'delCert');
-  document.getElementById('projects-admin-list').innerHTML = mkList(siteData.projects, 'title', 'delProj');
+  const sl = document.getElementById('skills-admin-list');
+  if(sl) sl.innerHTML = mkList(siteData.skills, 'title', 'delSkill');
+  
+  const el = document.getElementById('exp-admin-list');
+  if(el) el.innerHTML = mkList(siteData.experience, 'role', 'delExp');
+  
+  const al = document.getElementById('achievements-admin-list');
+  if(al) al.innerHTML = mkList(siteData.achievements, 'title', 'delAch');
+  
+  const cl = document.getElementById('certs-admin-list');
+  if(cl) cl.innerHTML = mkList(siteData.certifications, 'title', 'delCert');
+  
+  const pl = document.getElementById('projects-admin-list');
+  if(pl) pl.innerHTML = mkList(siteData.projects, 'title', 'delProj');
+}
+
+// INSTANT SAVE FUNCTION
+function syncAndSave() {
+  const ap1 = document.getElementById('about-edit-p1');
+  const ap2 = document.getElementById('about-edit-p2');
+  if(ap1 && ap2) {
+    siteData.about.p1 = ap1.value;
+    siteData.about.p2 = ap2.value;
+  }
+  saveData();
+  renderAllUI();
+  loadAdminUI();
 }
 
 // Add Functions
 function addSkillCategory() {
   const t = document.getElementById('new-skill-cat').value.trim();
   const i = document.getElementById('new-skill-items').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(t) { siteData.skills.push({icon:'🔹', title:t, items:i}); document.getElementById('new-skill-cat').value=''; document.getElementById('new-skill-items').value=''; loadAdminUI(); }
+  if(t) { 
+    siteData.skills.push({icon:'🔹', title:t, items:i}); 
+    document.getElementById('new-skill-cat').value=''; 
+    document.getElementById('new-skill-items').value=''; 
+    syncAndSave();
+    showToast("✅ Skill Added");
+  } else { showToast("⚠️ Title required"); }
 }
+
 function addExperience() {
   const r = document.getElementById('new-exp-role').value.trim();
   const c = document.getElementById('new-exp-company').value.trim();
   const pts = document.getElementById('new-exp-points').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(r&&c) { siteData.experience.push({role:r, company:c, period:document.getElementById('new-exp-period').value, location:document.getElementById('new-exp-location').value, points:pts}); document.getElementById('new-exp-role').value=''; document.getElementById('new-exp-company').value=''; document.getElementById('new-exp-points').value=''; loadAdminUI(); }
+  if(r && c) { 
+    siteData.experience.push({
+      role: r, 
+      company: c, 
+      period: document.getElementById('new-exp-period').value, 
+      location: document.getElementById('new-exp-location').value, 
+      points: pts
+    }); 
+    document.getElementById('new-exp-role').value=''; 
+    document.getElementById('new-exp-company').value=''; 
+    document.getElementById('new-exp-points').value=''; 
+    syncAndSave();
+    showToast("✅ Experience Added");
+  } else { showToast("⚠️ Role & Company required"); }
 }
+
 function addAchievement() {
   const t = document.getElementById('new-ach-title').value.trim();
-  if(t) { siteData.achievements.push({icon:'✨', title:t, desc:document.getElementById('new-ach-desc').value}); document.getElementById('new-ach-title').value=''; document.getElementById('new-ach-desc').value=''; loadAdminUI(); }
+  if(t) { 
+    siteData.achievements.push({icon:'✨', title:t, desc:document.getElementById('new-ach-desc').value}); 
+    document.getElementById('new-ach-title').value=''; 
+    document.getElementById('new-ach-desc').value=''; 
+    syncAndSave();
+    showToast("✅ Achievement Added");
+  } else { showToast("⚠️ Title required"); }
 }
+
 function addCertification() {
   const t = document.getElementById('new-cert-title').value.trim();
-  if(t) { siteData.certifications.push({icon:'🎓', title:t, org:document.getElementById('new-cert-org').value, year:document.getElementById('new-cert-year').value}); document.getElementById('new-cert-title').value=''; loadAdminUI(); }
+  if(t) { 
+    siteData.certifications.push({icon:'🎓', title:t, org:document.getElementById('new-cert-org').value, year:document.getElementById('new-cert-year').value}); 
+    document.getElementById('new-cert-title').value=''; 
+    syncAndSave();
+    showToast("✅ Certification Added");
+  } else { showToast("⚠️ Title required"); }
 }
+
 function addProject() {
   const t = document.getElementById('new-proj-title').value.trim();
   const tg = document.getElementById('new-proj-tags').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(t) { siteData.projects.push({title:t, desc:document.getElementById('new-proj-desc').value, tags:tg, link:document.getElementById('new-proj-link').value}); document.getElementById('new-proj-title').value=''; document.getElementById('new-proj-desc').value=''; loadAdminUI(); }
+  if(t) { 
+    siteData.projects.push({title:t, desc:document.getElementById('new-proj-desc').value, tags:tg, link:document.getElementById('new-proj-link').value}); 
+    document.getElementById('new-proj-title').value=''; 
+    document.getElementById('new-proj-desc').value=''; 
+    syncAndSave();
+    showToast("✅ Project Added");
+  } else { showToast("⚠️ Title required"); }
 }
 
 // Delete Functions
-function delSkill(i) { siteData.skills.splice(i,1); loadAdminUI(); }
-function delExp(i) { siteData.experience.splice(i,1); loadAdminUI(); }
-function delAch(i) { siteData.achievements.splice(i,1); loadAdminUI(); }
-function delCert(i) { siteData.certifications.splice(i,1); loadAdminUI(); }
-function delProj(i) { siteData.projects.splice(i,1); loadAdminUI(); }
+function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
 
 // Save & Reset
 function saveAll() {
-  siteData.about.p1 = document.getElementById('about-edit-p1').value;
-  siteData.about.p2 = document.getElementById('about-edit-p2').value;
-  saveData();
-  renderAllUI();
+  syncAndSave();
   closeAdmin();
   showToast('💾 Saved successfully!');
 }
 
 function resetAll() {
   if (confirm('Reset to defaults? Cannot be undone.')) {
-    localStorage.removeItem('sourabh_v4_data');
+    localStorage.removeItem('sourabh_v5_data');
     loadData();
-    loadAdminUI();
-    renderAllUI();
+    syncAndSave();
     showToast('↺ Reset to default');
   }
 }
@@ -299,12 +390,17 @@ function resetAll() {
 /* ═══════════════════════════════════════════
    NARADA CHATBOT
 ════════════════════════════════════════════ */
-function toggleChat() { document.getElementById('chat-body').classList.toggle('hidden'); }
+function toggleChat() { 
+  const cb = document.getElementById('chat-body');
+  if(cb) cb.classList.toggle('hidden'); 
+}
 
 function handleChat(e) {
   if (e.key === 'Enter') {
     const input = document.getElementById('chat-input');
     const container = document.getElementById('msg-container');
+    if(!input || !container) return;
+    
     const msg = input.value.toLowerCase().trim();
     if (!msg) return;
     
@@ -344,6 +440,9 @@ function handleChat(e) {
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.remove('hidden');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
+  if(!t) return;
+  t.textContent = msg; 
+  t.classList.remove('hidden');
+  clearTimeout(toastTimer); 
+  toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
 }
