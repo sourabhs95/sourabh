@@ -10,9 +10,13 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════════
+     WELCOME SCREEN — Krishna / Sudarshana Chakra
+════════════════════════════════════════════════════ -->
 <div id="welcome-screen">
   <div class="welcome-bg"></div>
 
+  <!-- Peacock Feather -->
   <div class="feather-container">
     <svg class="peacock-feather" viewBox="0 0 120 340" xmlns="http://www.w3.org/2000/svg">
       <line x1="60" y1="340" x2="60" y2="60" stroke="#8B6914" stroke-width="2.5"/>
@@ -42,6 +46,7 @@
     </svg>
   </div>
 
+  <!-- Sudarshana Chakra -->
   <div class="chakra-container">
     <svg class="sudarshana-chakra" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -85,6 +90,7 @@
     </svg>
   </div>
 
+  <!-- Welcome Text -->
   <div class="welcome-text">
     <p class="sanskrit-welcome">स्वागतम् • सुस्वागतम्</p>
     <h1 class="welcome-name">Sourabh Satish Shet</h1>
@@ -92,14 +98,21 @@
     <p class="welcome-subtitle">Pricing & Quotation Specialist</p>
     <button class="enter-btn" onclick="enterSite()">
       <span>Enter</span>
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
     </button>
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════
+     MAIN SITE
+════════════════════════════════════════════════════ -->
 <div id="main-site" class="hidden">
 
+  <!-- NAV -->
   <nav id="navbar">
-    <div class="nav-logo"><span class="nav-chakra">☸</span> SS</div>
+    <div class="nav-logo">
+      <span class="nav-chakra">☸</span> SS
+    </div>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
@@ -110,11 +123,16 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
-      <button class="admin-btn" onclick="openAdmin()" title="Admin Panel" style="font-size: 20px; padding: 4px 12px; cursor: pointer; border: 1px solid var(--gold); background: transparent; color: var(--gold); border-radius: 20px;">☸</button>
+      <button class="translate-btn" onclick="toggleTranslation()" title="Translate to Sanskrit">
+        <span class="translate-icon">🕉</span> Sanskrit
+      </button>
+      <!-- REPLACED ADMIN TEXT WITH CHAKRA LOGO -->
+      <button class="admin-btn" onclick="openAdmin()" title="Admin Panel" style="font-size: 20px; padding: 4px 14px; background: transparent; border: 1px solid var(--gold); border-radius: 20px; color: var(--gold);">☸</button>
       <button class="nav-toggle" onclick="toggleNav()">☰</button>
     </div>
   </nav>
 
+  <!-- HERO -->
   <section id="hero">
     <div class="hero-chakra-bg">
       <svg viewBox="0 0 400 400" class="bg-chakra-svg">
@@ -130,6 +148,7 @@
     </div>
     <div class="hero-content">
       <div class="hero-feather-mini">🦚</div>
+      <p class="hero-sanskrit" id="hero-sanskrit">सौरभ सतीश शेट</p>
       <h1 class="hero-name" id="hero-name">Sourabh Satish Shet</h1>
       <h2 class="hero-title" id="hero-title">Pricing & Quotation Specialist</h2>
       <p class="hero-location" id="hero-location">📍 Yelahanka, Bangalore · Electronics Components Supply Chain</p>
@@ -142,11 +161,16 @@
         <a href="#experience" class="btn-secondary">View Experience</a>
       </div>
     </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
   </section>
 
+  <!-- ABOUT -->
   <section id="about" class="section">
     <div class="section-label">01 · About</div>
-    <h2 class="section-title">About Me</h2>
+    <h2 class="section-title" id="about-title">About Me</h2>
     <div class="about-grid">
       <div class="about-text">
         <p id="about-p1"></p>
@@ -160,44 +184,72 @@
         </div>
       </div>
       <div class="about-stats">
-        <div class="stat-card"><span class="stat-num">1+</span><span class="stat-label">Years at Mouser</span></div>
-        <div class="stat-card"><span class="stat-num">2</span><span class="stat-label">Awards Won</span></div>
-        <div class="stat-card"><span class="stat-num">5</span><span class="stat-label">Languages</span></div>
-        <div class="stat-card"><span class="stat-num">∞</span><span class="stat-label">Accuracy Focus</span></div>
+        <div class="stat-card">
+          <span class="stat-num">1+</span>
+          <span class="stat-label">Years at Mouser</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Awards Won</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Languages</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Accuracy Focus</span>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- SKILLS -->
   <section id="skills" class="section dark-section">
     <div class="section-label">02 · Skills</div>
-    <h2 class="section-title">Skills & Expertise</h2>
-    <div class="skills-grid" id="skills-container"></div>
+    <h2 class="section-title" id="skills-title">Skills & Expertise</h2>
+    <div class="skills-grid" id="skills-container">
+      <!-- Populated by JS -->
+    </div>
   </section>
 
+  <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <div class="section-label">03 · Experience</div>
-    <h2 class="section-title">Work Experience</h2>
-    <div class="timeline" id="experience-container"></div>
+    <h2 class="section-title" id="exp-title">Work Experience</h2>
+    <div class="timeline" id="experience-container">
+      <!-- Populated by JS -->
+    </div>
   </section>
 
+  <!-- ACHIEVEMENTS -->
   <section id="achievements" class="section dark-section">
     <div class="section-label">04 · Achievements</div>
     <h2 class="section-title">Achievements</h2>
-    <div class="achievements-grid" id="achievements-container"></div>
+    <div class="achievements-grid" id="achievements-container">
+      <!-- Populated by JS -->
+    </div>
   </section>
 
+  <!-- CERTIFICATIONS -->
   <section id="certifications" class="section">
     <div class="section-label">05 · Certifications</div>
     <h2 class="section-title">Certifications</h2>
-    <div class="certs-grid" id="certs-container"></div>
+    <div class="certs-grid" id="certs-container">
+      <!-- Populated by JS -->
+    </div>
   </section>
 
+  <!-- PROJECTS -->
   <section id="projects" class="section dark-section">
     <div class="section-label">06 · Projects</div>
-    <h2 class="section-title">Projects</h2>
-    <div class="projects-grid" id="projects-container"></div>
+    <h2 class="section-title" id="projects-title">Projects</h2>
+    <div class="projects-grid" id="projects-container">
+      <!-- Populated by JS -->
+    </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact" class="section">
     <div class="section-label">07 · Contact</div>
     <h2 class="section-title">Get In Touch</h2>
@@ -205,121 +257,169 @@
       <div class="contact-links">
         <a href="mailto:sourabhshet95@gmail.com" class="contact-card">
           <i class="fas fa-envelope"></i>
-          <div><span class="contact-type">Email</span><span class="contact-value">sourabhshet95@gmail.com</span></div>
+          <div>
+            <span class="contact-type">Email</span>
+            <span class="contact-value">sourabhshet95@gmail.com</span>
+          </div>
         </a>
         <a href="tel:+919019215348" class="contact-card">
           <i class="fas fa-phone"></i>
-          <div><span class="contact-type">Phone</span><span class="contact-value">+91 9019215348</span></div>
+          <div>
+            <span class="contact-type">Phone</span>
+            <span class="contact-value">+91 9019215348</span>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/sourabhshet" target="_blank" class="contact-card">
+          <i class="fab fa-linkedin"></i>
+          <div>
+            <span class="contact-type">LinkedIn</span>
+            <span class="contact-value">linkedin.com/in/sourabhshet</span>
+          </div>
+        </a>
+        <a href="https://github.com/sourabhshet" target="_blank" class="contact-card">
+          <i class="fab fa-github"></i>
+          <div>
+            <span class="contact-type">GitHub</span>
+            <span class="contact-value">github.com/sourabhshet</span>
+          </div>
         </a>
       </div>
       <div class="contact-note">
         <div class="contact-feather">🦚</div>
         <p id="contact-quote">"Precision in pricing, excellence in delivery."</p>
         <p class="contact-sanskrit">यथा कार्यं तथा फलम्</p>
+        <p class="contact-translation">As is the work, so is the result</p>
       </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-chakra">☸</div>
     <p class="footer-copy">© <span id="year"></span> Sourabh Satish Shet. All Rights Reserved.</p>
+    <p class="footer-sanskrit">सर्वाधिकार सुरक्षित · Sarvadhikar Surakshit</p>
     <p class="footer-sub">Designed & Developed with 🦚 by Sourabh</p>
   </footer>
 
+  <!-- NARADA CHATBOT (Now properly inside main-site) -->
   <div id="narada-bot" class="narada-chat">
     <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
     <div id="chat-body" class="chat-body hidden">
-      <div class="chat-messages" id="msg-container"></div>
-      <input type="text" id="chat-input" placeholder="Say hi or ask about skills..." onkeypress="handleChat(event)">
+      <div class="chat-messages" id="msg-container">
+        <div class="bot-msg" style="color:var(--gold-dark); margin:5px; padding:8px; background:rgba(201,168,76,0.1); border-radius:8px;"><b>Narada:</b> Hari Om! I am Narada, your virtual guide to Sourabh's portfolio. How can I assist you?</div>
+      </div>
+      <input type="text" id="chat-input" placeholder="Say hi or ask about expertise..." onkeypress="handleChat(event)">
     </div>
   </div>
 
-</div>
+</div><!-- /main-site -->
 
+<!-- ═══════════════════════════════════════════════════
+     ADMIN PANEL
+════════════════════════════════════════════════════ -->
 <div id="admin-overlay" class="hidden">
   <div class="admin-panel">
     <div class="admin-header">
       <h2>☸ Admin Panel</h2>
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
-    
     <div class="admin-login" id="admin-login">
-      <p>Enter password to edit portfolio</p>
+      <p>Enter admin password to edit your portfolio</p>
       <input type="password" id="admin-pass" placeholder="Password" />
       <button onclick="checkAdminPass()">Login</button>
     </div>
-
     <div class="admin-content hidden" id="admin-content">
       <div class="admin-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-about', this)">About</button>
-        <button class="tab-btn" onclick="switchTab('tab-skills', this)">Skills</button>
-        <button class="tab-btn" onclick="switchTab('tab-exp', this)">Experience</button>
-        <button class="tab-btn" onclick="switchTab('tab-ach', this)">Achievements</button>
-        <button class="tab-btn" onclick="switchTab('tab-cert', this)">Certs</button>
-        <button class="tab-btn" onclick="switchTab('tab-proj', this)">Projects</button>
+        <button class="tab-btn active" onclick="switchTab('about-tab', this)">About</button>
+        <button class="tab-btn" onclick="switchTab('skills-tab', this)">Skills</button>
+        <button class="tab-btn" onclick="switchTab('exp-tab', this)">Experience</button>
+        <button class="tab-btn" onclick="switchTab('ach-tab', this)">Achievements</button>
+        <button class="tab-btn" onclick="switchTab('certs-tab', this)">Certs</button>
+        <button class="tab-btn" onclick="switchTab('projects-tab', this)">Projects</button>
       </div>
 
-      <div id="tab-about" class="tab-content active">
-        <h3>Edit About Section</h3>
-        <textarea id="edit-about-p1" rows="4"></textarea>
-        <textarea id="edit-about-p2" rows="4"></textarea>
-        <button onclick="saveAbout()">Save About</button>
+      <!-- About Tab -->
+      <div id="about-tab" class="tab-content active">
+        <h3>Edit About Text</h3>
+        <textarea id="about-edit-p1" rows="4" style="width:100%;margin-bottom:10px;"></textarea>
+        <textarea id="about-edit-p2" rows="4" style="width:100%;margin-bottom:10px;"></textarea>
       </div>
 
-      <div id="tab-skills" class="tab-content">
+      <!-- Skills Tab -->
+      <div id="skills-tab" class="tab-content">
         <h3>Manage Skills</h3>
-        <div id="admin-list-skills"></div>
-        <input type="text" id="add-skill-cat" placeholder="Category (e.g., Tools)" />
-        <textarea id="add-skill-items" placeholder="Skill 1, Skill 2 (comma separated)"></textarea>
-        <button onclick="addSkill()">+ Add Skill Category</button>
+        <div id="skills-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Skill Category</h4>
+          <input type="text" id="new-skill-cat" placeholder="Category name (e.g. Tools)" />
+          <textarea id="new-skill-items" placeholder="Skill 1, Skill 2, Skill 3 (Comma separated)"></textarea>
+          <button onclick="addSkillCategory()">+ Add Category</button>
+        </div>
       </div>
 
-      <div id="tab-exp" class="tab-content">
+      <!-- Experience Tab -->
+      <div id="exp-tab" class="tab-content">
         <h3>Manage Experience</h3>
-        <div id="admin-list-exp"></div>
-        <input type="text" id="add-exp-role" placeholder="Role (e.g., Specialist I)" />
-        <input type="text" id="add-exp-company" placeholder="Company" />
-        <input type="text" id="add-exp-period" placeholder="Period" />
-        <input type="text" id="add-exp-location" placeholder="Location" />
-        <textarea id="add-exp-points" placeholder="Bullet point 1, Bullet point 2 (comma separated)"></textarea>
-        <button onclick="addExp()">+ Add Experience</button>
+        <div id="exp-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Role</h4>
+          <input type="text" id="new-exp-role" placeholder="Role (e.g. Specialist I)" />
+          <input type="text" id="new-exp-company" placeholder="Company" />
+          <input type="text" id="new-exp-period" placeholder="Period" />
+          <input type="text" id="new-exp-location" placeholder="Location" />
+          <textarea id="new-exp-points" placeholder="Bullet 1, Bullet 2 (Comma separated)"></textarea>
+          <button onclick="addExperience()">+ Add Experience</button>
+        </div>
       </div>
 
-      <div id="tab-ach" class="tab-content">
+      <!-- Achievements Tab -->
+      <div id="ach-tab" class="tab-content">
         <h3>Manage Achievements</h3>
-        <div id="admin-list-ach"></div>
-        <input type="text" id="add-ach-title" placeholder="Achievement Title" />
-        <textarea id="add-ach-desc" placeholder="Description"></textarea>
-        <button onclick="addAch()">+ Add Achievement</button>
+        <div id="achievements-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Achievement</h4>
+          <input type="text" id="new-ach-title" placeholder="Achievement title" />
+          <textarea id="new-ach-desc" placeholder="Description"></textarea>
+          <button onclick="addAchievement()">+ Add Achievement</button>
+        </div>
       </div>
 
-      <div id="tab-cert" class="tab-content">
+      <!-- Certs Tab -->
+      <div id="certs-tab" class="tab-content">
         <h3>Manage Certifications</h3>
-        <div id="admin-list-cert"></div>
-        <input type="text" id="add-cert-title" placeholder="Certification Title" />
-        <input type="text" id="add-cert-org" placeholder="Organization" />
-        <input type="text" id="add-cert-year" placeholder="Year" />
-        <button onclick="addCert()">+ Add Certification</button>
+        <div id="certs-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Certification</h4>
+          <input type="text" id="new-cert-title" placeholder="Certification name" />
+          <input type="text" id="new-cert-org" placeholder="Issuing organization" />
+          <input type="text" id="new-cert-year" placeholder="Year" />
+          <button onclick="addCertification()">+ Add Certification</button>
+        </div>
       </div>
 
-      <div id="tab-proj" class="tab-content">
+      <!-- Projects Tab -->
+      <div id="projects-tab" class="tab-content">
         <h3>Manage Projects</h3>
-        <div id="admin-list-proj"></div>
-        <input type="text" id="add-proj-title" placeholder="Project Title" />
-        <textarea id="add-proj-desc" placeholder="Project Description"></textarea>
-        <input type="text" id="add-proj-tags" placeholder="Tags (e.g., Excel, PowerBI - comma separated)" />
-        <input type="url" id="add-proj-link" placeholder="URL Link (optional)" />
-        <button onclick="addProj()">+ Add Project</button>
+        <div id="projects-admin-list"></div>
+        <div class="admin-add-form">
+          <h4>Add New Project</h4>
+          <input type="text" id="new-proj-title" placeholder="Project title" />
+          <textarea id="new-proj-desc" placeholder="Project description"></textarea>
+          <input type="text" id="new-proj-tags" placeholder="Tags: Excel, Python (Comma separated)" />
+          <input type="url" id="new-proj-link" placeholder="Project URL (optional)" />
+          <button onclick="addProject()">+ Add Project</button>
+        </div>
       </div>
-      
+
       <div class="admin-actions">
-        <button class="save-all-btn" onclick="closeAdmin()">💾 Close Panel</button>
-        <button class="reset-btn" onclick="resetData()">↺ Factory Reset Data</button>
+        <button class="save-all-btn" onclick="saveAll()">💾 Save All Changes</button>
+        <button class="reset-btn" onclick="resetAll()">↺ Reset to Default</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- TOAST -->
 <div id="toast" class="toast hidden"></div>
 
 <script src="app.js"></script>
