@@ -31,7 +31,7 @@ body { font-family: var(--font-body); background: var(--cream); color: var(--tex
    WELCOME SCREEN
 ════════════════════════════════════════════ */
 #welcome-screen {
-  position: fixed; inset: 0; z-index: 1000;
+  position: fixed; inset: 0; z-index: 3000;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   background: radial-gradient(ellipse at center, #0a1628 0%, #060E18 60%, #020810 100%);
   overflow: hidden;
@@ -369,7 +369,7 @@ footer {
    ADMIN PANEL
 ════════════════════════════════════════════ */
 #admin-overlay {
-  position: fixed; inset: 0; z-index: 500;
+  position: fixed; inset: 0; z-index: 2000;
   background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center; padding: 20px;
 }
@@ -473,7 +473,7 @@ footer {
    NARADA CHATBOT
 ════════════════════════════════════════════ */
 .narada-chat {
-  position: fixed; bottom: 20px; right: 20px; z-index: 999; width: 280px;
+  position: fixed; bottom: 20px; right: 20px; z-index: 990; width: 280px;
 }
 .chat-header {
   background: linear-gradient(135deg, var(--gold), var(--gold-dark));
