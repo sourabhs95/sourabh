@@ -65,14 +65,13 @@ let isTranslated = false;
 let siteData = loadData();
 
 /* ═══════════════════════════════════════════
-   LOAD / SAVE DATA (Fixes Admin breaking)
+   LOAD / SAVE DATA 
 ════════════════════════════════════════════ */
 function loadData() {
   try {
     const saved = localStorage.getItem('sourabh_portfolio');
     if (saved) {
       let parsed = JSON.parse(saved);
-      // Fallback merge: if an array like achievements is missing from old saves, add it back
       return {
         skills: parsed.skills || [...DEFAULT_DATA.skills],
         experience: parsed.experience || [...DEFAULT_DATA.experience],
@@ -120,6 +119,11 @@ function initSite() {
   document.getElementById('year').textContent = new Date().getFullYear();
   initReveal();
   initNavScroll();
+  
+  // Automatically open Narada Chatbot when website loads
+  setTimeout(() => {
+    document.getElementById('chat-body').classList.remove('hidden');
+  }, 1000);
 }
 
 /* ═══════════════════════════════════════════
@@ -256,31 +260,26 @@ function checkAdminPass() {
 }
 
 function loadAdminData() {
-  // Skills
   const sl = document.getElementById('skills-admin-list');
   sl.innerHTML = siteData.skills.map((cat, ci) => `
     <div class="admin-item"><span>${cat.icon} ${cat.title} (${cat.items.length} skills)</span><button class="admin-item-del" onclick="deleteSkillCat(${ci})">🗑</button></div>
   `).join('');
 
-  // Projects
   const pl = document.getElementById('projects-admin-list');
   pl.innerHTML = siteData.projects.map((p, pi) => `
     <div class="admin-item"><span>${p.title}</span><button class="admin-item-del" onclick="deleteProject(${pi})">🗑</button></div>
   `).join('');
 
-  // Certs
   const cl = document.getElementById('certs-admin-list');
   cl.innerHTML = siteData.certifications.map((c, ci) => `
     <div class="admin-item"><span>${c.icon} ${c.title} — ${c.org}</span><button class="admin-item-del" onclick="deleteCert(${ci})">🗑</button></div>
   `).join('');
 
-  // Achievements
   const al = document.getElementById('achievements-admin-list');
   al.innerHTML = siteData.achievements.map((a, ai) => `
     <div class="admin-item"><span>${a.icon} ${a.title}</span><button class="admin-item-del" onclick="deleteAchievement(${ai})">🗑</button></div>
   `).join('');
 
-  // About
   document.getElementById('about-edit-p1').value = siteData.about.p1;
   document.getElementById('about-edit-p2').value = siteData.about.p2;
 }
@@ -292,7 +291,6 @@ function switchTab(tabId, btn) {
   btn.classList.add('active');
 }
 
-// Add/Delete Skill
 function addSkillCategory() {
   const cat = document.getElementById('new-skill-cat').value.trim();
   const items = document.getElementById('new-skill-items').value.split(',').map(s => s.trim()).filter(Boolean);
@@ -303,7 +301,6 @@ function addSkillCategory() {
 }
 function deleteSkillCat(i) { siteData.skills.splice(i, 1); loadAdminData(); showToast('🗑 Skill category removed'); }
 
-// Add/Delete Project
 function addProject() {
   const title = document.getElementById('new-proj-title').value.trim();
   const desc = document.getElementById('new-proj-desc').value.trim();
@@ -317,7 +314,6 @@ function addProject() {
 }
 function deleteProject(i) { siteData.projects.splice(i, 1); loadAdminData(); showToast('🗑 Project removed'); }
 
-// Add/Delete Cert
 function addCertification() {
   const title = document.getElementById('new-cert-title').value.trim();
   const org = document.getElementById('new-cert-org').value.trim();
@@ -329,7 +325,6 @@ function addCertification() {
 }
 function deleteCert(i) { siteData.certifications.splice(i, 1); loadAdminData(); showToast('🗑 Certification removed'); }
 
-// Add/Delete Achievement
 function addAchievement() {
   const title = document.getElementById('new-ach-title').value.trim();
   const desc = document.getElementById('new-ach-desc').value.trim();
@@ -340,7 +335,6 @@ function addAchievement() {
 }
 function deleteAchievement(i) { siteData.achievements.splice(i, 1); loadAdminData(); showToast('🗑 Achievement removed'); }
 
-// Save All / About
 function saveAbout() {
   siteData.about.p1 = document.getElementById('about-edit-p1').value;
   siteData.about.p2 = document.getElementById('about-edit-p2').value;
@@ -350,17 +344,16 @@ function saveAbout() {
 }
 
 function saveAll() {
-  // Always sync About section variables just in case
   siteData.about.p1 = document.getElementById('about-edit-p1').value;
   siteData.about.p2 = document.getElementById('about-edit-p2').value;
   document.getElementById('about-p1').textContent = siteData.about.p1;
   document.getElementById('about-p2').textContent = siteData.about.p2;
 
-  saveData(); // Commit to LocalStorage
+  saveData();
   renderSkills();
   renderProjects();
   renderCertifications();
-  renderAchievements(); // Refresh Achievement UI
+  renderAchievements(); 
   closeAdmin();
   showToast('💾 All changes saved successfully!');
 }
@@ -376,7 +369,7 @@ function resetAll() {
 }
 
 /* ═══════════════════════════════════════════
-   NARADA CHATBOT
+   NARADA CHATBOT (Upgraded Smart Logic)
 ════════════════════════════════════════════ */
 function toggleChat() {
   document.getElementById('chat-body').classList.toggle('hidden');
@@ -386,19 +379,41 @@ function handleChat(e) {
   if (e.key === 'Enter') {
     const input = document.getElementById('chat-input');
     const container = document.getElementById('msg-container');
-    const msg = input.value.toLowerCase();
+    const msg = input.value.toLowerCase().trim();
+    if (!msg) return;
     
     // User message
     container.innerHTML += `<div style="text-align:right; margin:8px 0; color:#555; padding:8px; background:#f0f0f0; border-radius:8px; display:inline-block; float:right; clear:both;">${input.value}</div>`;
     
-    // Simple logic response
-    let reply = "I am pondering this... ask me about Pricing, Experience, Skills, or Projects.";
-    if (msg.includes('skill')) reply = "Sourabh specializes in: " + siteData.skills.map(s => s.title).join(', ') + ".";
-    else if (msg.includes('experience') || msg.includes('work')) reply = `He currently works at ${siteData.experience[0].company} as a ${siteData.experience[0].role}.`;
-    else if (msg.includes('project')) reply = `He has worked on things like: ${siteData.projects.map(p=>p.title).join(', ')}.`;
-    else if (msg.includes('contact') || msg.includes('email')) reply = "You can email him at sourabhshet95@gmail.com.";
+    // Dynamic response logic based on siteData and Hare Krishna trigger
+    let reply = "I am pondering this... ask me about Sourabh's Experience, Skills, Projects, Certifications, or Contact info.";
     
-    // Bot message
+    if (msg === 'hi' || msg === 'hello' || msg === 'hey' || msg.includes('hare krishna')) {
+        reply = "Hare Krishna! 🙏 How can I assist you with Sourabh's portfolio today?";
+    } 
+    else if (msg.includes('skill') || msg.includes('expertise') || msg.includes('know')) {
+        reply = "Sourabh specializes in: " + siteData.skills.map(s => s.title).join(', ') + ".";
+    } 
+    else if (msg.includes('experience') || msg.includes('work') || msg.includes('job')) {
+        reply = `He currently works at ${siteData.experience[0].company} as a ${siteData.experience[0].role}.`;
+    } 
+    else if (msg.includes('project')) {
+        reply = `He has built impactful projects like: ${siteData.projects.map(p=>p.title).join(', ')}.`;
+    } 
+    else if (msg.includes('certif')) {
+        reply = `He holds certifications in: ${siteData.certifications.map(c=>c.title).join(', ')}.`;
+    } 
+    else if (msg.includes('achieve') || msg.includes('award')) {
+        reply = `His achievements include: ${siteData.achievements.map(a=>a.title).join(', ')}.`;
+    } 
+    else if (msg.includes('contact') || msg.includes('email') || msg.includes('phone') || msg.includes('hire')) {
+        reply = "You can email him at sourabhshet95@gmail.com or call +91 9019215348.";
+    } 
+    else if (msg.includes('about') || msg.includes('who is')) {
+        reply = siteData.about.p1;
+    }
+
+    // Bot message (Appears after a short human-like delay)
     setTimeout(() => {
       container.innerHTML += `<div style="color:var(--gold-dark); margin:8px 0; padding:8px; background:rgba(201,168,76,0.1); border-radius:8px; display:inline-block; float:left; clear:both;"><b>Narada:</b> ${reply}</div>`;
       container.scrollTop = container.scrollHeight;
