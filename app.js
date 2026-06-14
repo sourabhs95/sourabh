@@ -1,4 +1,10 @@
 /* ═══════════════════════════════════════════
+   CLOUD DATABASE KEYS (GET THESE FROM JSONBIN.IO)
+════════════════════════════════════════════ */
+const BIN_ID = 'PASTE_YOUR_BIN_ID_HERE';
+const API_KEY = 'PASTE_YOUR_API_KEY_HERE';
+
+/* ═══════════════════════════════════════════
    DEFAULT DATA & STATE
 ════════════════════════════════════════════ */
 const DEFAULT_DATA = {
@@ -42,22 +48,27 @@ const DEFAULT_DATA = {
 let siteData = {};
 
 // EDIT STATE TRACKER
-let editState = {
-  skill: -1,
-  exp: -1,
-  ach: -1,
-  cert: -1,
-  proj: -1
-};
+let editState = { skill: -1, exp: -1, ach: -1, cert: -1, proj: -1 };
 
 /* ═══════════════════════════════════════════
-   INITIALIZATION
+   CLOUD INITIALIZATION & DATA
 ════════════════════════════════════════════ */
-function loadData() {
+async function loadData() {
+  if (BIN_ID === 'PASTE_YOUR_BIN_ID_HERE') {
+    console.warn("Using default data. Please add JSONBin keys to sync across devices.");
+    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    return;
+  }
+
   try {
-    const saved = localStorage.getItem('sourabh_v7_data');
-    if (saved) {
-      siteData = JSON.parse(saved);
+    const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      siteData = data.record;
+      // Failsafes to prevent crashes
       if(!Array.isArray(siteData.skills)) siteData.skills = [...DEFAULT_DATA.skills];
       if(!Array.isArray(siteData.experience)) siteData.experience = [...DEFAULT_DATA.experience];
       if(!Array.isArray(siteData.achievements)) siteData.achievements = [...DEFAULT_DATA.achievements];
@@ -68,12 +79,27 @@ function loadData() {
       siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
     }
   } catch (e) {
+    console.error("Cloud load failed", e);
     siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
   }
 }
 
-function saveData() {
-  localStorage.setItem('sourabh_v7_data', JSON.stringify(siteData));
+async function saveData() {
+  if (BIN_ID === 'PASTE_YOUR_BIN_ID_HERE') return; // Skips if no key added
+
+  try {
+    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: JSON.stringify(siteData)
+    });
+  } catch (e) {
+    console.error("Failed to save to cloud", e);
+    showToast('⚠️ Cloud save failed. Check connection.');
+  }
 }
 
 function enterSite() {
@@ -91,11 +117,13 @@ function enterSite() {
 }
 document.body.style.overflow = 'hidden';
 
-function initSite() {
-  loadData();
+async function initSite() {
+  await loadData(); // Wait for cloud data to download
   renderAllUI();
+  
   const yr = document.getElementById('year');
   if(yr) yr.textContent = new Date().getFullYear();
+  
   initReveal();
   initNavScroll();
   setTimeout(() => { 
@@ -183,8 +211,13 @@ function initNavScroll() {
   });
 }
 
+function toggleNav() { 
+  const links = document.querySelector('.nav-links');
+  if(links) links.classList.toggle('open'); 
+}
+
 /* ═══════════════════════════════════════════
-   ADMIN PANEL: PROPER EDITING LOGIC
+   ADMIN PANEL: CLOUD SYNC LOGIC
 ════════════════════════════════════════════ */
 function openAdmin() { 
   const ov = document.getElementById('admin-overlay');
@@ -207,17 +240,25 @@ function checkAdminPass() {
 }
 
 function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+  document.querySelectorAll('.tab-content').forEach(t => {
+    t.style.display = 'none';
+    t.classList.remove('active');
+  });
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   
   const target = document.getElementById(tabId);
-  if(target) target.style.display = 'block';
+  if(target) {
+    target.style.display = 'block';
+    target.classList.add('active');
+  }
   if(btn) btn.classList.add('active');
 }
 
 function loadAdminUI() {
-  document.getElementById('about-edit-p1').value = siteData.about.p1;
-  document.getElementById('about-edit-p2').value = siteData.about.p2;
+  const ap1 = document.getElementById('about-edit-p1');
+  const ap2 = document.getElementById('about-edit-p2');
+  if(ap1) ap1.value = siteData.about.p1;
+  if(ap2) ap2.value = siteData.about.p2;
 
   const mkList = (arr, tKey, editFunc, delFunc) => arr.map((item, i) => `
     <div class="admin-item">
@@ -228,24 +269,38 @@ function loadAdminUI() {
       </div>
     </div>`).join('');
   
-  document.getElementById('skills-admin-list').innerHTML = mkList(siteData.skills, 'title', 'editSkill', 'delSkill');
-  document.getElementById('exp-admin-list').innerHTML = mkList(siteData.experience, 'role', 'editExp', 'delExp');
-  document.getElementById('achievements-admin-list').innerHTML = mkList(siteData.achievements, 'title', 'editAch', 'delAch');
-  document.getElementById('certs-admin-list').innerHTML = mkList(siteData.certifications, 'title', 'editCert', 'delCert');
-  document.getElementById('projects-admin-list').innerHTML = mkList(siteData.projects, 'title', 'editProj', 'delProj');
+  const sl = document.getElementById('skills-admin-list');
+  if(sl) sl.innerHTML = mkList(siteData.skills, 'title', 'editSkill', 'delSkill');
+  
+  const el = document.getElementById('exp-admin-list');
+  if(el) el.innerHTML = mkList(siteData.experience, 'role', 'editExp', 'delExp');
+  
+  const al = document.getElementById('achievements-admin-list');
+  if(al) al.innerHTML = mkList(siteData.achievements, 'title', 'editAch', 'delAch');
+  
+  const cl = document.getElementById('certs-admin-list');
+  if(cl) cl.innerHTML = mkList(siteData.certifications, 'title', 'editCert', 'delCert');
+  
+  const pl = document.getElementById('projects-admin-list');
+  if(pl) pl.innerHTML = mkList(siteData.projects, 'title', 'editProj', 'delProj');
 }
 
-function syncAndSave() {
-  saveData();
+async function syncAndSave() {
+  showToast('⏳ Syncing to cloud...');
+  await saveData(); // Uploads to JSONBin
   renderAllUI();
   loadAdminUI();
+  showToast('✅ Cloud Sync Complete!');
 }
 
 function saveAbout() {
-  siteData.about.p1 = document.getElementById('about-edit-p1').value;
-  siteData.about.p2 = document.getElementById('about-edit-p2').value;
+  const ap1 = document.getElementById('about-edit-p1');
+  const ap2 = document.getElementById('about-edit-p2');
+  if(ap1 && ap2) {
+    siteData.about.p1 = ap1.value;
+    siteData.about.p2 = ap2.value;
+  }
   syncAndSave();
-  showToast('✅ About Saved!');
 }
 
 /* ─── SKILLS ─── */
@@ -257,7 +312,6 @@ function editSkill(i) {
   document.getElementById('btn-skill').textContent = "Update Skill";
   showToast("✏️ Editing: " + item.title);
 }
-
 function saveSkill() {
   const t = document.getElementById('new-skill-cat').value.trim();
   const i = document.getElementById('new-skill-items').value.split(',').map(s=>s.trim()).filter(Boolean);
@@ -268,16 +322,13 @@ function saveSkill() {
     siteData.skills[editState.skill].items = i;
     editState.skill = -1;
     document.getElementById('btn-skill').textContent = "+ Save Skill";
-    showToast("✅ Skill Updated");
   } else {
     siteData.skills.push({icon:'🔹', title:t, items:i});
-    showToast("✅ Skill Added");
   }
   document.getElementById('new-skill-cat').value=''; document.getElementById('new-skill-items').value=''; 
   syncAndSave();
 }
-function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-
+function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); }
 
 /* ─── EXPERIENCE ─── */
 function editExp(i) {
@@ -291,7 +342,6 @@ function editExp(i) {
   document.getElementById('btn-exp').textContent = "Update Experience";
   showToast("✏️ Editing: " + item.role);
 }
-
 function saveExperience() {
   const r = document.getElementById('new-exp-role').value.trim();
   const c = document.getElementById('new-exp-company').value.trim();
@@ -304,16 +354,13 @@ function saveExperience() {
     siteData.experience[editState.exp] = {role: r, company: c, period: p, location: l, points: pts};
     editState.exp = -1;
     document.getElementById('btn-exp').textContent = "+ Save Experience";
-    showToast("✅ Experience Updated");
   } else {
     siteData.experience.push({role: r, company: c, period: p, location: l, points: pts}); 
-    showToast("✅ Experience Added");
   }
   document.getElementById('new-exp-role').value=''; document.getElementById('new-exp-company').value=''; document.getElementById('new-exp-period').value=''; document.getElementById('new-exp-location').value=''; document.getElementById('new-exp-points').value=''; 
   syncAndSave();
 }
-function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-
+function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); }
 
 /* ─── ACHIEVEMENTS ─── */
 function editAch(i) {
@@ -324,7 +371,6 @@ function editAch(i) {
   document.getElementById('btn-ach').textContent = "Update Achievement";
   showToast("✏️ Editing: " + item.title);
 }
-
 function saveAchievement() {
   const t = document.getElementById('new-ach-title').value.trim();
   const d = document.getElementById('new-ach-desc').value.trim();
@@ -335,16 +381,13 @@ function saveAchievement() {
     siteData.achievements[editState.ach].desc = d;
     editState.ach = -1;
     document.getElementById('btn-ach').textContent = "+ Save Achievement";
-    showToast("✅ Achievement Updated");
   } else {
     siteData.achievements.push({icon:'✨', title:t, desc:d}); 
-    showToast("✅ Achievement Added");
   }
   document.getElementById('new-ach-title').value=''; document.getElementById('new-ach-desc').value=''; 
   syncAndSave();
 }
-function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-
+function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); }
 
 /* ─── CERTIFICATIONS ─── */
 function editCert(i) {
@@ -356,7 +399,6 @@ function editCert(i) {
   document.getElementById('btn-cert').textContent = "Update Certification";
   showToast("✏️ Editing: " + item.title);
 }
-
 function saveCertification() {
   const t = document.getElementById('new-cert-title').value.trim();
   const o = document.getElementById('new-cert-org').value.trim();
@@ -369,16 +411,13 @@ function saveCertification() {
     siteData.certifications[editState.cert].year = y;
     editState.cert = -1;
     document.getElementById('btn-cert').textContent = "+ Save Certification";
-    showToast("✅ Certification Updated");
   } else {
     siteData.certifications.push({icon:'🎓', title:t, org:o, year:y}); 
-    showToast("✅ Certification Added");
   }
   document.getElementById('new-cert-title').value=''; document.getElementById('new-cert-org').value=''; document.getElementById('new-cert-year').value='';
   syncAndSave();
 }
-function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-
+function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); }
 
 /* ─── PROJECTS ─── */
 function editProj(i) {
@@ -391,7 +430,6 @@ function editProj(i) {
   document.getElementById('btn-proj').textContent = "Update Project";
   showToast("✏️ Editing: " + item.title);
 }
-
 function saveProject() {
   const t = document.getElementById('new-proj-title').value.trim();
   const d = document.getElementById('new-proj-desc').value.trim();
@@ -403,20 +441,19 @@ function saveProject() {
     siteData.projects[editState.proj] = {title:t, desc:d, tags:tg, link:l};
     editState.proj = -1;
     document.getElementById('btn-proj').textContent = "+ Save Project";
-    showToast("✅ Project Updated");
   } else {
     siteData.projects.push({title:t, desc:d, tags:tg, link:l}); 
-    showToast("✅ Project Added");
   }
   document.getElementById('new-proj-title').value=''; document.getElementById('new-proj-desc').value=''; document.getElementById('new-proj-tags').value=''; document.getElementById('new-proj-link').value=''; 
   syncAndSave();
 }
-function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); }
 
-function resetAll() {
-  if (confirm('Reset to defaults? Cannot be undone.')) {
-    localStorage.removeItem('sourabh_v7_data');
-    loadData(); syncAndSave(); showToast('↺ Reset to default');
+async function resetAll() {
+  if (confirm('Reset all cloud data to defaults? Cannot be undone.')) {
+    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    await syncAndSave();
+    showToast('↺ Reset to default');
   }
 }
 
