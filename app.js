@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   DEFAULT DATA
+   DEFAULT DATA & STATE
 ════════════════════════════════════════════ */
 const DEFAULT_DATA = {
   about: {
@@ -39,26 +39,23 @@ const DEFAULT_DATA = {
   ]
 };
 
-const SANSKRIT = {
-  'About Me': 'मम परिचयः',
-  'Skills & Expertise': 'कौशल्यानि',
-  'Work Experience': 'कार्यानुभवः',
-  'Projects': 'परियोजनाः',
-  'Sourabh Satish Shet': 'सौरभ सतीश शेट',
-  'Pricing & Quotation Specialist': 'मूल्य-उद्धरण विशेषज्ञः',
-  '📍 Yelahanka, Bangalore · Electronics Components Supply Chain': '📍 येलहंका, बंगळूरु · इलेक्ट्रॉनिक्स आपूर्ति श्रृंखला'
-};
-
-let isTranslated = false;
 let siteData = {};
 
+// EDIT STATE TRACKER
+let editState = {
+  skill: -1,
+  exp: -1,
+  ach: -1,
+  cert: -1,
+  proj: -1
+};
+
 /* ═══════════════════════════════════════════
-   INITIALIZATION & DATA
+   INITIALIZATION
 ════════════════════════════════════════════ */
 function loadData() {
   try {
-    // V5 forces a fresh start to fix browser cache bugs
-    const saved = localStorage.getItem('sourabh_v5_data');
+    const saved = localStorage.getItem('sourabh_v7_data');
     if (saved) {
       siteData = JSON.parse(saved);
       if(!Array.isArray(siteData.skills)) siteData.skills = [...DEFAULT_DATA.skills];
@@ -76,7 +73,7 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('sourabh_v5_data', JSON.stringify(siteData));
+  localStorage.setItem('sourabh_v7_data', JSON.stringify(siteData));
 }
 
 function enterSite() {
@@ -84,44 +81,26 @@ function enterSite() {
   const ms = document.getElementById('main-site');
   if(ws) {
     ws.style.opacity = '0';
-    ws.style.transform = 'scale(1.05)';
-    ws.style.transition = 'all 0.8s cubic-bezier(0.4,0,0.2,1)';
     setTimeout(() => {
-      ws.classList.add('hidden');
-      if(ms) ms.classList.remove('hidden');
+      ws.style.display = 'none';
+      if(ms) ms.style.display = 'block';
       document.body.style.overflow = 'auto';
       initSite();
     }, 800);
-  } else {
-    initSite();
   }
 }
 document.body.style.overflow = 'hidden';
 
 function initSite() {
-  // FORCE CHAKRA LOGO VIA JS TO FIX HTML CACHING
-  const adminBtn = document.querySelector('.admin-btn');
-  if (adminBtn) {
-    adminBtn.innerHTML = '☸';
-    adminBtn.style.fontSize = '20px';
-    adminBtn.style.padding = '4px 14px';
-    adminBtn.style.background = 'transparent';
-    adminBtn.style.border = '1px solid var(--gold)';
-    adminBtn.style.borderRadius = '20px';
-    adminBtn.style.color = 'var(--gold)';
-  }
-
   loadData();
   renderAllUI();
-  
   const yr = document.getElementById('year');
   if(yr) yr.textContent = new Date().getFullYear();
-  
   initReveal();
   initNavScroll();
   setTimeout(() => { 
     const cb = document.getElementById('chat-body');
-    if(cb) cb.classList.remove('hidden'); 
+    if(cb) cb.style.display = 'block'; 
   }, 1500);
 }
 
@@ -203,50 +182,24 @@ function initNavScroll() {
     else nav.style.padding = '14px 48px';
   });
 }
-function toggleNav() { 
-  const links = document.querySelector('.nav-links');
-  if(links) links.classList.toggle('open'); 
-}
-
-function toggleTranslation() {
-  isTranslated = !isTranslated;
-  const tBtn = document.querySelector('.translate-btn');
-  if(tBtn) tBtn.classList.toggle('active', isTranslated);
-  
-  const swaps = [
-    { id: 'hero-name', en: 'Sourabh Satish Shet', sk: SANSKRIT['Sourabh Satish Shet'] },
-    { id: 'hero-title', en: 'Pricing & Quotation Specialist', sk: SANSKRIT['Pricing & Quotation Specialist'] },
-    { id: 'hero-location', en: '📍 Yelahanka, Bangalore · Electronics Components Supply Chain', sk: SANSKRIT['📍 Yelahanka, Bangalore · Electronics Components Supply Chain'] },
-    { id: 'about-title', en: 'About Me', sk: SANSKRIT['About Me'] },
-    { id: 'skills-title', en: 'Skills & Expertise', sk: SANSKRIT['Skills & Expertise'] },
-    { id: 'exp-title', en: 'Work Experience', sk: SANSKRIT['Work Experience'] },
-    { id: 'projects-title', en: 'Projects', sk: SANSKRIT['Projects'] },
-    { id: 'hero-sanskrit', en: 'सौरभ सतीश शेट', sk: 'Sourabh Satish Shet' }
-  ];
-  swaps.forEach(({ id, en, sk }) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = isTranslated ? sk : en;
-  });
-  showToast(isTranslated ? '🕉 संस्कृत भाषायाम् अनुवादितम्' : '🌐 Switched back to English');
-}
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL: INSTANT SYNC LOGIC
+   ADMIN PANEL: PROPER EDITING LOGIC
 ════════════════════════════════════════════ */
 function openAdmin() { 
   const ov = document.getElementById('admin-overlay');
-  if(ov) ov.classList.remove('hidden'); 
+  if(ov) ov.style.display = 'flex'; 
 }
 function closeAdmin() { 
   const ov = document.getElementById('admin-overlay');
-  if(ov) ov.classList.add('hidden'); 
+  if(ov) ov.style.display = 'none'; 
 }
 
 function checkAdminPass() {
   const pass = document.getElementById('admin-pass');
   if (pass && pass.value === 'sourabh@2025') {
-    document.getElementById('admin-login').classList.add('hidden');
-    document.getElementById('admin-content').classList.remove('hidden');
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-content').style.display = 'block';
     loadAdminUI();
   } else { 
     showToast('❌ Wrong password!'); 
@@ -254,136 +207,216 @@ function checkAdminPass() {
 }
 
 function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  const t = document.getElementById(tabId);
-  if(t) t.classList.remove('hidden');
+  
+  const target = document.getElementById(tabId);
+  if(target) target.style.display = 'block';
   if(btn) btn.classList.add('active');
 }
 
 function loadAdminUI() {
-  const ap1 = document.getElementById('about-edit-p1');
-  const ap2 = document.getElementById('about-edit-p2');
-  if(ap1) ap1.value = siteData.about.p1;
-  if(ap2) ap2.value = siteData.about.p2;
+  document.getElementById('about-edit-p1').value = siteData.about.p1;
+  document.getElementById('about-edit-p2').value = siteData.about.p2;
 
-  const mkList = (arr, tKey, dFunc) => arr.map((item, i) => `<div class="admin-item"><span>${item[tKey]}</span><button class="admin-item-del" onclick="${dFunc}(${i})">🗑</button></div>`).join('');
+  const mkList = (arr, tKey, editFunc, delFunc) => arr.map((item, i) => `
+    <div class="admin-item">
+      <span>${item[tKey]}</span>
+      <div>
+        <button onclick="${editFunc}(${i})" style="background:none; border:none; cursor:pointer; font-size:16px; margin-right:10px;" title="Edit">✏️</button>
+        <button onclick="${delFunc}(${i})" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:16px;" title="Delete">🗑</button>
+      </div>
+    </div>`).join('');
   
-  const sl = document.getElementById('skills-admin-list');
-  if(sl) sl.innerHTML = mkList(siteData.skills, 'title', 'delSkill');
-  
-  const el = document.getElementById('exp-admin-list');
-  if(el) el.innerHTML = mkList(siteData.experience, 'role', 'delExp');
-  
-  const al = document.getElementById('achievements-admin-list');
-  if(al) al.innerHTML = mkList(siteData.achievements, 'title', 'delAch');
-  
-  const cl = document.getElementById('certs-admin-list');
-  if(cl) cl.innerHTML = mkList(siteData.certifications, 'title', 'delCert');
-  
-  const pl = document.getElementById('projects-admin-list');
-  if(pl) pl.innerHTML = mkList(siteData.projects, 'title', 'delProj');
+  document.getElementById('skills-admin-list').innerHTML = mkList(siteData.skills, 'title', 'editSkill', 'delSkill');
+  document.getElementById('exp-admin-list').innerHTML = mkList(siteData.experience, 'role', 'editExp', 'delExp');
+  document.getElementById('achievements-admin-list').innerHTML = mkList(siteData.achievements, 'title', 'editAch', 'delAch');
+  document.getElementById('certs-admin-list').innerHTML = mkList(siteData.certifications, 'title', 'editCert', 'delCert');
+  document.getElementById('projects-admin-list').innerHTML = mkList(siteData.projects, 'title', 'editProj', 'delProj');
 }
 
-// INSTANT SAVE FUNCTION
 function syncAndSave() {
-  const ap1 = document.getElementById('about-edit-p1');
-  const ap2 = document.getElementById('about-edit-p2');
-  if(ap1 && ap2) {
-    siteData.about.p1 = ap1.value;
-    siteData.about.p2 = ap2.value;
-  }
   saveData();
   renderAllUI();
   loadAdminUI();
 }
 
-// Add Functions
-function addSkillCategory() {
+function saveAbout() {
+  siteData.about.p1 = document.getElementById('about-edit-p1').value;
+  siteData.about.p2 = document.getElementById('about-edit-p2').value;
+  syncAndSave();
+  showToast('✅ About Saved!');
+}
+
+/* ─── SKILLS ─── */
+function editSkill(i) {
+  const item = siteData.skills[i];
+  document.getElementById('new-skill-cat').value = item.title;
+  document.getElementById('new-skill-items').value = item.items.join(', ');
+  editState.skill = i;
+  document.getElementById('btn-skill').textContent = "Update Skill";
+  showToast("✏️ Editing: " + item.title);
+}
+
+function saveSkill() {
   const t = document.getElementById('new-skill-cat').value.trim();
   const i = document.getElementById('new-skill-items').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(t) { 
-    siteData.skills.push({icon:'🔹', title:t, items:i}); 
-    document.getElementById('new-skill-cat').value=''; 
-    document.getElementById('new-skill-items').value=''; 
-    syncAndSave();
+  if(!t) return showToast("⚠️ Title required");
+  
+  if(editState.skill > -1) {
+    siteData.skills[editState.skill].title = t;
+    siteData.skills[editState.skill].items = i;
+    editState.skill = -1;
+    document.getElementById('btn-skill').textContent = "+ Save Skill";
+    showToast("✅ Skill Updated");
+  } else {
+    siteData.skills.push({icon:'🔹', title:t, items:i});
     showToast("✅ Skill Added");
-  } else { showToast("⚠️ Title required"); }
+  }
+  document.getElementById('new-skill-cat').value=''; document.getElementById('new-skill-items').value=''; 
+  syncAndSave();
+}
+function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+
+
+/* ─── EXPERIENCE ─── */
+function editExp(i) {
+  const item = siteData.experience[i];
+  document.getElementById('new-exp-role').value = item.role;
+  document.getElementById('new-exp-company').value = item.company;
+  document.getElementById('new-exp-period').value = item.period;
+  document.getElementById('new-exp-location').value = item.location;
+  document.getElementById('new-exp-points').value = item.points.join(', ');
+  editState.exp = i;
+  document.getElementById('btn-exp').textContent = "Update Experience";
+  showToast("✏️ Editing: " + item.role);
 }
 
-function addExperience() {
+function saveExperience() {
   const r = document.getElementById('new-exp-role').value.trim();
   const c = document.getElementById('new-exp-company').value.trim();
+  const p = document.getElementById('new-exp-period').value;
+  const l = document.getElementById('new-exp-location').value;
   const pts = document.getElementById('new-exp-points').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(r && c) { 
-    siteData.experience.push({
-      role: r, 
-      company: c, 
-      period: document.getElementById('new-exp-period').value, 
-      location: document.getElementById('new-exp-location').value, 
-      points: pts
-    }); 
-    document.getElementById('new-exp-role').value=''; 
-    document.getElementById('new-exp-company').value=''; 
-    document.getElementById('new-exp-points').value=''; 
-    syncAndSave();
+  if(!r || !c) return showToast("⚠️ Role & Company required");
+  
+  if(editState.exp > -1) {
+    siteData.experience[editState.exp] = {role: r, company: c, period: p, location: l, points: pts};
+    editState.exp = -1;
+    document.getElementById('btn-exp').textContent = "+ Save Experience";
+    showToast("✅ Experience Updated");
+  } else {
+    siteData.experience.push({role: r, company: c, period: p, location: l, points: pts}); 
     showToast("✅ Experience Added");
-  } else { showToast("⚠️ Role & Company required"); }
-}
-
-function addAchievement() {
-  const t = document.getElementById('new-ach-title').value.trim();
-  if(t) { 
-    siteData.achievements.push({icon:'✨', title:t, desc:document.getElementById('new-ach-desc').value}); 
-    document.getElementById('new-ach-title').value=''; 
-    document.getElementById('new-ach-desc').value=''; 
-    syncAndSave();
-    showToast("✅ Achievement Added");
-  } else { showToast("⚠️ Title required"); }
-}
-
-function addCertification() {
-  const t = document.getElementById('new-cert-title').value.trim();
-  if(t) { 
-    siteData.certifications.push({icon:'🎓', title:t, org:document.getElementById('new-cert-org').value, year:document.getElementById('new-cert-year').value}); 
-    document.getElementById('new-cert-title').value=''; 
-    syncAndSave();
-    showToast("✅ Certification Added");
-  } else { showToast("⚠️ Title required"); }
-}
-
-function addProject() {
-  const t = document.getElementById('new-proj-title').value.trim();
-  const tg = document.getElementById('new-proj-tags').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(t) { 
-    siteData.projects.push({title:t, desc:document.getElementById('new-proj-desc').value, tags:tg, link:document.getElementById('new-proj-link').value}); 
-    document.getElementById('new-proj-title').value=''; 
-    document.getElementById('new-proj-desc').value=''; 
-    syncAndSave();
-    showToast("✅ Project Added");
-  } else { showToast("⚠️ Title required"); }
-}
-
-// Delete Functions
-function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
-
-// Save & Reset
-function saveAll() {
+  }
+  document.getElementById('new-exp-role').value=''; document.getElementById('new-exp-company').value=''; document.getElementById('new-exp-period').value=''; document.getElementById('new-exp-location').value=''; document.getElementById('new-exp-points').value=''; 
   syncAndSave();
-  closeAdmin();
-  showToast('💾 Saved successfully!');
 }
+function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+
+
+/* ─── ACHIEVEMENTS ─── */
+function editAch(i) {
+  const item = siteData.achievements[i];
+  document.getElementById('new-ach-title').value = item.title;
+  document.getElementById('new-ach-desc').value = item.desc;
+  editState.ach = i;
+  document.getElementById('btn-ach').textContent = "Update Achievement";
+  showToast("✏️ Editing: " + item.title);
+}
+
+function saveAchievement() {
+  const t = document.getElementById('new-ach-title').value.trim();
+  const d = document.getElementById('new-ach-desc').value.trim();
+  if(!t) return showToast("⚠️ Title required");
+  
+  if(editState.ach > -1) {
+    siteData.achievements[editState.ach].title = t;
+    siteData.achievements[editState.ach].desc = d;
+    editState.ach = -1;
+    document.getElementById('btn-ach').textContent = "+ Save Achievement";
+    showToast("✅ Achievement Updated");
+  } else {
+    siteData.achievements.push({icon:'✨', title:t, desc:d}); 
+    showToast("✅ Achievement Added");
+  }
+  document.getElementById('new-ach-title').value=''; document.getElementById('new-ach-desc').value=''; 
+  syncAndSave();
+}
+function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+
+
+/* ─── CERTIFICATIONS ─── */
+function editCert(i) {
+  const item = siteData.certifications[i];
+  document.getElementById('new-cert-title').value = item.title;
+  document.getElementById('new-cert-org').value = item.org;
+  document.getElementById('new-cert-year').value = item.year;
+  editState.cert = i;
+  document.getElementById('btn-cert').textContent = "Update Certification";
+  showToast("✏️ Editing: " + item.title);
+}
+
+function saveCertification() {
+  const t = document.getElementById('new-cert-title').value.trim();
+  const o = document.getElementById('new-cert-org').value.trim();
+  const y = document.getElementById('new-cert-year').value.trim();
+  if(!t) return showToast("⚠️ Title required");
+
+  if(editState.cert > -1) {
+    siteData.certifications[editState.cert].title = t;
+    siteData.certifications[editState.cert].org = o;
+    siteData.certifications[editState.cert].year = y;
+    editState.cert = -1;
+    document.getElementById('btn-cert').textContent = "+ Save Certification";
+    showToast("✅ Certification Updated");
+  } else {
+    siteData.certifications.push({icon:'🎓', title:t, org:o, year:y}); 
+    showToast("✅ Certification Added");
+  }
+  document.getElementById('new-cert-title').value=''; document.getElementById('new-cert-org').value=''; document.getElementById('new-cert-year').value='';
+  syncAndSave();
+}
+function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
+
+
+/* ─── PROJECTS ─── */
+function editProj(i) {
+  const item = siteData.projects[i];
+  document.getElementById('new-proj-title').value = item.title;
+  document.getElementById('new-proj-desc').value = item.desc;
+  document.getElementById('new-proj-tags').value = item.tags.join(', ');
+  document.getElementById('new-proj-link').value = item.link || '';
+  editState.proj = i;
+  document.getElementById('btn-proj').textContent = "Update Project";
+  showToast("✏️ Editing: " + item.title);
+}
+
+function saveProject() {
+  const t = document.getElementById('new-proj-title').value.trim();
+  const d = document.getElementById('new-proj-desc').value.trim();
+  const tg = document.getElementById('new-proj-tags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  const l = document.getElementById('new-proj-link').value.trim();
+  if(!t) return showToast("⚠️ Title required");
+
+  if(editState.proj > -1) {
+    siteData.projects[editState.proj] = {title:t, desc:d, tags:tg, link:l};
+    editState.proj = -1;
+    document.getElementById('btn-proj').textContent = "+ Save Project";
+    showToast("✅ Project Updated");
+  } else {
+    siteData.projects.push({title:t, desc:d, tags:tg, link:l}); 
+    showToast("✅ Project Added");
+  }
+  document.getElementById('new-proj-title').value=''; document.getElementById('new-proj-desc').value=''; document.getElementById('new-proj-tags').value=''; document.getElementById('new-proj-link').value=''; 
+  syncAndSave();
+}
+function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); showToast("🗑 Deleted"); }
 
 function resetAll() {
   if (confirm('Reset to defaults? Cannot be undone.')) {
-    localStorage.removeItem('sourabh_v5_data');
-    loadData();
-    syncAndSave();
-    showToast('↺ Reset to default');
+    localStorage.removeItem('sourabh_v7_data');
+    loadData(); syncAndSave(); showToast('↺ Reset to default');
   }
 }
 
@@ -392,7 +425,14 @@ function resetAll() {
 ════════════════════════════════════════════ */
 function toggleChat() { 
   const cb = document.getElementById('chat-body');
-  if(cb) cb.classList.toggle('hidden'); 
+  if(cb) {
+    if(cb.style.display === 'none' || cb.classList.contains('hidden')) {
+      cb.style.display = 'block';
+      cb.classList.remove('hidden');
+    } else {
+      cb.style.display = 'none';
+    }
+  }
 }
 
 function handleChat(e) {
@@ -442,7 +482,7 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   if(!t) return;
   t.textContent = msg; 
-  t.classList.remove('hidden');
+  t.style.display = 'block';
   clearTimeout(toastTimer); 
-  toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
+  toastTimer = setTimeout(() => t.style.display = 'none', 3000);
 }
