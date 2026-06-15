@@ -221,6 +221,16 @@ function toggleNav() {
   if(links) links.classList.toggle('open'); 
 }
 
+// Close mobile menu automatically when a link is clicked
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    const linksMenu = document.querySelector('.nav-links');
+    if(linksMenu && linksMenu.classList.contains('open')) {
+      linksMenu.classList.remove('open');
+    }
+  });
+});
+
 function toggleTranslation() {
   isTranslated = !isTranslated;
   const tBtn = document.querySelector('.translate-btn');
