@@ -60,15 +60,12 @@ async function loadData() {
     
     if (response.ok) {
       const data = await response.json();
-      
-      // Prevent crashing if cloud database is completely empty
       if (Object.keys(data.record).length === 0) {
         siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
       } else {
         siteData = data.record;
       }
       
-      // Failsafes to guarantee the structures exist
       if(!Array.isArray(siteData.skills)) siteData.skills = [...DEFAULT_DATA.skills];
       if(!Array.isArray(siteData.experience)) siteData.experience = [...DEFAULT_DATA.experience];
       if(!Array.isArray(siteData.achievements)) siteData.achievements = [...DEFAULT_DATA.achievements];
@@ -126,7 +123,7 @@ async function initSite() {
   initNavScroll();
   setTimeout(() => { 
     const cb = document.getElementById('chat-body');
-    if(cb) cb.style.display = 'block'; 
+    if(cb) cb.style.display = 'flex'; 
   }, 1500);
 }
 
@@ -209,8 +206,13 @@ function initNavScroll() {
   window.addEventListener('scroll', () => {
     const nav = document.getElementById('navbar');
     if(!nav) return;
-    if (window.scrollY > 50) nav.style.padding = '8px 48px';
-    else nav.style.padding = '14px 48px';
+    if (window.scrollY > 50) {
+      nav.style.padding = '12px 48px';
+      nav.style.background = 'rgba(5, 11, 20, 0.9)';
+    } else {
+      nav.style.padding = '16px 48px';
+      nav.style.background = 'rgba(5, 11, 20, 0.6)';
+    }
   });
 }
 
@@ -219,28 +221,12 @@ function toggleNav() {
   if(links) links.classList.toggle('open'); 
 }
 
-function toggleMusic() {
-  const music = document.getElementById('bg-music');
-  const btn = document.querySelector('.music-btn');
-  if (!music) return showToast('⚠️ Audio file not found. Ensure namo_bhagavate.mp3 is in your folder.');
-
-  if (music.paused) {
-    music.play();
-    if(btn) { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--midnight)'; }
-    showToast('🪈 Playing Om Namo Bhagavate Vasudevaya');
-  } else {
-    music.pause();
-    if(btn) { btn.style.background = 'transparent'; btn.style.color = 'var(--gold)'; }
-    showToast('⏸ Music Paused');
-  }
-}
-
 function toggleTranslation() {
   isTranslated = !isTranslated;
   const tBtn = document.querySelector('.translate-btn');
   if(tBtn) {
-    tBtn.style.background = isTranslated ? 'var(--gold)' : 'transparent';
-    tBtn.style.color = isTranslated ? 'var(--midnight)' : 'var(--gold)';
+    tBtn.style.background = isTranslated ? 'var(--gold)' : 'rgba(255,215,0,0.05)';
+    tBtn.style.color = isTranslated ? 'var(--bg-dark)' : 'var(--gold)';
   }
 
   const elementsToTranslate = {
@@ -495,7 +481,7 @@ function toggleChat() {
   const cb = document.getElementById('chat-body');
   if(cb) {
     if(cb.style.display === 'none' || cb.classList.contains('hidden')) {
-      cb.style.display = 'block';
+      cb.style.display = 'flex';
       cb.classList.remove('hidden');
     } else {
       cb.style.display = 'none';
@@ -512,7 +498,7 @@ function handleChat(e) {
     const msg = input.value.toLowerCase().trim();
     if (!msg) return;
     
-    container.innerHTML += `<div style="text-align:right; margin:8px 0; color:#555; padding:8px; background:#f0f0f0; border-radius:8px; display:inline-block; float:right; clear:both;">${input.value}</div>`;
+    container.innerHTML += `<div style="text-align:right; margin:8px 0; color:#E2E8F0; padding:10px 14px; background:rgba(255,255,255,0.1); border-radius:12px 12px 0px 12px; display:inline-block; float:right; clear:both; border: 1px solid rgba(255,255,255,0.2);">${input.value}</div>`;
     
     let reply = "I am pondering this... Ask me about Sourabh's Experience, Skills, Projects, or Certifications.";
     
@@ -533,7 +519,7 @@ function handleChat(e) {
     }
 
     setTimeout(() => {
-      container.innerHTML += `<div style="color:var(--gold-dark); margin:8px 0; padding:8px; background:rgba(201,168,76,0.1); border-radius:8px; display:inline-block; float:left; clear:both;"><b>Narada:</b> ${reply}</div>`;
+      container.innerHTML += `<div style="color:var(--gold); margin:8px 0; padding:10px 14px; background:rgba(255,215,0,0.1); border-radius:12px 12px 12px 0px; display:inline-block; float:left; clear:both; border: 1px solid rgba(255,215,0,0.2);"><b>Narada:</b> ${reply}</div>`;
       container.scrollTop = container.scrollHeight;
     }, 400);
 
