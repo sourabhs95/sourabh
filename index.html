@@ -3,135 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sourabh Satish Shet | Pricing & AI Professional</title>
+  <title>Sourabh Satish Shet | Will Be Back</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Animated Background Orbs -->
   <div class="bg-orbs">
     <div class="orb orb-teal"></div>
     <div class="orb orb-gold"></div>
   </div>
 
-  <nav>
-    <div class="logo"><span>S</span>ourabh</div>
-    <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#profile">Profile</a>
-      <a href="#experience">Experience</a>
-      <button class="chat-trigger-btn" onclick="toggleChat()">
-        <i class="fas fa-comment-dots"></i> Ask AI
-      </button>
+  <main class="maintenance-container">
+    <div class="content fade-in">
+      <div class="chakra-spinner">☸</div>
+      <h1>Will Be Back</h1>
+      <p>My portfolio is currently undergoing scheduled upgrades and maintenance.</p>
+      <p class="subtitle">Please check back soon.</p>
+      
+      <div class="contact-info">
+        <p>Need to reach me urgently?</p>
+        <a href="mailto:sourabhshet95@gmail.com">sourabhshet95@gmail.com</a>
+      </div>
     </div>
-  </nav>
-
-  <main>
-    <section id="home" class="hero">
-      <div class="hero-content fade-in">
-        <p class="greeting">नमस्ते (Namaste)</p>
-        <h1>Sourabh <br><span class="highlight">Satish Shet</span></h1>
-        <p class="tagline">Pricing & Quotation Specialist | AI Integrator</p>
-        <div class="hero-buttons">
-          <a href="#profile" class="btn primary">Explore Portfolio</a>
-          <button onclick="toggleChat()" class="btn secondary">Talk to my AI</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="profile" class="bento-section">
-      <div class="bento-grid fade-in">
-        
-        <div class="bento-box about-box">
-          <h3><i class="fas fa-user-astronaut"></i> About Me</h3>
-          <p>I bridge the gap between supply chain analytics and modern technology. With an eagle eye for competitive pricing and a passion for Artificial Intelligence, I optimize margins and automate complex workflows.</p>
-        </div>
-
-        <div class="bento-box stats-box">
-          <div class="stat">
-            <span class="number">5+</span>
-            <span class="label">Years Exp</span>
-          </div>
-          <div class="stat">
-            <span class="number">100%</span>
-            <span class="label">Precision</span>
-          </div>
-        </div>
-
-        <div class="bento-box skills-box">
-          <h3><i class="fas fa-bolt"></i> Core Arsenal</h3>
-          <div class="chips">
-            <span class="chip">Strategic Pricing</span>
-            <span class="chip">Margin Optimization</span>
-            <span class="chip">Advanced Excel</span>
-            <span class="chip">Gemini AI</span>
-            <span class="chip">Power Query</span>
-          </div>
-        </div>
-
-        <div class="bento-box contact-box">
-          <h3><i class="fas fa-paper-plane"></i> Let's Connect</h3>
-          <a href="mailto:sourabhshet95@gmail.com" class="contact-link"><i class="fas fa-envelope"></i> sourabhshet95@gmail.com</a>
-          <a href="tel:+919019215348" class="contact-link"><i class="fas fa-phone"></i> +91 9019215348</a>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="experience" class="exp-section fade-in">
-      <h2>Professional Journey</h2>
-      <div class="timeline">
-        <div class="timeline-card">
-          <div class="card-glow"></div>
-          <span class="date">Current</span>
-          <h3>Pricing & Quotation Specialist</h3>
-          <h4>Mouser Electronics · Bangalore</h4>
-          <p>Managing high-value B2B component quotations, analyzing global supply chain trends, and automating pricing workflows using advanced data tools.</p>
-        </div>
-        <div class="timeline-card">
-          <div class="card-glow"></div>
-          <span class="date">Foundation</span>
-          <h3>Supply Chain & Analytics</h3>
-          <h4>Industry Expert</h4>
-          <p>Built a strong foundation in vendor negotiation, margin analysis, and competitive market positioning.</p>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <footer>
-    <p>यथा कार्यं तथा फलम् | As is the action, so is the result.</p>
-    <p class="copyright">© <span id="year"></span> Sourabh Satish Shet. Built with AI.</p>
-  </footer>
-
-  <button class="floating-ai-btn" onclick="toggleChat()" title="Talk to Narada AI">
-    <i class="fas fa-robot"></i>
-  </button>
-
-  <div id="ai-chat-window" class="chat-window">
-    <div class="chat-header">
-      <div class="ai-identity">
-        <i class="fas fa-microphone-alt"></i> Narada AI
-      </div>
-      <button class="close-chat" onclick="toggleChat()">✕</button>
-    </div>
-    
-    <div class="chat-body" id="chat-messages">
-      <div class="msg bot">
-        <p><b>Narada:</b> Hari Om! I am Sourabh's voice-enabled AI assistant. Ask me about his skills, experience, or contact info!</p>
-      </div>
-    </div>
-    
-    <div class="chat-input-area">
-      <input type="text" id="user-input" placeholder="Ask a question..." onkeypress="if(event.key === 'Enter') handleChat()">
-      <button onclick="handleChat()"><i class="fas fa-paper-plane"></i></button>
-    </div>
-  </div>
 
   <script src="app.js"></script>
 </body>
