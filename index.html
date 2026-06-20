@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh Satish Shet | Pricing Specialist & AI Engineer</title>
+  <title>Sourabh Satish Shet | Pricing & Quotation Specialist</title>
   
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+<!-- WELCOME SCREEN -->
 <div id="welcome-screen">
   <div class="welcome-bg"></div>
   <div class="feather-container">
@@ -75,13 +75,14 @@
     <p class="sanskrit-welcome">स्वागतम् • सुस्वागतम्</p>
     <h1 class="welcome-name">Sourabh Satish Shet</h1>
     <p class="english-welcome">Welcome to my Portfolio</p>
-    <p class="welcome-subtitle">Pricing Specialist & AI Engineer</p>
+    <p class="welcome-subtitle">Pricing & Quotation Specialist</p>
     <button class="enter-btn" onclick="enterSite()">
       <span>Enter Journey</span>
     </button>
   </div>
 </div>
 
+<!-- MAIN SITE -->
 <div id="main-site" style="display:none;">
   <div class="main-ambient-bg">
     <div class="ambient-orb orb-1"></div>
@@ -95,7 +96,6 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#experience">Experience</a></li>
-      <li><a href="#ai-forge">AI Forge (Live)</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-actions">
@@ -119,22 +119,31 @@
       <div class="hero-feather-mini">🦚</div>
       <p class="hero-sanskrit" id="hero-sanskrit">सौरभ सतीश शेट</p>
       <h1 class="hero-name" id="hero-name">Sourabh Satish Shet</h1>
-      <h2 class="hero-title" id="hero-title">Pricing Specialist & AI Tinkerer</h2>
-      <p class="hero-location" id="hero-location">📍 Bangalore, India · Supply Chain Intelligence</p>
+      <h2 class="hero-title" id="hero-title">Pricing & Quotation Specialist</h2>
+      <p class="hero-location" id="hero-location">📍 Yelahanka, Bangalore · Electronics Components Supply Chain</p>
+      <div class="hero-awards">
+        <span class="award-badge">⭐ Rising Star 2025</span>
+        <span class="award-badge">🏆 Star Performer Q1 2026</span>
+      </div>
       <div class="hero-cta">
-        <a href="#ai-forge" class="btn-primary">Build an AI Agent</a>
-        <a href="#experience" class="btn-secondary">View Profile</a>
+        <a href="#contact" class="btn-primary">Connect with Me</a>
+        <a href="#experience" class="btn-secondary">View Experience</a>
       </div>
     </div>
   </section>
 
+  <!-- CORE PROFILE DATA -->
   <section id="about" class="section glass-section">
     <div class="section-label">01 · About</div>
     <h2 class="section-title">Professional Summary</h2>
-    <div class="about-grid" style="grid-template-columns: 1fr;">
+    <div class="about-grid">
       <div class="about-text">
         <p>I am a detail-oriented <b>Pricing & Quotation Specialist</b> with robust experience in the electronics component supply chain. My expertise lies in analyzing market trends, optimizing margins, and delivering precise, competitive quotes that drive business growth.</p>
-        <p>Beyond supply chain analytics, I am a passionate AI Developer. I build autonomous web agents, integrate Large Language Models (like Google Gemini), and create intelligent web applications that merge ancient aesthetics with futuristic functionality.</p>
+        <p>I thrive in fast-paced environments, bridging the gap between sales strategies and financial accuracy. By utilizing advanced analytics and a deep understanding of component life cycles, I ensure mutually beneficial partnerships between suppliers and clients.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><span class="stat-num">5+</span><span class="stat-label">Years Exp.</span></div>
+        <div class="stat-card"><span class="stat-num">100%</span><span class="stat-label">Accuracy Focus</span></div>
       </div>
     </div>
   </section>
@@ -150,24 +159,16 @@
                 <span class="skill-tag">Quotation Management</span>
                 <span class="skill-tag">Margin Optimization</span>
                 <span class="skill-tag">Competitor Analysis</span>
+                <span class="skill-tag">Vendor Negotiation</span>
             </div>
         </div>
         <div class="skill-category">
-            <h3 class="skill-cat-title"><i class="fas fa-microchip"></i> Technology</h3>
+            <h3 class="skill-cat-title"><i class="fas fa-microchip"></i> Technology & Tools</h3>
             <div class="skill-tags">
                 <span class="skill-tag">Advanced Excel</span>
                 <span class="skill-tag">Power Query</span>
-                <span class="skill-tag">Python Scripting</span>
+                <span class="skill-tag">ERP Systems (SAP/Oracle)</span>
                 <span class="skill-tag">Data Visualization</span>
-            </div>
-        </div>
-        <div class="skill-category">
-            <h3 class="skill-cat-title"><i class="fas fa-brain"></i> AI & Web</h3>
-            <div class="skill-tags">
-                <span class="skill-tag">Gemini API Integration</span>
-                <span class="skill-tag">Prompt Engineering</span>
-                <span class="skill-tag">JavaScript / HTML / CSS</span>
-                <span class="skill-tag">Agentic Workflows</span>
             </div>
         </div>
     </div>
@@ -186,63 +187,20 @@
             <ul class="timeline-points">
                 <li>Manage complex B2B component quotations, ensuring competitive pricing and maintaining optimal profit margins.</li>
                 <li>Analyze global supply chain trends, regional pricing structures, and component availability.</li>
-                <li>Automate repetitive pricing workflows using advanced Excel, macros, and API integrations.</li>
-                <li>Collaborate with international sales teams to execute strategic, high-value bulk deals.</li>
+                <li>Automate repetitive pricing workflows using advanced Excel and data tools to increase efficiency by 40%.</li>
+                <li>Collaborate directly with international sales teams to execute strategic, high-value bulk deals.</li>
             </ul>
         </div>
     </div>
   </section>
 
-  <section id="ai-forge" class="section glass-section">
-    <div class="section-label">04 · Live API Sandbox</div>
-    <h2 class="section-title">Forge Your Own AI Agent</h2>
-    <p style="margin-bottom: 30px; font-weight: 300; color: var(--text-muted);">
-      Design your custom AI persona and enter a <b>Gemini API Key</b> to make it real. Test the intelligence instantly in the sandbox. When you're happy, export the code to host your agent on the web!
-    </p>
-
-    <div class="forge-grid">
-      <div class="forge-form">
-        <h3>1. Define AI Identity</h3>
-        <label>Agent Name</label>
-        <input type="text" id="ai-name" placeholder="e.g., Arjun, PricingBot">
-
-        <label>System Instructions / Persona</label>
-        <textarea id="ai-role" rows="4" placeholder="e.g., You are an expert financial advisor. Speak formally and clearly..."></textarea>
-
-        <label>Initial Welcome Message</label>
-        <input type="text" id="ai-greeting" placeholder="e.g., Greetings! How may I assist your business today?">
-
-        <label style="color:var(--gold); margin-top:10px;">Gemini API Key (Optional but recommended)</label>
-        <input type="password" id="ai-api-key" placeholder="AIzaSy...">
-        <p style="font-size:11px; color:#888; margin-top:-5px;">Get one for free at Google AI Studio.</p>
-
-        <button onclick="spawnLiveAgent()" class="btn-primary" style="width: 100%; margin-top: 15px;">
-          <i class="fas fa-magic"></i> Spawn AI Agent
-        </button>
-      </div>
-
-      <div class="forge-sandbox">
-        <div class="sandbox-header" style="display: flex; justify-content: space-between;">
-          <span id="sandbox-title">🛠️ Agent Sandbox (Awaiting Spawn)</span>
-          <button id="export-btn" class="export-nav-btn" style="display:none;" onclick="openExportModal()"><i class="fas fa-download"></i> Export Code</button>
-        </div>
-        <div class="sandbox-body" id="sandbox-chat">
-          <div class="sandbox-system-msg">Fill out the form and click "Spawn" to test your agent.</div>
-        </div>
-        <div class="sandbox-input-area">
-          <input type="text" id="sandbox-input" placeholder="Chat with your new AI..." onkeypress="if(event.key==='Enter') handleSandboxChat()" disabled>
-          <button id="sandbox-send-btn" onclick="handleSandboxChat()" disabled><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section id="contact" class="section glass-section">
-    <div class="section-label">05 · Contact</div>
+    <div class="section-label">04 · Contact</div>
     <h2 class="section-title">Get In Touch</h2>
     <div class="contact-grid">
       <div class="contact-links">
         <a href="mailto:sourabhshet95@gmail.com" class="contact-card"><i class="fas fa-envelope"></i><div><span class="contact-type">Email</span><span class="contact-value">sourabhshet95@gmail.com</span></div></a>
+        <a href="tel:+919019215348" class="contact-card"><i class="fas fa-phone"></i><div><span class="contact-type">Phone</span><span class="contact-value">+91 9019215348</span></div></a>
       </div>
       <div class="contact-note">
         <div class="contact-feather">🦚</div>
@@ -257,113 +215,62 @@
     <p class="footer-copy">© <span id="year"></span> Sourabh Satish Shet. All Rights Reserved.</p>
   </footer>
 
+  <!-- NARADA AI CHATBOT WIDGET (TALKING) -->
   <div id="narada-bot" class="narada-chat">
     <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
     <div id="chat-body" class="chat-body" style="display:none;">
       <div class="chat-messages" id="msg-container">
         <div class="bot-msg" style="color:var(--gold-dark); margin:5px; padding:8px; background:rgba(255,215,0,0.1); border-radius:8px;">
-            <b>Narada:</b> Hari Om! I am Narada. I can guide you through Sourabh's experience, or help you build your own AI!
+            <b>Narada:</b> Hari Om! I am Narada. I can tell you all about Sourabh's professional experience and skills. What would you like to know?
         </div>
       </div>
-      <input type="text" id="chat-input" placeholder="Ask me anything..." onkeypress="handleNaradaChat(event)">
+      <input type="text" id="chat-input" placeholder="Ask about Sourabh's skills..." onkeypress="handleNaradaChat(event)">
     </div>
   </div>
 
 </div>
 
+<!-- HIDDEN ADMIN OVERLAY WITH PASSWORD CHANGE & PROFILE EDITS -->
 <div id="admin-overlay" style="display:none;">
   <div class="admin-panel">
     <div class="admin-header">
       <h2>☸ Admin Panel</h2>
       <button class="admin-close" onclick="closeAdmin()">✕</button>
     </div>
+    
+    <!-- LOGIN SCREEN -->
     <div class="admin-login" id="admin-login">
       <p>Enter password to manage portfolio</p>
       <input type="password" id="admin-pass" placeholder="Password (Default: admin123)" />
       <button onclick="checkAdminPass()">Login</button>
     </div>
     
+    <!-- ADMIN DASHBOARD -->
     <div class="admin-content" id="admin-content" style="display:none; padding:20px;">
-      <h3 style="color:var(--gold);">Site Settings</h3>
-      <p style="color:white; margin-bottom: 10px;">Admin controls active. You can connect backend endpoints here in the future.</p>
       
+      <div class="admin-tabs">
+        <button class="tab-btn active">Content Editor</button>
+      </div>
+
+      <!-- Content Edit Forms -->
+      <h3 style="color:var(--gold); margin-bottom: 10px; font-family: var(--font-serif); font-size: 18px;">Edit Profile Text</h3>
+      <label style="color:var(--text-muted); font-size:12px; text-transform:uppercase;">About Section Paragraph 1</label>
+      <textarea id="edit-about" rows="3" style="width:100%; padding:10px; border-radius:8px; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--glass-border); margin-bottom: 15px; outline: none;">I am a detail-oriented Pricing & Quotation Specialist...</textarea>
+      
+      <button class="btn-primary" onclick="alert('Content changes saved locally!')" style="width: 100%; padding: 10px; font-size: 14px; border-radius: 8px; border:none; cursor:pointer; margin-bottom: 20px;">
+        <i class="fas fa-save"></i> Save Content
+      </button>
+
       <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
       
-      <h3 style="color:var(--gold); margin-bottom: 10px;">Security Settings</h3>
+      <!-- CHANGE PASSWORD SECTION -->
+      <h3 style="color:var(--gold); margin-bottom: 10px; font-family: var(--font-serif); font-size: 18px;">Security Settings</h3>
       <p style="color:var(--text-muted); font-size: 13px; margin-bottom: 10px;">Change your admin panel password here.</p>
       <input type="password" id="new-admin-pass" placeholder="Enter new password" style="width:100%; padding:10px; border-radius:8px; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--gold); margin-bottom: 15px; outline: none;">
+      
       <button class="btn-primary" onclick="changeAdminPass()" style="width: 100%; padding: 10px; font-size: 14px; border-radius: 8px; border:none; cursor:pointer;">
         <i class="fas fa-key"></i> Update Password
       </button>
-    </div>
-  </div>
-</div>
-
-<div id="export-overlay" style="display:none;">
-  <div class="admin-panel" style="max-width: 800px;">
-    <div class="admin-header">
-      <h2>🚀 Deploy Your AI Agent</h2>
-      <button class="admin-close" onclick="closeExportModal()">✕</button>
-    </div>
-    
-    <div class="export-content">
-      <p style="color:var(--text-muted); margin-bottom: 20px;">Choose a hosting method to see instructions, and download the complete PDF package.</p>
-      
-      <div class="admin-tabs">
-        <button class="tab-btn active" id="tab-github" onclick="switchHostMode('github')">Hosting via GitHub (Free)</button>
-        <button class="tab-btn" id="tab-other" onclick="switchHostMode('other')">Custom Server / Other</button>
-      </div>
-
-      <div id="host-github" class="host-instructions" style="display:block;">
-        <ol class="github-steps">
-          <li>Create a free account on <b style="color:var(--gold);">GitHub.com</b>.</li>
-          <li>Create a new repository named <code>my-ai-agent</code>.</li>
-          <li>Download your AI Code PDF using the button below.</li>
-          <li>Copy the source code from the PDF into a new file named <code>index.html</code> in your GitHub repository.</li>
-          <li>Go to Repository <b>Settings > Pages</b>. Set the source to the "main" branch and save.</li>
-        </ol>
-      </div>
-
-      <div id="host-other" class="host-instructions" style="display:none;">
-        <ol class="github-steps">
-          <li>Download your AI Code PDF using the button below.</li>
-          <li>Copy the source code from the PDF into a file named <code>index.html</code>.</li>
-          <li>Upload this <code>index.html</code> file to your web server (e.g., cPanel, HostGator, Vercel, or Netlify).</li>
-        </ol>
-      </div>
-
-      <button class="btn-primary" onclick="downloadAIPDF()" style="width: 100%; margin-top: 20px; font-size:16px; border:none; cursor:pointer;">
-        <i class="fas fa-file-pdf"></i> Download Full Code Package (PDF)
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="pdf-template" style="display:none;">
-  <div style="font-family: Arial, sans-serif; padding: 40px; color: #333; background: #fff;">
-    <h1 style="color: #0A9396; border-bottom: 2px solid #FFD700; padding-bottom: 10px;" id="pdf-title">AI Agent Documentation</h1>
-    <p><strong>Created By:</strong> AI Forge Portal | Sourabh Satish Shet</p>
-    
-    <h2 style="color: #0A9396; margin-top: 30px;">1. System Architecture</h2>
-    <div style="background: #f8f9fa; border: 1px solid #ddd; padding: 20px; text-align: center; border-radius: 8px;">
-      <pre style="font-family: monospace; font-size: 14px; color: #333; line-height: 1.5;">
-[ End User ] ──▶ [ HTML Interface ] 
-                       │
-                       ▼
-             [ JavaScript Engine ] ──▶ Injects Persona: "<span id="pdf-role"></span>"
-                       │
-                       ▼
-             [ Gemini 3.5 API ] ──▶ Fetches AI Response
-                       │
-                       ▼
-          [ SpeechSynthesis API ] ──▶ Speaks to User
-      </pre>
-    </div>
-
-    <h2 style="color: #0A9396; margin-top: 30px;">2. Complete Source Code</h2>
-    <p>Copy this HTML into your <code>index.html</code> file to deploy a live, talking AI Assistant powered by Google Gemini!</p>
-    <div style="background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; font-size: 10px; overflow-x: hidden;">
-      <pre><code id="pdf-code"></code></pre>
     </div>
   </div>
 </div>
