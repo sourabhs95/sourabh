@@ -1,138 +1,94 @@
 // ==========================================
-// CORE SITE NAVIGATION
+// INITIALIZATION
 // ==========================================
-function enterSite() {
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('main-site').style.display = 'block';
+document.addEventListener("DOMContentLoaded", () => {
+    // Set dynamic year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
-}
-
-function toggleNav() {
-    document.querySelector('.nav-links').classList.toggle('open');
-}
+    
+    // Ensure text-to-speech voices load properly
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+});
 
 // ==========================================
-// GLOBAL TEXT-TO-SPEECH (TTS) FUNCTION
+// TEXT-TO-SPEECH (TTS) ENGINE
 // ==========================================
 function speak(text) {
     if ('speechSynthesis' in window) {
+        // Stop any currently playing audio
         window.speechSynthesis.cancel();
         
-        // Clean markdown or bolding artifacts before speaking
-        const cleanText = text.replace(/\*/g, '');
+        // Clean text formatting so it sounds natural
+        const cleanText = text.replace(/[*_~`]/g, '');
         const utterance = new SpeechSynthesisUtterance(cleanText);
         
-        // Fetch voices and try to assign an Indian English voice
+        // Fetch available voices
         const voices = window.speechSynthesis.getVoices();
-        const indianVoice = voices.find(v => v.lang.includes('en-IN'));
+        
+        // Attempt to select an Indian English voice for aesthetic, fallback to default
+        const indianVoice = voices.find(v => v.lang.includes('en-IN') || v.name.includes('India'));
         if (indianVoice) utterance.voice = indianVoice;
         
-        utterance.pitch = 1;
-        utterance.rate = 0.9; 
+        utterance.pitch = 1.0;
+        utterance.rate = 0.95; // Slightly slower for clarity
+        
+        // Speak!
         window.speechSynthesis.speak(utterance);
     }
 }
 
-// Chrome/Safari quirk: ensure voices are loaded
-if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
-
 // ==========================================
-// NARADA AI CHATBOT LOGIC (Your Profile Bot)
+// NARADA AI CHATBOT LOGIC
 // ==========================================
 function toggleChat() {
-    const body = document.getElementById('chat-body');
-    body.style.display = body.style.display === 'none' ? 'flex' : 'none';
-}
-
-function handleNaradaChat(e) {
-    if (e.key === 'Enter') {
-        const input = document.getElementById('chat-input');
-        const container = document.getElementById('msg-container');
-        if(!input.value.trim()) return;
-        
-        const userMsg = input.value;
-        const msgLower = userMsg.toLowerCase();
-        
-        // 1. Display User Message
-        container.innerHTML += `
-            <div style="text-align:right; margin:8px 0; color:#E2E8F0; padding:10px 14px; background:rgba(255,255,255,0.1); border-radius:12px 12px 0px 12px; display:inline-block; float:right; clear:both; border: 1px solid rgba(255,255,255,0.2);">
-                ${userMsg}
-            </div>`;
-        
-        // 2. Determine Bot Response based on Profile Data
-        let reply = "I am pondering this. Please ask me about Sourabh's work experience, his pricing skills, or how to contact him.";
-        
-        if (msgLower.includes('experience') || msgLower.includes('work') || msgLower.includes('job')) {
-            reply = "Sourabh works as a Pricing & Quotation Specialist at Mouser Electronics in Bangalore. He manages complex B2B component quotations and automates pricing workflows.";
-        } else if (msgLower.includes('skill') || msgLower.includes('tech') || msgLower.includes('excel')) {
-            reply = "He is an expert in Supply Chain Analytics, Strategic Pricing, Advanced Excel, Power Query, and Competitor Analysis.";
-        } else if (msgLower.includes('contact') || msgLower.includes('email') || msgLower.includes('phone') || msgLower.includes('hire')) {
-            reply = "You can reach Sourabh via email at sourabhshet95@gmail.com, or call him directly at +91 9019215348.";
-        } else if (msgLower.includes('admin') || msgLower.includes('edit') || msgLower.includes('login')) {
-            reply = "To edit the site or change your password, click the Chakra symbol (☸) in the top right navigation bar to open the Admin Panel.";
-        } else if (msgLower.includes('hi') || msgLower.includes('hello') || msgLower.includes('namaste')) {
-            reply = "Hare Krishna! I am Narada, Sourabh's personal AI assistant. How may I guide you through his portfolio?";
-        }
-
-        // 3. Display Bot Response with slight delay to mimic thinking
-        setTimeout(() => {
-            container.innerHTML += `
-                <div style="color:var(--gold); margin:8px 0; padding:10px 14px; background:rgba(255,215,0,0.1); border-radius:12px 12px 12px 0px; display:inline-block; float:left; clear:both; border: 1px solid rgba(255,215,0,0.2);">
-                    <b>Narada:</b> ${reply}
-                </div>`;
-            container.scrollTop = container.scrollHeight;
-            
-            // Speak the reply aloud
-            speak(reply); 
-        }, 600);
-
-        // Reset input field
-        input.value = '';
-        container.scrollTop = container.scrollHeight;
-    }
-}
-
-// ==========================================
-// ADMIN PANEL LOGIC (With Password Memory)
-// ==========================================
-function openAdmin() { 
-    document.getElementById('admin-overlay').style.display = 'flex'; 
-}
-
-function closeAdmin() { 
-    document.getElementById('admin-overlay').style.display = 'none'; 
-    // Reset the panel UI back to login screen on close
-    document.getElementById('admin-login').style.display = 'block';
-    document.getElementById('admin-content').style.display = 'none';
-    document.getElementById('admin-pass').value = '';
-    document.getElementById('new-admin-pass').value = '';
-}
-
-function checkAdminPass() {
-    const inputPass = document.getElementById('admin-pass').value;
-    // Check localStorage for a custom password, otherwise use default 'admin123'
-    const currentPassword = localStorage.getItem('siteAdminPassword') || 'admin123';
-    
-    if (inputPass === currentPassword) { 
-        document.getElementById('admin-login').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
+    const chatWindow = document.getElementById('ai-chat-window');
+    // Toggle display between none and flex
+    if (chatWindow.style.display === 'flex') {
+        chatWindow.style.display = 'none';
+        window.speechSynthesis.cancel(); // Stop talking when closed
     } else {
-        alert("Incorrect Password!");
+        chatWindow.style.display = 'flex';
+        // Auto-focus input when opened
+        document.getElementById('user-input').focus();
     }
 }
 
-function changeAdminPass() {
-    const newPass = document.getElementById('new-admin-pass').value.trim();
+function handleChat() {
+    const inputField = document.getElementById('user-input');
+    const chatBox = document.getElementById('chat-messages');
+    const userText = inputField.value.trim();
     
-    if (newPass.length < 4) {
-        alert("Please enter a password that is at least 4 characters long.");
-        return;
+    if(!userText) return;
+
+    // 1. Display User Message
+    chatBox.innerHTML += `<div class="msg user">${userText}</div>`;
+    inputField.value = '';
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 2. Generate Logic/Response
+    const lowerText = userText.toLowerCase();
+    let reply = "I am processing that. You can ask me about Sourabh's pricing experience, his technical skills, or how to contact him.";
+
+    // Simple keyword matching logic to act as the AI
+    if (lowerText.includes('hi') || lowerText.includes('hello') || lowerText.includes('namaste')) {
+        reply = "Hari Om! I am Narada, Sourabh's voice AI. How may I assist you in exploring his portfolio today?";
+    } else if (lowerText.includes('experience') || lowerText.includes('work') || lowerText.includes('job')) {
+        reply = "Sourabh is a Pricing & Quotation Specialist at Mouser Electronics in Bangalore. He specializes in B2B component quotations, margin optimization, and supply chain analytics.";
+    } else if (lowerText.includes('skill') || lowerText.includes('tech') || lowerText.includes('excel') || lowerText.includes('know')) {
+        reply = "His core arsenal includes Strategic Pricing, Advanced Excel, Power Query, Data Visualization, and integrating AI models like Gemini into workflows.";
+    } else if (lowerText.includes('contact') || lowerText.includes('email') || lowerText.includes('hire') || lowerText.includes('phone')) {
+        reply = "You can reach Sourabh directly via email at sourabhshet95@gmail.com, or give him a call at +91 9019215348. He is always open to great opportunities.";
+    } else if (lowerText.includes('who are you') || lowerText.includes('narada') || lowerText.includes('ai')) {
+        reply = "I am Narada, a custom voice-enabled AI assistant built natively into this website to guide you through Sourabh's professional journey.";
     }
-    
-    // Save the new password to browser LocalStorage so it persists after refresh
-    localStorage.setItem('siteAdminPassword', newPass);
-    alert("Password successfully updated! Please remember it for next time.");
-    document.getElementById('new-admin-pass').value = '';
+
+    // 3. Display Bot Response with a slight "thinking" delay
+    setTimeout(() => {
+        chatBox.innerHTML += `<div class="msg bot"><b>Narada:</b> ${reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        // 4. Trigger Text-to-Speech
+        speak(reply);
+    }, 600);
 }
