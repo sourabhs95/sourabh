@@ -7,13 +7,13 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- WELCOME SCREEN -->
 <div id="welcome-screen">
   <div class="welcome-bg"></div>
   <div class="feather-container">
@@ -82,7 +82,6 @@
   </div>
 </div>
 
-<!-- MAIN SITE -->
 <div id="main-site" style="display:none;">
   <div class="main-ambient-bg">
     <div class="ambient-orb orb-1"></div>
@@ -129,7 +128,6 @@
     </div>
   </section>
 
-  <!-- CORE PROFILE DATA -->
   <section id="about" class="section glass-section">
     <div class="section-label">01 · About</div>
     <h2 class="section-title">Professional Summary</h2>
@@ -195,7 +193,6 @@
     </div>
   </section>
 
-  <!-- LIVE GEMINI AI FORGE & SANDBOX -->
   <section id="ai-forge" class="section glass-section">
     <div class="section-label">04 · Live API Sandbox</div>
     <h2 class="section-title">Forge Your Own AI Agent</h2>
@@ -204,7 +201,6 @@
     </p>
 
     <div class="forge-grid">
-      <!-- Creator Form -->
       <div class="forge-form">
         <h3>1. Define AI Identity</h3>
         <label>Agent Name</label>
@@ -225,7 +221,6 @@
         </button>
       </div>
 
-      <!-- Live Chat Sandbox -->
       <div class="forge-sandbox">
         <div class="sandbox-header" style="display: flex; justify-content: space-between;">
           <span id="sandbox-title">🛠️ Agent Sandbox (Awaiting Spawn)</span>
@@ -262,7 +257,6 @@
     <p class="footer-copy">© <span id="year"></span> Sourabh Satish Shet. All Rights Reserved.</p>
   </footer>
 
-  <!-- NARADA AI CHATBOT WIDGET -->
   <div id="narada-bot" class="narada-chat">
     <div class="chat-header" onclick="toggleChat()">🦚 Narada AI</div>
     <div id="chat-body" class="chat-body" style="display:none;">
@@ -277,7 +271,6 @@
 
 </div>
 
-<!-- HIDDEN ADMIN OVERLAY -->
 <div id="admin-overlay" style="display:none;">
   <div class="admin-panel">
     <div class="admin-header">
@@ -286,17 +279,26 @@
     </div>
     <div class="admin-login" id="admin-login">
       <p>Enter password to manage portfolio</p>
-      <input type="password" id="admin-pass" placeholder="Password (admin123)" />
+      <input type="password" id="admin-pass" placeholder="Password (Default: admin123)" />
       <button onclick="checkAdminPass()">Login</button>
     </div>
+    
     <div class="admin-content" id="admin-content" style="display:none; padding:20px;">
       <h3 style="color:var(--gold);">Site Settings</h3>
       <p style="color:white; margin-bottom: 10px;">Admin controls active. You can connect backend endpoints here in the future.</p>
+      
+      <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 20px 0;">
+      
+      <h3 style="color:var(--gold); margin-bottom: 10px;">Security Settings</h3>
+      <p style="color:var(--text-muted); font-size: 13px; margin-bottom: 10px;">Change your admin panel password here.</p>
+      <input type="password" id="new-admin-pass" placeholder="Enter new password" style="width:100%; padding:10px; border-radius:8px; background:rgba(0,0,0,0.5); color:white; border:1px solid var(--gold); margin-bottom: 15px; outline: none;">
+      <button class="btn-primary" onclick="changeAdminPass()" style="width: 100%; padding: 10px; font-size: 14px; border-radius: 8px; border:none; cursor:pointer;">
+        <i class="fas fa-key"></i> Update Password
+      </button>
     </div>
   </div>
 </div>
 
-<!-- AI EXPORT MODAL -->
 <div id="export-overlay" style="display:none;">
   <div class="admin-panel" style="max-width: 800px;">
     <div class="admin-header">
@@ -330,14 +332,13 @@
         </ol>
       </div>
 
-      <button class="btn-primary" onclick="downloadAIPDF()" style="width: 100%; margin-top: 20px; font-size:16px;">
+      <button class="btn-primary" onclick="downloadAIPDF()" style="width: 100%; margin-top: 20px; font-size:16px; border:none; cursor:pointer;">
         <i class="fas fa-file-pdf"></i> Download Full Code Package (PDF)
       </button>
     </div>
   </div>
 </div>
 
-<!-- HIDDEN PDF TEMPLATE (Converted to PDF on Export) -->
 <div id="pdf-template" style="display:none;">
   <div style="font-family: Arial, sans-serif; padding: 40px; color: #333; background: #fff;">
     <h1 style="color: #0A9396; border-bottom: 2px solid #FFD700; padding-bottom: 10px;" id="pdf-title">AI Agent Documentation</h1>
