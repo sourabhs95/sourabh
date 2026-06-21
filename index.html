@@ -3,200 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh Satish Shet | Cosmic Portfolio</title>
+  <title>Sourabh Satish Shet | Enterprise AI Portfolio</title>
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Outfit:wght@300;400;500;600&family=Noto+Sans+Kannada&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
+  <!-- Fonts: Inter (similar to Salesforce Sans) and regional fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Kannada&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <style>
 /* ═══════════════════════════════════════════
-   TOKENS & ANIMATIONS
+   TOKENS & ANIMATIONS (Modern Salesforce/AI Theme)
 ════════════════════════════════════════════ */
 :root {
-  --cosmic-bg: #05050A;
-  --cosmic-surface: rgba(15, 15, 25, 0.6);
-  --gold-glow: #F9D423;
-  --cyan-glow: #00E5FF;
-  --text-main: #E2E8F0;
-  --text-muted: #94A3B8;
-  --font-display: 'Cinzel Decorative', serif;
-  --font-body: 'Outfit', sans-serif;
+  --sf-blue: #00a1e0;
+  --sf-dark-blue: #032d60;
+  --ai-cyan: #00e5ff;
+  --ai-purple: #7f00ff;
+  --bg-dark: #0b132b;
+  --bg-surface: rgba(28, 38, 58, 0.6);
+  --text-main: #f4f6f9;
+  --text-muted: #a0aec0;
+  --font-main: 'Inter', sans-serif;
   --font-kn: 'Noto Sans Kannada', sans-serif;
   --font-sa: 'Tiro Devanagari Sanskrit', serif;
-  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-body); background: var(--cosmic-bg); color: var(--text-main); overflow-x: hidden; }
+body { font-family: var(--font-main); background: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
 
-/* ════════ BACKGROUND ════════ */
-.stars {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050A 100%);
-  z-index: -2;
-}
-.nebula {
-  position: fixed; width: 60vw; height: 60vw; border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 60%);
-  filter: blur(80px); z-index: -1;
-  animation: floatNebula 20s infinite alternate ease-in-out;
-}
-.nebula-2 {
-  background: radial-gradient(circle, rgba(249, 212, 35, 0.1) 0%, transparent 60%);
-  right: -10%; bottom: -10%; animation-delay: -5s;
-}
+/* ════════ AI NEURAL BACKGROUND ════════ */
+#ai-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at 50% 50%, #111b3d 0%, #0b132b 100%); }
+.glow-orb { position: fixed; width: 40vw; height: 40vw; border-radius: 50%; background: radial-gradient(circle, rgba(0, 161, 224, 0.1) 0%, transparent 70%); filter: blur(60px); z-index: -1; animation: floatOrb 15s infinite alternate ease-in-out; }
+.glow-orb.purple { background: radial-gradient(circle, rgba(127, 0, 255, 0.08) 0%, transparent 70%); right: -10vw; bottom: -10vh; animation-delay: -5s; }
 
-@keyframes floatNebula {
+@keyframes floatOrb {
   0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(10vw, 10vh) scale(1.2); }
+  100% { transform: translate(5vw, 5vh) scale(1.1); }
 }
 
-/* ════════ WELCOME SCREEN & AI LOAD ════════ */
-#welcome-screen { position: fixed; inset: 0; z-index: 5000; background: var(--cosmic-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease; }
-.mandala-loader { position: relative; width: 200px; height: 200px; animation: spin 15s linear infinite; }
-.mandala-loader svg { width: 100%; height: 100%; filter: drop-shadow(0 0 15px var(--cyan-glow)); }
+/* ════════ INITIALIZATION SCREEN ════════ */
+#welcome-screen { position: fixed; inset: 0; z-index: 5000; background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
+.ai-core { position: relative; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; }
+.ai-ring { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--sf-blue); border-bottom-color: var(--ai-cyan); animation: spin 2s linear infinite; }
+.ai-ring:nth-child(2) { width: 80%; height: 80%; border-top-color: var(--ai-purple); border-bottom-color: transparent; animation: spin 3s linear infinite reverse; }
+.ai-core i { font-size: 3rem; color: var(--ai-cyan); animation: pulse 2s infinite; }
+
 @keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { transform: scale(0.9); opacity: 0.7; text-shadow: 0 0 10px transparent; } 50% { transform: scale(1.1); opacity: 1; text-shadow: 0 0 20px var(--ai-cyan); } }
 
-.loading-text { font-family: var(--font-display); color: var(--cyan-glow); letter-spacing: 5px; margin-top: 30px; animation: pulseText 2s infinite; text-transform: uppercase; }
-@keyframes pulseText { 0%, 100% { opacity: 0.5; text-shadow: 0 0 10px transparent; } 50% { opacity: 1; text-shadow: 0 0 20px var(--cyan-glow); } }
+.welcome-content { display: none; text-align: center; flex-direction: column; align-items: center; animation: fadeInUp 1s ease forwards; margin-top: 30px; }
+.welcome-title { font-size: 2.5rem; color: var(--text-main); font-weight: 700; margin-bottom: 10px; }
+.welcome-subtitle { color: var(--sf-blue); font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 40px; }
 
-.welcome-content { display: none; text-align: center; flex-direction: column; align-items: center; animation: fadeInUp 1s ease forwards; }
-.welcome-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold-glow); text-shadow: 0 0 30px rgba(249,212,35,0.5); margin-bottom: 10px; }
-.welcome-subtitle { font-size: 1.2rem; color: var(--cyan-glow); letter-spacing: 3px; margin-bottom: 40px; }
-
-.voice-toggle-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0,229,255,0.3); }
-.voice-switch { position: relative; width: 50px; height: 24px; background: #333; border-radius: 24px; cursor: pointer; transition: 0.3s; }
-.voice-switch.active { background: var(--cyan-glow); box-shadow: 0 0 15px var(--cyan-glow); }
+.voice-toggle-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 12px 25px; border-radius: 8px; border: 1px solid rgba(0, 161, 224, 0.3); }
+.voice-switch { position: relative; width: 44px; height: 24px; background: #2d3748; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+.voice-switch.active { background: var(--sf-blue); box-shadow: 0 0 10px var(--sf-blue); }
 .voice-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: 0.3s; }
-.voice-switch.active::after { transform: translateX(26px); }
+.voice-switch.active::after { transform: translateX(20px); }
 
-.enter-btn { padding: 15px 40px; background: transparent; border: 2px solid var(--gold-glow); color: var(--gold-glow); font-family: var(--font-body); font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.4s; letter-spacing: 2px; text-transform: uppercase; overflow: hidden; position: relative; }
-.enter-btn:hover { background: var(--gold-glow); color: #000; box-shadow: 0 0 30px var(--gold-glow); }
+.enter-btn { padding: 12px 35px; background: var(--sf-blue); color: #fff; font-family: var(--font-main); font-size: 1rem; font-weight: 600; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0, 161, 224, 0.4); }
+.enter-btn:hover { background: var(--ai-cyan); color: var(--bg-dark); box-shadow: 0 6px 20px rgba(0, 229, 255, 0.6); transform: translateY(-2px); }
 
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ════════ NAVBAR ════════ */
-nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); background: rgba(5,5,10,0.8); border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-.nav-logo { font-family: var(--font-display); font-size: 1.5rem; color: var(--cyan-glow); display: flex; align-items: center; gap: 10px; }
-.nav-logo i { animation: spin 10s linear infinite; }
+nav { position: fixed; top: 0; width: 100%; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(12px); background: rgba(11, 19, 43, 0.85); border-bottom: 1px solid rgba(255,255,255,0.08); transition: 0.3s; }
+.nav-logo { font-size: 1.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+.nav-logo i { color: var(--sf-blue); }
 .nav-links { display: flex; gap: 30px; list-style: none; }
-.nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
-.nav-links a:hover { color: var(--gold-glow); text-shadow: 0 0 10px var(--gold-glow); }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+.nav-links a:hover { color: var(--ai-cyan); }
 
 .nav-actions { display: flex; gap: 15px; align-items: center; }
-.lang-select { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--cyan-glow); padding: 8px 15px; border-radius: 20px; font-family: var(--font-body); cursor: pointer; outline: none; }
-.lang-select option { background: var(--cosmic-bg); color: #fff; }
-.icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
-.icon-btn:hover { background: var(--cyan-glow); color: #000; box-shadow: 0 0 15px var(--cyan-glow); border-color: var(--cyan-glow); }
-.nav-toggle { display: none; }
+.lang-select { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 4px; font-family: var(--font-main); font-size: 0.85rem; cursor: pointer; outline: none; }
+.lang-select option { background: var(--bg-dark); color: #fff; }
+.icon-btn { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-muted); width: 36px; height: 36px; border-radius: 4px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+.icon-btn:hover { background: rgba(0, 161, 224, 0.1); color: var(--sf-blue); border-color: var(--sf-blue); }
 
 /* ════════ HERO SECTION ════════ */
 #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 20px; text-align: center; position: relative; }
-.hero-content { background: var(--cosmic-surface); padding: 50px; border-radius: 30px; border: 1px solid rgba(0,229,255,0.2); backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 900px; z-index: 2; position: relative; overflow: hidden; }
-.hero-content::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: conic-gradient(transparent, rgba(0,229,255,0.1), transparent 30%); animation: spin 10s linear infinite; z-index: -1; }
-.hero-name { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
-.hero-title { font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--gold-glow); font-weight: 300; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
-.hero-location { color: var(--text-muted); margin-bottom: 30px; letter-spacing: 1px; }
+.hero-content { background: var(--bg-surface); padding: 60px 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(16px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-width: 900px; z-index: 2; border-top: 3px solid var(--sf-blue); }
+.hero-name { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; color: #fff; margin-bottom: 5px; letter-spacing: -1px; }
+.hero-title { font-size: clamp(1.1rem, 2vw, 1.5rem); color: var(--sf-blue); font-weight: 500; margin-bottom: 20px; }
+.hero-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 20px; color: var(--text-muted); font-size: 0.9rem; }
+.hero-contact span { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 20px; }
 
 /* ════════ SECTIONS & CARDS ════════ */
-.section { padding: 100px 50px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
-.section-title { font-family: var(--font-display); font-size: 3rem; color: var(--cyan-glow); text-align: center; margin-bottom: 50px; text-shadow: 0 0 20px rgba(0,229,255,0.3); }
+.section { padding: 100px 50px; max-width: 1300px; margin: 0 auto; position: relative; z-index: 2; }
+.section-title { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(0,161,224,0.5), transparent); }
 
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-.glass-card { background: var(--cosmic-surface); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; transition: 0.4s; overflow: hidden; position: relative; }
-.glass-card:hover { transform: translateY(-10px); border-color: var(--gold-glow); box-shadow: 0 10px 30px rgba(249,212,35,0.2); }
-.glass-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); transition: 0.5s; }
-.glass-card:hover::after { left: 150%; }
+.grid { display: grid; gap: 25px; }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
-.card-title { font-size: 1.5rem; color: var(--gold-glow); margin-bottom: 15px; font-family: var(--font-display); }
-.card-text { font-size: 1rem; color: var(--text-main); line-height: 1.6; font-weight: 300; }
+.saas-card { background: var(--bg-surface); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); padding: 30px; border-radius: 8px; transition: var(--transition); position: relative; overflow: hidden; }
+.saas-card:hover { transform: translateY(-5px); border-color: rgba(0, 161, 224, 0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.saas-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--sf-blue), var(--ai-cyan)); opacity: 0; transition: 0.3s; }
+.saas-card:hover::before { opacity: 1; }
+
+.card-title { font-size: 1.2rem; font-weight: 600; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+.card-title i { color: var(--sf-blue); }
+.card-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+.pill-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.pill { background: rgba(0, 161, 224, 0.1); color: var(--ai-cyan); border: 1px solid rgba(0, 161, 224, 0.2); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; }
 
 /* Timeline */
-.timeline { border-left: 2px solid var(--cyan-glow); padding-left: 30px; margin-left: 20px; }
+.timeline { border-left: 2px solid rgba(255,255,255,0.1); padding-left: 30px; margin-left: 10px; }
 .timeline-item { position: relative; margin-bottom: 40px; }
-.timeline-item::before { content: ''; position: absolute; left: -38px; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--cosmic-bg); border: 2px solid var(--cyan-glow); box-shadow: 0 0 10px var(--cyan-glow); }
+.timeline-item::before { content: ''; position: absolute; left: -36px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--sf-blue); box-shadow: 0 0 10px var(--sf-blue); }
+.timeline-date { color: var(--ai-cyan); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.timeline-role { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
+.timeline-company { color: var(--text-muted); font-size: 1rem; margin-bottom: 15px; }
+.timeline-list { list-style: none; }
+.timeline-list li { position: relative; padding-left: 20px; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+.timeline-list li::before { content: '▹'; position: absolute; left: 0; color: var(--sf-blue); font-weight: bold; }
+
+/* Citation Styling */
+.cite { font-size: 0.75rem; color: rgba(255,255,255,0.3); vertical-align: super; margin-left: 2px; }
 
 /* Language Specific Fonts */
 body[data-lang="kn"] .translate, body[data-lang="kn"] .hover-speak { font-family: var(--font-kn); }
-body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family: var(--font-sa); font-size: 110%; }
+body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family: var(--font-sa); font-size: 105%; }
 
-/* ════════ NARADA CHATBOT ════════ */
-.narada-bot { position: fixed; bottom: 30px; right: 30px; z-index: 1000; width: 350px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.8); border: 1px solid var(--gold-glow); transform: translateY(120%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.narada-bot.active { transform: translateY(0); }
-.narada-header { background: rgba(249,212,35,0.1); padding: 15px 20px; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(249,212,35,0.3); display: flex; justify-content: space-between; align-items: center; color: var(--gold-glow); font-family: var(--font-display); cursor: pointer; }
-.narada-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: var(--cosmic-surface); border: 2px solid var(--gold-glow); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--gold-glow); cursor: pointer; z-index: 999; box-shadow: 0 0 20px rgba(249,212,35,0.3); transition: 0.3s; }
-.narada-toggle-btn:hover { transform: scale(1.1); background: var(--gold-glow); color: #000; }
-.chat-body { background: rgba(5,5,10,0.95); height: 350px; display: flex; flex-direction: column; }
-.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.9rem; }
-.chat-input { padding: 15px; background: rgba(0,0,0,0.5); border: none; border-top: 1px solid rgba(255,255,255,0.1); color: #fff; width: 100%; outline: none; }
-.msg { margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
-.msg-bot { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: var(--cyan-glow); align-self: flex-start; border-bottom-left-radius: 2px; }
-.msg-user { background: rgba(255,255,255,0.1); color: #fff; margin-left: auto; border-bottom-right-radius: 2px; text-align: right; border: 1px solid rgba(255,255,255,0.2); }
+/* ════════ NARADA AI CHATBOT (Enterprise Style) ════════ */
+.narada-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 56px; height: 56px; border-radius: 50%; background: var(--sf-blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; z-index: 999; box-shadow: 0 5px 20px rgba(0, 161, 224, 0.4); transition: var(--transition); border: none; }
+.narada-toggle-btn:hover { transform: scale(1.05); background: var(--ai-cyan); color: var(--bg-dark); }
+
+.narada-bot { position: fixed; bottom: 100px; right: 30px; z-index: 1000; width: 340px; background: var(--bg-surface); backdrop-filter: blur(20px); border-radius: 12px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); transform: translateY(20px); opacity: 0; pointer-events: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.narada-bot.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
+
+.narada-header { background: rgba(0, 161, 224, 0.15); padding: 15px; border-bottom: 1px solid rgba(0, 161, 224, 0.2); display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 600; cursor: pointer; }
+.narada-header i.fa-times { color: var(--text-muted); transition: 0.3s; }
+.narada-header i.fa-times:hover { color: #fff; }
+
+.chat-body { height: 350px; display: flex; flex-direction: column; }
+.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.9rem; display: flex; flex-direction: column; gap: 10px; }
+.chat-input-wrap { padding: 12px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05); }
+.chat-input { width: 100%; padding: 10px 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; outline: none; font-family: var(--font-main); font-size: 0.9rem; transition: 0.3s; }
+.chat-input:focus { border-color: var(--sf-blue); background: rgba(255,255,255,0.1); }
+
+.msg { padding: 10px 14px; border-radius: 12px; max-width: 85%; line-height: 1.4; word-wrap: break-word; }
+.msg-bot { background: rgba(0, 161, 224, 0.1); border: 1px solid rgba(0, 161, 224, 0.2); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; }
+.msg-user { background: var(--sf-blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
 
 /* ════════ ADMIN PANEL ════════ */
-#admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-.admin-panel { background: #0a0a14; width: 90%; max-width: 600px; padding: 30px; border-radius: 20px; border: 1px solid var(--cyan-glow); box-shadow: 0 0 50px rgba(0,229,255,0.2); }
-.admin-input { width: 100%; padding: 15px; margin: 15px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 10px; font-family: var(--font-body); outline: none; }
-.admin-input:focus { border-color: var(--cyan-glow); }
-.admin-btn { width: 100%; padding: 15px; background: var(--cyan-glow); color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
-.admin-btn:hover { box-shadow: 0 0 20px var(--cyan-glow); }
+#admin-overlay { position: fixed; inset: 0; background: rgba(11, 19, 43, 0.9); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+.admin-panel { background: var(--bg-surface); width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.admin-input { width: 100%; padding: 12px; margin: 15px 0; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 4px; font-family: var(--font-main); outline: none; transition: 0.3s; }
+.admin-input:focus { border-color: var(--sf-blue); }
+.admin-btn { width: 100%; padding: 12px; background: var(--sf-blue); color: #fff; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.admin-btn:hover { background: var(--ai-cyan); color: var(--bg-dark); }
 
 /* Scroll Reveal */
-.reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; }
+.reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
 .reveal.active { opacity: 1; transform: translateY(0); }
 
 @media (max-width: 768px) {
   nav { padding: 15px 20px; }
   .nav-links { display: none; }
   .section { padding: 80px 20px; }
+  .hero-content { padding: 40px 20px; }
 }
 </style>
 </head>
 <body data-lang="en">
 
 <!-- BACKGROUND ELEMENTS -->
-<div class="stars"></div>
-<div class="nebula"></div>
-<div class="nebula nebula-2"></div>
+<canvas id="ai-canvas"></canvas>
+<div class="glow-orb"></div>
+<div class="glow-orb purple"></div>
 
-<!-- WELCOME SCREEN & AI LOAD -->
+<!-- INITIALIZATION SCREEN -->
 <div id="welcome-screen">
-  <div class="mandala-loader" id="loader-gfx">
-    <!-- SVG Sacred Geometry/Circuit Hybrid -->
-    <svg viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="#00E5FF" stroke-width="1" opacity="0.5"/>
-      <circle cx="50" cy="50" r="35" fill="none" stroke="#F9D423" stroke-width="2" stroke-dasharray="10 5"/>
-      <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="none" stroke="#00E5FF" stroke-width="1"/>
-      <circle cx="50" cy="50" r="15" fill="#F9D423" opacity="0.8"/>
-    </svg>
+  <div class="ai-core">
+    <div class="ai-ring"></div>
+    <div class="ai-ring"></div>
+    <i class="fas fa-brain"></i>
   </div>
-  <div class="loading-text" id="loader-txt">Summoning Narada AI...</div>
-
   <div class="welcome-content" id="welcome-content">
-    <h1 class="welcome-title hover-speak">Awakening Complete</h1>
-    <p class="welcome-subtitle hover-speak">Welcome to the Cosmic Portfolio of Sourabh</p>
+    <h1 class="welcome-title hover-speak">System Initialized</h1>
+    <p class="welcome-subtitle hover-speak">Enterprise AI Framework Online</p>
     
     <div class="voice-toggle-wrap hover-speak">
-      <span>Enable AI Voice Assistant</span>
+      <span>Enable Voice Intelligence</span>
       <div class="voice-switch" id="init-voice-toggle" onclick="toggleVoice()"></div>
     </div>
     
-    <button class="enter-btn hover-speak" onclick="enterCosmos()">Enter The Cosmos</button>
+    <button class="enter-btn hover-speak" onclick="enterSystem()">Access Dashboard</button>
   </div>
 </div>
 
-<!-- MAIN SITE -->
+<!-- MAIN SITE NAVIGATION -->
 <nav id="navbar" style="opacity:0; pointer-events:none;">
   <div class="nav-logo hover-speak">
-    <i class="fas fa-dharmachakra"></i> <span data-i18n="nav_logo">Sourabh</span>
+    <i class="fas fa-cloud"></i> <span class="translate" data-i18n="nav_logo">Sourabh Shet</span>
   </div>
   <ul class="nav-links">
-    <li><a href="#about" class="hover-speak translate" data-i18n="nav_about">About</a></li>
-    <li><a href="#skills" class="hover-speak translate" data-i18n="nav_skills">Skills</a></li>
+    <li><a href="#about" class="hover-speak translate" data-i18n="nav_about">Summary</a></li>
+    <li><a href="#skills" class="hover-speak translate" data-i18n="nav_skills">Capabilities</a></li>
     <li><a href="#experience" class="hover-speak translate" data-i18n="nav_experience">Experience</a></li>
+    <li><a href="#achievements" class="hover-speak translate" data-i18n="nav_achievements">Achievements</a></li>
   </ul>
   <div class="nav-actions">
     <select class="lang-select hover-speak" onchange="changeLanguage(this.value)">
@@ -205,7 +214,7 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
       <option value="sa">संस्कृतम् (Sanskrit)</option>
     </select>
     <button class="icon-btn hover-speak" onclick="toggleVoice()" title="Toggle Voice"><i class="fas fa-volume-up" id="nav-vol-icon"></i></button>
-    <button class="icon-btn hover-speak" onclick="openAdmin()" title="Admin"><i class="fas fa-user-shield"></i></button>
+    <button class="icon-btn hover-speak" onclick="openAdmin()" title="Admin Login"><i class="fas fa-lock"></i></button>
   </div>
 </nav>
 
@@ -214,55 +223,98 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   <!-- HERO -->
   <section id="hero">
     <div class="hero-content reveal active">
-      <h1 class="hero-name hover-speak translate" data-i18n="hero_name">Sourabh Satish Shet</h1>
-      <h2 class="hero-title hover-speak translate" data-i18n="hero_title">Pricing & Quotation Specialist</h2>
-      <p class="hero-location hover-speak translate" data-i18n="hero_location">📍 Yelahanka, Bangalore | Electronics Supply Chain</p>
+      <h1 class="hero-name hover-speak translate" data-i18n="hero_name">SOURABH SATISH SHET<span class="cite">[cite: 1]</span></h1>
+      <h2 class="hero-title hover-speak translate" data-i18n="hero_title">Pricing & Quotation Specialist<span class="cite">[cite: 1]</span></h2>
+      
+      <div class="hero-contact hover-speak">
+        <span><i class="fas fa-envelope"></i> sourabhshet95@gmail.com<span class="cite">[cite: 1]</span></span>
+        <span><i class="fas fa-phone"></i> +91 9019215348<span class="cite">[cite: 1]</span></span>
+        <span><i class="fas fa-map-marker-alt"></i> Yelahanka, Bangalore<span class="cite">[cite: 1]</span></span>
+      </div>
+      <div class="hero-contact hover-speak">
+        <span><i class="fab fa-linkedin"></i> linkedin.com/in/sourabhshet<span class="cite">[cite: 1]</span></span>
+      </div>
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- SUMMARY -->
   <section id="about" class="section">
-    <h2 class="section-title hover-speak translate" data-i18n="title_about">About Me</h2>
-    <div class="glass-card reveal hover-speak">
+    <h2 class="section-title hover-speak translate" data-i18n="title_about">Executive Summary</h2>
+    <div class="saas-card reveal hover-speak">
       <p class="card-text translate" data-i18n="about_desc" id="about-text-ui">
-        Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. Experienced in multiple sourcing portals and BOM scrubbing.
+        Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components.<span class="cite">[cite: 1]</span> B.Tech in Electronics & Communication Engineering with 1+ years of experience at Mouser Electronics, managing daily workflows through IQS application and multiple sourcing portals (Global, Matrix).<span class="cite">[cite: 1]</span> Skilled in BOM scrubbing, pricing analysis, margin optimization, and tracking critical supply chain parameters including lead times, country of origin, and MOQ requirements.<span class="cite">[cite: 1]</span> Recognized with Rising Star Award (2025) and Star Performer Q1 2026 for accuracy, efficiency, and meeting critical turnaround deadlines.<span class="cite">[cite: 1]</span>
       </p>
     </div>
   </section>
 
   <!-- SKILLS -->
   <section id="skills" class="section">
-    <h2 class="section-title hover-speak translate" data-i18n="title_skills">Core Expertise</h2>
-    <div class="grid" id="skills-grid">
+    <h2 class="section-title hover-speak translate" data-i18n="title_skills">Core Capabilities</h2>
+    <div class="grid grid-2" id="skills-grid">
       <!-- Injected by JS -->
     </div>
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
-    <h2 class="section-title hover-speak translate" data-i18n="title_experience">Cosmic Journey</h2>
+    <h2 class="section-title hover-speak translate" data-i18n="title_experience">Professional Experience</h2>
     <div class="timeline" id="exp-timeline">
       <!-- Injected by JS -->
     </div>
   </section>
 
+  <!-- EDUCATION & CERTIFICATIONS -->
+  <section id="achievements" class="section">
+    <h2 class="section-title hover-speak translate" data-i18n="title_edu">Education & Certifications</h2>
+    <div class="grid grid-2">
+      <div class="saas-card reveal hover-speak">
+        <h3 class="card-title"><i class="fas fa-graduation-cap"></i> Education</h3>
+        <p class="card-text" style="color:#fff; font-weight:600;">Bachelor of Technology (B.Tech) - Electronics & Communication Engineering<span class="cite">[cite: 1]</span></p>
+        <p class="card-text">Indian Institute of Industry Interaction Education and Research<span class="cite">[cite: 1]</span> | 2019-2023<span class="cite">[cite: 1]</span></p>
+      </div>
+      <div class="saas-card reveal hover-speak">
+        <h3 class="card-title"><i class="fas fa-certificate"></i> Certifications</h3>
+        <ul class="timeline-list">
+          <li>Business Analytics with Excel & Power BI (Simplilearn)<span class="cite">[cite: 1]</span></li>
+          <li>Data Analytics (Accenture / Forage)<span class="cite">[cite: 1]</span></li>
+          <li>Power BI Analytics (J2J Institute)<span class="cite">[cite: 1]</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <h2 class="section-title hover-speak translate" data-i18n="title_lang">Languages</h2>
+    <div class="saas-card reveal hover-speak">
+      <div class="pill-container">
+        <span class="pill">English<span class="cite">[cite: 1]</span></span>
+        <span class="pill">Kannada<span class="cite">[cite: 1]</span></span>
+        <span class="pill">Hindi<span class="cite">[cite: 1]</span></span>
+        <span class="pill">Sanskrit<span class="cite">[cite: 1]</span></span>
+        <span class="pill">Konkani<span class="cite">[cite: 1]</span></span>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<!-- NARADA AI CHATBOT -->
-<div class="narada-toggle-btn hover-speak" onclick="toggleChatbot()" title="Summon Narada AI">
+<!-- NARADA AI CHATBOT (Enterprise Style) -->
+<button class="narada-toggle-btn hover-speak" onclick="toggleChatbot()" title="Initialize Narada AI Core">
   <i class="fas fa-robot"></i>
-</div>
+</button>
 
 <div class="narada-bot" id="narada-bot">
   <div class="narada-header" onclick="toggleChatbot()">
-    <span class="hover-speak">🦚 Narada Oracle AI</span>
+    <span class="hover-speak"><i class="fas fa-cloud"></i> Narada AI Core</span>
     <i class="fas fa-times"></i>
   </div>
   <div class="chat-body">
     <div class="chat-msgs" id="chat-msgs">
-      <div class="msg msg-bot hover-speak">Greetings traveler. I am Narada AI. How may I guide you through Sourabh's universe?</div>
+      <div class="msg msg-bot hover-speak">System ready. I am Narada AI. How may I assist you with Sourabh's data?</div>
     </div>
-    <input type="text" class="chat-input hover-speak" id="chat-input" placeholder="Ask a question..." onkeypress="handleChat(event)">
+    <div class="chat-input-wrap">
+      <input type="text" class="chat-input hover-speak" id="chat-input" placeholder="Query database..." onkeypress="handleChat(event)">
+    </div>
   </div>
 </div>
 
@@ -270,18 +322,18 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 <div id="admin-overlay">
   <div class="admin-panel hover-speak">
     <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
-      <h2 style="color:var(--cyan-glow); font-family:var(--font-display);">Admin Access</h2>
-      <button onclick="closeAdmin()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+      <h2 style="color:var(--text-main); font-family:var(--font-main); font-weight:700;">System Admin</h2>
+      <button onclick="closeAdmin()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
     </div>
     <div id="admin-login-view">
-      <!-- Notice: NO hint text here -->
-      <input type="password" id="admin-pass" class="admin-input" placeholder="Enter Authorization Code">
+      <!-- NO password hint included -->
+      <input type="password" id="admin-pass" class="admin-input" placeholder="Enter Security Key">
       <button class="admin-btn" onclick="checkAdmin()">Authenticate</button>
     </div>
     <div id="admin-edit-view" style="display:none;">
-      <h3 style="color:var(--gold-glow); margin-bottom:10px;">Edit About Section (English)</h3>
-      <textarea id="admin-about-text" class="admin-input" rows="5"></textarea>
-      <button class="admin-btn" onclick="saveAdmin()">Save Changes</button>
+      <h3 style="color:var(--sf-blue); margin-bottom:10px; font-size:1rem;">Update Executive Summary (English)</h3>
+      <textarea id="admin-about-text" class="admin-input" rows="6" style="resize:vertical;"></textarea>
+      <button class="admin-btn" onclick="saveAdmin()">Deploy Changes</button>
     </div>
   </div>
 </div>
@@ -289,58 +341,156 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 <!-- SCRIPTS -->
 <script>
 /* ═══════════════════════════════════════════
-   DATA & TRANSLATION DICTIONARY
+   DATA & TRANSLATION DICTIONARY (From [source: 1])
 ════════════════════════════════════════════ */
+const defaultAbout = "Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components.[cite: 1] B.Tech in Electronics & Communication Engineering with 1+ years of experience at Mouser Electronics, managing daily workflows through IQS application and multiple sourcing portals (Global, Matrix).[cite: 1] Skilled in BOM scrubbing, pricing analysis, margin optimization, and tracking critical supply chain parameters including lead times, country of origin, and MOQ requirements.[cite: 1] Recognized with Rising Star Award (2025) and Star Performer Q1 2026 for accuracy, efficiency, and meeting critical turnaround deadlines.[cite: 1]";
+
 const portfolioData = {
-  aboutEn: "Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. Experienced in multiple sourcing portals and BOM scrubbing.",
+  aboutEn: defaultAbout,
   skills: [
-    { title: "Supply Chain", text: "RFQ Processing, Quote Development, Lead Time Analysis." },
-    { title: "Pricing Analytics", text: "Margin Calculation, Vendor Pricing, Rule Sets." },
-    { title: "Tools & Tech", text: "IQS, Global Matrix, Power BI, Advanced Excel." }
+    { 
+      icon: "fa-project-diagram", 
+      title: "Supply Chain & Quoting", 
+      pills: ["RFQ Processing & Management", "Quote Development", "Multi-Portal Management (Global, Matrix)", "IQS Application", "BOM Scrubbing & Data Validation", "Lead Time Analysis", "Country of Origin Tracking", "MOQ Management", "Supplier Coordination"] 
+    },
+    { 
+      icon: "fa-chart-line", 
+      title: "Pricing & Analytics", 
+      pills: ["Pricing Analysis & Optimization", "Margin Calculation", "Customer-Specific Pricing Rules", "Manufacturer Portal Navigation", "Vendor Pricing", "Data Integrity"] 
+    },
+    { 
+      icon: "fa-microchip", 
+      title: "Component & Tech Knowledge", 
+      pills: ["Component Identification", "Obsolescence Management", "Product Lifecycle Analysis", "Cross-Reference & Alternate Part Sourcing", "EOL Mitigation", "NCNR Parts Handling", "Technical Datasheet Analysis"] 
+    },
+    { 
+      icon: "fa-laptop-code", 
+      title: "Tools & Technology", 
+      pills: ["Microsoft Office Suite", "Power BI", "Database Management", "Python", "AI Workflow Process Improvement"] 
+    }
   ],
   experience: [
-    { role: "Specialist I – Quote Management", company: "Mouser Electronics", period: "Sep 2024 – Present", desc: "Processed high-volume RFQs, performed BOM scrubbing, applied customer pricing rules." }
+    { 
+      role: "Specialist I - Quote Management (QRG Representative)", 
+      company: "Mouser Electronics (TTI Inc)", 
+      period: "Sep 2024 - Present", 
+      location: "Bengaluru, India",
+      bullets: [
+        "Processed high-volume RFQs daily from multiple sourcing portals including Global and Matrix platforms, managing complete quote workflows.",
+        "Configured customer RFQs in IQS tool by setting quote parameters, customer requirements, and technical specifications.",
+        "Performed BOM scrubbing and data validation to identify unresolved part numbers.",
+        "Calculated competitive pricing margins by applying customer-specific rule sets.",
+        "Managed supply chain parameters including lead time analysis, country of origin tracking, and MOQ.",
+        "Awarded Rising Star Award (2025) and Star Performer of Q1 2026 for exceptional quote processing accuracy."
+      ] 
+    }
   ]
 };
 
 const translations = {
   en: {
-    nav_logo: "Sourabh", nav_about: "About", nav_skills: "Skills", nav_experience: "Experience",
-    hero_name: "Sourabh Satish Shet", hero_title: "Pricing & Quotation Specialist", hero_location: "📍 Yelahanka, Bangalore | Electronics Supply Chain",
-    title_about: "About Me", title_skills: "Core Expertise", title_experience: "Cosmic Journey",
+    nav_logo: "Sourabh Shet", nav_about: "Summary", nav_skills: "Capabilities", nav_experience: "Experience", nav_achievements: "Achievements",
+    hero_name: "SOURABH SATISH SHET<span class='cite'>[cite: 1]</span>", 
+    hero_title: "Pricing & Quotation Specialist<span class='cite'>[cite: 1]</span>", 
+    hero_location: "📍 Yelahanka, Bangalore<span class='cite'>[cite: 1]</span>",
+    title_about: "Executive Summary", title_skills: "Core Capabilities", title_experience: "Professional Experience",
+    title_edu: "Education & Certifications", title_lang: "Languages",
     about_desc: portfolioData.aboutEn
   },
   kn: {
-    nav_logo: "ಸೌರಭ್", nav_about: "ಬಗ್ಗೆ", nav_skills: "ಕೌಶಲ್ಯಗಳು", nav_experience: "ಅನುಭವ",
-    hero_name: "ಸೌರಭ್ ಸತೀಶ್ ಶೇಟ್", hero_title: "ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ", hero_location: "📍 ಯಲಹಂಕ, ಬೆಂಗಳೂರು | ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಪೂರೈಕೆ ಸರಪಳಿ",
-    title_about: "ನನ್ನ ಬಗ್ಗೆ", title_skills: "ಮೂಲ ಪರಿಣತಿ", title_experience: "ವೃತ್ತಿಪರ ಪ್ರಯಾಣ",
-    about_desc: "ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಘಟಕಗಳಿಗಾಗಿ RFQ ಪ್ರಕ್ರಿಯೆ ಮತ್ತು ಉಲ್ಲೇಖ ನಿರ್ವಹಣೆಯಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿರುವ ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ."
+    nav_logo: "ಸೌರಭ್", nav_about: "ಸಾರಾಂಶ", nav_skills: "ಸಾಮರ್ಥ್ಯಗಳು", nav_experience: "ಅನುಭವ", nav_achievements: "ಸಾಧನೆಗಳು",
+    hero_name: "ಸೌರಭ್ ಸತೀಶ್ ಶೇಟ್<span class='cite'>[cite: 1]</span>", 
+    hero_title: "ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ<span class='cite'>[cite: 1]</span>", 
+    hero_location: "📍 ಯಲಹಂಕ, ಬೆಂಗಳೂರು<span class='cite'>[cite: 1]</span>",
+    title_about: "ಕಾರ್ಯನಿರ್ವಾಹಕ ಸಾರಾಂಶ", title_skills: "ಮೂಲ ಸಾಮರ್ಥ್ಯಗಳು", title_experience: "ವೃತ್ತಿಪರ ಅನುಭವ",
+    title_edu: "ಶಿಕ್ಷಣ ಮತ್ತು ಪ್ರಮಾಣೀಕರಣಗಳು", title_lang: "ಭಾಷೆಗಳು",
+    about_desc: "ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಘಟಕಗಳಿಗಾಗಿ RFQ ಪ್ರಕ್ರಿಯೆ ಮತ್ತು ಉಲ್ಲೇಖ ನಿರ್ವಹಣೆಯಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿರುವ ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ.<span class='cite'>[cite: 1]</span>"
   },
   sa: {
-    nav_logo: "सौरभ", nav_about: "परिचयः", nav_skills: "कौशल्यानि", nav_experience: "कार्यानुभवः",
-    hero_name: "सौरभ सतीश शेट", hero_title: "मूल्य-उद्धरण विशेषज्ञः", hero_location: "📍 येलहंका, बंगळूरु | इलेक्ट्रॉनिक्स आपूर्ति श्रृंखला",
-    title_about: "मम परिचयः", title_skills: "कौशल्यानि", title_experience: "कार्यानुभवः",
-    about_desc: "विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः।"
+    nav_logo: "सौरभ", nav_about: "सारांशः", nav_skills: "कौशल्यानि", nav_experience: "कार्यानुभवः", nav_achievements: "उपलब्धयः",
+    hero_name: "सौरभ सतीश शेट<span class='cite'>[cite: 1]</span>", 
+    hero_title: "मूल्य-उद्धरण विशेषज्ञः<span class='cite'>[cite: 1]</span>", 
+    hero_location: "📍 येलहंका, बंगळूरु<span class='cite'>[cite: 1]</span>",
+    title_about: "सारांशः", title_skills: "कौशल्यानि", title_experience: "कार्यानुभवः",
+    title_edu: "शिक्षा एवं प्रमाणपत्राणि", title_lang: "भाषाः",
+    about_desc: "विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः।<span class='cite'>[cite: 1]</span>"
   }
 };
 
 let currentLang = 'en';
 
 /* ═══════════════════════════════════════════
+   AI NEURAL NETWORK CANVAS ANIMATION
+════════════════════════════════════════════ */
+const canvas = document.getElementById('ai-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+
+function initCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  particlesArray = [];
+  let numberOfParticles = (canvas.height * canvas.width) / 12000;
+  for(let i=0; i<numberOfParticles; i++){
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height;
+    let directionX = (Math.random() * 1) - 0.5;
+    let directionY = (Math.random() * 1) - 0.5;
+    let size = Math.random() * 2;
+    particlesArray.push({x, y, directionX, directionY, size});
+  }
+}
+
+function animateCanvas() {
+  requestAnimationFrame(animateCanvas);
+  ctx.clearRect(0,0,innerWidth, innerHeight);
+  
+  for(let i=0; i<particlesArray.length; i++){
+    let p = particlesArray[i];
+    p.x += p.directionX;
+    p.y += p.directionY;
+    if(p.x < 0 || p.x > canvas.width) p.directionX = -p.directionX;
+    if(p.y < 0 || p.y > canvas.height) p.directionY = -p.directionY;
+    
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0, 161, 224, 0.5)';
+    ctx.fill();
+
+    for(let j=i; j<particlesArray.length; j++){
+      let p2 = particlesArray[j];
+      let dx = p.x - p2.x;
+      let dy = p.y - p2.y;
+      let distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance < 100){
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0, 161, 224, ${1 - distance/100})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+animateCanvas();
+
+/* ═══════════════════════════════════════════
    INITIALIZATION & AI LOAD ANIMATION
 ════════════════════════════════════════════ */
 window.onload = () => {
-  // Simulate AI Loading
   setTimeout(() => {
-    document.getElementById('loader-gfx').style.display = 'none';
-    document.getElementById('loader-txt').style.display = 'none';
+    document.querySelector('.ai-core').style.display = 'none';
     document.getElementById('welcome-content').style.display = 'flex';
-  }, 2500);
+  }, 2000);
 
   renderData();
 };
 
-function enterCosmos() {
+function enterSystem() {
   const welcome = document.getElementById('welcome-screen');
   welcome.style.opacity = '0';
   setTimeout(() => {
@@ -350,7 +500,7 @@ function enterCosmos() {
     document.getElementById('main-content').style.opacity = '1';
     document.getElementById('main-content').style.pointerEvents = 'auto';
     initScrollReveal();
-  }, 1000);
+  }, 800);
 }
 
 /* ═══════════════════════════════════════════
@@ -362,45 +512,43 @@ const synth = window.speechSynthesis;
 function toggleVoice() {
   isVoiceEnabled = !isVoiceEnabled;
   
-  // Update toggle UI on Welcome Screen
   const switchEl = document.getElementById('init-voice-toggle');
   if(switchEl) switchEl.classList.toggle('active', isVoiceEnabled);
 
-  // Update nav icon
   const navIcon = document.getElementById('nav-vol-icon');
   if(navIcon) {
     navIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
-    navIcon.style.color = isVoiceEnabled ? 'var(--cyan-glow)' : 'var(--text-main)';
+    navIcon.style.color = isVoiceEnabled ? 'var(--sf-blue)' : 'var(--text-muted)';
   }
 
   if(!isVoiceEnabled) synth.cancel();
-  else speak("Voice Assistant Activated.");
+  else speak("Voice Intelligence Online.");
 }
 
 function speak(text) {
   if (!isVoiceEnabled || !synth) return;
-  synth.cancel(); // Stop current speech
-  const utterance = new SpeechSynthesisUtterance(text);
+  synth.cancel(); 
   
-  // Set language based on current UI selection
+  // Clean up citations for speech
+  let cleanText = text.replace(/\/g, "");
+  
+  const utterance = new SpeechSynthesisUtterance(cleanText);
   if(currentLang === 'kn') utterance.lang = 'kn-IN';
-  else if(currentLang === 'sa') utterance.lang = 'hi-IN'; // Fallback for Sanskrit
+  else if(currentLang === 'sa') utterance.lang = 'hi-IN'; 
   else utterance.lang = 'en-IN';
   
   utterance.rate = 1.05;
   synth.speak(utterance);
 }
 
-// Attach Hover Listeners
+// Hover Listeners
 document.addEventListener('mouseover', (e) => {
   if(!isVoiceEnabled) return;
   const target = e.target.closest('.hover-speak');
   if(target) {
-    // Prevent re-triggering constantly on the same element
     if(target.dataset.speaking === "true") return;
     target.dataset.speaking = "true";
     
-    // Read the text content, or the value if it's an input
     speak(target.innerText || target.value);
     
     target.addEventListener('mouseleave', () => {
@@ -420,37 +568,41 @@ function changeLanguage(lang) {
   elements.forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (translations[lang][key]) {
-      el.innerText = translations[lang][key];
+      el.innerHTML = translations[lang][key]; // Using innerHTML to preserve span citations
     }
   });
 
-  if(isVoiceEnabled) speak("Language changed");
+  if(isVoiceEnabled) speak("Language settings updated.");
 }
 
 function renderData() {
-  // Load saved local data if exists
-  const savedAbout = localStorage.getItem('cosmic_about');
+  const savedAbout = localStorage.getItem('ai_portfolio_about');
   if(savedAbout) {
     portfolioData.aboutEn = savedAbout;
     translations.en.about_desc = savedAbout;
   }
   
-  // Render Skills
+  // Render Skills[cite: 1]
   const skillGrid = document.getElementById('skills-grid');
   skillGrid.innerHTML = portfolioData.skills.map(s => `
-    <div class="glass-card reveal hover-speak">
-      <h3 class="card-title">${s.title}</h3>
-      <p class="card-text">${s.text}</p>
+    <div class="saas-card reveal hover-speak">
+      <h3 class="card-title"><i class="fas ${s.icon}"></i> ${s.title}<span class="cite">[cite: 1]</span></h3>
+      <div class="pill-container">
+        ${s.pills.map(p => `<span class="pill">${p}<span class="cite">[cite: 1]</span></span>`).join('')}
+      </div>
     </div>
   `).join('');
 
-  // Render Experience
+  // Render Experience[cite: 1]
   const expTime = document.getElementById('exp-timeline');
   expTime.innerHTML = portfolioData.experience.map(e => `
-    <div class="timeline-item reveal glass-card hover-speak">
-      <h3 class="card-title">${e.role}</h3>
-      <p style="color:var(--cyan-glow); margin-bottom:10px;">${e.company} | ${e.period}</p>
-      <p class="card-text">${e.desc}</p>
+    <div class="timeline-item reveal hover-speak">
+      <div class="timeline-date">${e.period}<span class="cite">[cite: 1]</span> | ${e.location}<span class="cite">[cite: 1]</span></div>
+      <h3 class="timeline-role">${e.role}<span class="cite">[cite: 1]</span></h3>
+      <div class="timeline-company">${e.company}<span class="cite">[cite: 1]</span></div>
+      <ul class="timeline-list">
+        ${e.bullets.map(b => `<li>${b}<span class="cite">[cite: 1]</span></li>`).join('')}
+      </ul>
     </div>
   `).join('');
 }
@@ -469,13 +621,13 @@ function initScrollReveal() {
 }
 
 /* ═══════════════════════════════════════════
-   NARADA CHATBOT
+   NARADA AI CHATBOT (Einstein Style)
 ════════════════════════════════════════════ */
 function toggleChatbot() {
   const bot = document.getElementById('narada-bot');
   bot.classList.toggle('active');
   if(bot.classList.contains('active') && isVoiceEnabled) {
-    speak("I am listening.");
+    speak("Awaiting query.");
   }
 }
 
@@ -486,18 +638,23 @@ function handleChat(e) {
     const text = input.value.trim();
     if(!text) return;
 
-    // User Message
     msgBox.innerHTML += `<div class="msg msg-user hover-speak">${text}</div>`;
     input.value = '';
     msgBox.scrollTop = msgBox.scrollHeight;
 
-    // Bot Response Logic
     setTimeout(() => {
-      let reply = "The cosmos is vast. Ask me about his Skills or Experience.";
+      let reply = "I am processing the data. Ask me about his Experience, Skills, or Awards.[cite: 1]";
       const lower = text.toLowerCase();
-      if(lower.includes('skill')) reply = "He excels in Supply Chain, Pricing Analytics, and Data Tools like IQS and Power BI.";
-      else if(lower.includes('exp') || lower.includes('work')) reply = "He works at Mouser Electronics as a Specialist I in Quote Management.";
-      else if(lower.includes('hello') || lower.includes('hi')) reply = "Namaste. How may I enlighten you today?";
+      
+      if(lower.includes('skill') || lower.includes('know')) {
+        reply = "Sourabh is skilled in Supply Chain & Quoting (RFQ processing, IQS Application, BOM Scrubbing) and Pricing & Analytics.[cite: 1]";
+      } else if(lower.includes('exp') || lower.includes('work') || lower.includes('job')) {
+        reply = "He is currently a Specialist I - Quote Management at Mouser Electronics (TTI Inc), starting September 2024.[cite: 1]";
+      } else if(lower.includes('award') || lower.includes('achieve')) {
+        reply = "He received the Rising Star Award (2025) and was named Star Performer of Q1 2026.[cite: 1]";
+      } else if(lower.includes('edu') || lower.includes('degree')) {
+        reply = "He holds a B.Tech in Electronics & Communication Engineering from the Indian Institute of Industry Interaction Education and Research.[cite: 1]";
+      }
 
       msgBox.innerHTML += `<div class="msg msg-bot hover-speak">${reply}</div>`;
       msgBox.scrollTop = msgBox.scrollHeight;
@@ -508,7 +665,7 @@ function handleChat(e) {
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL
+   ADMIN PANEL (No Password Hint)
 ════════════════════════════════════════════ */
 function openAdmin() {
   document.getElementById('admin-overlay').style.display = 'flex';
@@ -521,27 +678,31 @@ function closeAdmin() {
 }
 function checkAdmin() {
   const pass = document.getElementById('admin-pass').value;
-  if(pass === 'sourabh@2025') { // Password Check
+  if(pass === 'sourabh@2025') { 
     document.getElementById('admin-login-view').style.display = 'none';
     document.getElementById('admin-edit-view').style.display = 'block';
-    document.getElementById('admin-about-text').value = portfolioData.aboutEn;
-    if(isVoiceEnabled) speak("Access Granted");
+    // Remove cite tags for raw editing view
+    document.getElementById('admin-about-text').value = portfolioData.aboutEn.replace(/\/g, "");
+    if(isVoiceEnabled) speak("Authentication Successful.");
   } else {
-    alert("Invalid Authorization");
-    if(isVoiceEnabled) speak("Access Denied");
+    alert("Invalid Security Key.");
+    if(isVoiceEnabled) speak("Authentication Failed.");
   }
 }
 function saveAdmin() {
-  const newAbout = document.getElementById('admin-about-text').value;
+  let newAbout = document.getElementById('admin-about-text').value;
+  // Re-append citation string at end (simple approach) to maintain prompt rules.
+  if(!newAbout.includes("[cite: 1]")) newAbout += "[cite: 1]";
+  
   portfolioData.aboutEn = newAbout;
   translations.en.about_desc = newAbout;
-  localStorage.setItem('cosmic_about', newAbout);
+  localStorage.setItem('ai_portfolio_about', newAbout);
   
   if(currentLang === 'en') {
-    document.getElementById('about-text-ui').innerText = newAbout;
+    document.getElementById('about-text-ui').innerHTML = newAbout;
   }
   closeAdmin();
-  if(isVoiceEnabled) speak("Database Updated");
+  if(isVoiceEnabled) speak("Changes deployed to core memory.");
 }
 </script>
 </body>
