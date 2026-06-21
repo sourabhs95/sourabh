@@ -407,10 +407,11 @@ let currentLang = 'en';
    AI NEURAL NETWORK CANVAS ANIMATION
 ════════════════════════════════════════════ */
 const canvas = document.getElementById('ai-canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas ? canvas.getContext('2d') : null;
 let particlesArray = [];
 
 function initCanvas() {
+  if (!canvas || !ctx) return;
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   particlesArray = [];
@@ -426,8 +427,9 @@ function initCanvas() {
 }
 
 function animateCanvas() {
+  if (!ctx) return;
   requestAnimationFrame(animateCanvas);
-  ctx.clearRect(0,0,innerWidth, innerHeight);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   
   for(let i=0; i<particlesArray.length; i++){
     let p = particlesArray[i];
@@ -467,8 +469,11 @@ animateCanvas();
 ════════════════════════════════════════════ */
 window.onload = () => {
   setTimeout(() => {
-    document.querySelector('.ai-core').style.display = 'none';
-    document.getElementById('welcome-content').style.display = 'flex';
+    const aiCore = document.querySelector('.ai-core');
+    if (aiCore) aiCore.style.display = 'none';
+    
+    const welcome = document.getElementById('welcome-content');
+    if (welcome) welcome.style.display = 'flex';
   }, 2000);
 
   renderData();
@@ -476,15 +481,17 @@ window.onload = () => {
 
 function enterSystem() {
   const welcome = document.getElementById('welcome-screen');
-  welcome.style.opacity = '0';
-  setTimeout(() => {
-    welcome.style.display = 'none';
-    document.getElementById('navbar').style.opacity = '1';
-    document.getElementById('navbar').style.pointerEvents = 'auto';
-    document.getElementById('main-content').style.opacity = '1';
-    document.getElementById('main-content').style.pointerEvents = 'auto';
-    initScrollReveal();
-  }, 800);
+  if(welcome) {
+    welcome.style.opacity = '0';
+    setTimeout(() => {
+      welcome.style.display = 'none';
+      document.getElementById('navbar').style.opacity = '1';
+      document.getElementById('navbar').style.pointerEvents = 'auto';
+      document.getElementById('main-content').style.opacity = '1';
+      document.getElementById('main-content').style.pointerEvents = 'auto';
+      initScrollReveal();
+    }, 800);
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -494,6 +501,11 @@ let isVoiceEnabled = false;
 const synth = window.speechSynthesis;
 
 function toggleVoice() {
+  if (!synth) {
+    console.warn("Speech synthesis is not supported in this environment.");
+    return;
+  }
+  
   isVoiceEnabled = !isVoiceEnabled;
   
   const switchEl = document.getElementById('init-voice-toggle');
@@ -513,7 +525,7 @@ function speak(text) {
   if (!isVoiceEnabled || !synth) return;
   synth.cancel(); 
   
-  // FIXED: Completely removed the broken regex and use safe cleanup
+  // Clean HTML tags and cleanly remove texts before speaking
   let cleanText = text.replace(/<[^>]*>?/gm, "").replace(/\/g, "");
   
   const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -551,8 +563,8 @@ function changeLanguage(lang) {
   const elements = document.querySelectorAll('.translate[data-i18n]');
   elements.forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      el.innerHTML = translations[lang][key]; // Using innerHTML to preserve span citations
+    if (translations[lang] && translations[lang][key]) {
+      el.innerHTML = translations[lang][key]; 
     }
   });
 
@@ -560,7 +572,14 @@ function changeLanguage(lang) {
 }
 
 function renderData() {
-  const savedAbout = localStorage.getItem('ai_portfolio_about');
+  // Failsafe for localStorage
+  let savedAbout = null;
+  try {
+    savedAbout = localStorage.getItem('ai_portfolio_about');
+  } catch (e) {
+    console.warn("Local storage not accessible.");
+  }
+
   if(savedAbout) {
     portfolioData.aboutEn = savedAbout;
     translations.en.about_desc = savedAbout;
@@ -568,27 +587,31 @@ function renderData() {
   
   // Render Skills
   const skillGrid = document.getElementById('skills-grid');
-  skillGrid.innerHTML = portfolioData.skills.map(s => `
-    <div class="saas-card reveal hover-speak">
-      <h3 class="card-title"><i class="fas ${s.icon}"></i> ${s.title}<span class="cite"></span></h3>
-      <div class="pill-container">
-        ${s.pills.map(p => `<span class="pill">${p}<span class="cite"></span></span>`).join('')}
-      </div>
-    </div>
-  `).join('');
+  if(skillGrid) {
+      skillGrid.innerHTML = portfolioData.skills.map(s => `
+        <div class="saas-card reveal hover-speak">
+          <h3 class="card-title"><i class="fas ${s.icon}"></i> ${s.title}<span class="cite"></span></h3>
+          <div class="pill-container">
+            ${s.pills.map(p => `<span class="pill">${p}<span class="cite"></span></span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+  }
 
   // Render Experience
   const expTime = document.getElementById('exp-timeline');
-  expTime.innerHTML = portfolioData.experience.map(e => `
-    <div class="timeline-item reveal hover-speak">
-      <div class="timeline-date">${e.period}<span class="cite"></span> | ${e.location}<span class="cite"></span></div>
-      <h3 class="timeline-role">${e.role}<span class="cite"></span></h3>
-      <div class="timeline-company">${e.company}<span class="cite"></span></div>
-      <ul class="timeline-list">
-        ${e.bullets.map(b => `<li>${b}<span class="cite"></span></li>`).join('')}
-      </ul>
-    </div>
-  `).join('');
+  if(expTime) {
+      expTime.innerHTML = portfolioData.experience.map(e => `
+        <div class="timeline-item reveal hover-speak">
+          <div class="timeline-date">${e.period}<span class="cite"></span> | ${e.location}<span class="cite"></span></div>
+          <h3 class="timeline-role">${e.role}<span class="cite"></span></h3>
+          <div class="timeline-company">${e.company}<span class="cite"></span></div>
+          <ul class="timeline-list">
+            ${e.bullets.map(b => `<li>${b}<span class="cite"></span></li>`).join('')}
+          </ul>
+        </div>
+      `).join('');
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -605,10 +628,11 @@ function initScrollReveal() {
 }
 
 /* ═══════════════════════════════════════════
-   NARADA AI CHATBOT (Einstein Style)
+   NARADA AI CHATBOT
 ════════════════════════════════════════════ */
 function toggleChatbot() {
   const bot = document.getElementById('narada-bot');
+  if(!bot) return;
   bot.classList.toggle('active');
   if(bot.classList.contains('active') && isVoiceEnabled) {
     speak("Awaiting query.");
@@ -619,6 +643,8 @@ function handleChat(e) {
   if(e.key === 'Enter') {
     const input = document.getElementById('chat-input');
     const msgBox = document.getElementById('chat-msgs');
+    if(!input || !msgBox) return;
+    
     const text = input.value.trim();
     if(!text) return;
 
@@ -666,8 +692,9 @@ function checkAdmin() {
     document.getElementById('admin-login-view').style.display = 'none';
     document.getElementById('admin-edit-view').style.display = 'block';
     
-    // FIXED: Cleaned up the broken regex entirely here as well
-    document.getElementById('admin-about-text').value = portfolioData.aboutEn.replace(/<[^>]*>?/gm, "").replace(/\/g, "");
+    // Safely strip HTML and citation tags before placing into the text box
+    let rawText = portfolioData.aboutEn.replace(/<[^>]*>?/gm, "").replace(/\/g, "");
+    document.getElementById('admin-about-text').value = rawText;
     
     if(isVoiceEnabled) speak("Authentication Successful.");
   } else {
@@ -678,11 +705,22 @@ function checkAdmin() {
 function saveAdmin() {
   let newAbout = document.getElementById('admin-about-text').value;
   
+  // Just safety checking that we aren't completely blanking it out
+  if(newAbout.trim() === "") {
+      newAbout = defaultAbout;
+  }
+  
+  // Maintain the citation string rule at the end if you want it applied to UI
   if(!newAbout.includes("")) newAbout += "";
   
   portfolioData.aboutEn = newAbout;
   translations.en.about_desc = newAbout;
-  localStorage.setItem('ai_portfolio_about', newAbout);
+  
+  try {
+    localStorage.setItem('ai_portfolio_about', newAbout);
+  } catch (e) {
+      console.warn("Could not save to localStorage");
+  }
   
   if(currentLang === 'en') {
     document.getElementById('about-text-ui').innerHTML = newAbout;
