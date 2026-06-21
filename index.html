@@ -3,1057 +3,545 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh Satish Shet | Pricing & Quotation Specialist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <title>Sourabh Satish Shet | Cosmic Portfolio</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Outfit:wght@300;400;500;600&family=Noto+Sans+Kannada&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <style>
 /* ═══════════════════════════════════════════
-   TOKENS & BASE STYLES
+   TOKENS & ANIMATIONS
 ════════════════════════════════════════════ */
 :root {
-  --gold: #FFD700;
-  --gold-light: #FFF5B8;
-  --gold-dark: #D4AF37;
-  --bg-dark: #050B14;
-  --glass-bg: rgba(13, 27, 42, 0.55);
-  --glass-border: rgba(255, 215, 0, 0.15);
-  --glass-border-hover: rgba(255, 215, 0, 0.5);
+  --cosmic-bg: #05050A;
+  --cosmic-surface: rgba(15, 15, 25, 0.6);
+  --gold-glow: #F9D423;
+  --cyan-glow: #00E5FF;
   --text-main: #E2E8F0;
   --text-muted: #94A3B8;
-  --peacock-blue: #005F73;
-  --peacock-teal: #0A9396;
-  --glow-gold: 0 0 20px rgba(255, 215, 0, 0.3);
-  --glow-teal: 0 0 30px rgba(10, 147, 150, 0.4);
   --font-display: 'Cinzel Decorative', serif;
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-kn: 'Noto Sans Kannada', sans-serif;
+  --font-sa: 'Tiro Devanagari Sanskrit', serif;
   --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-body); background: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
-.hidden { display: none !important; }
+body { font-family: var(--font-body); background: var(--cosmic-bg); color: var(--text-main); overflow-x: hidden; }
 
-/* ════════ AWESOME ANIMATED BACKGROUND ════════ */
-.main-ambient-bg {
+/* ════════ BACKGROUND ════════ */
+.stars {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  z-index: -1; overflow: hidden; background: #030712;
+  background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #05050A 100%);
+  z-index: -2;
 }
-.ambient-orb {
-  position: absolute; border-radius: 50%; filter: blur(120px);
-  animation: floatOrb 20s infinite alternate ease-in-out;
+.nebula {
+  position: fixed; width: 60vw; height: 60vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 60%);
+  filter: blur(80px); z-index: -1;
+  animation: floatNebula 20s infinite alternate ease-in-out;
 }
-.orb-1 { width: 50vw; height: 50vw; background: rgba(10, 147, 150, 0.15); top: -10%; left: -10%; }
-.orb-2 { width: 40vw; height: 40vw; background: rgba(255, 215, 0, 0.1); bottom: -10%; right: -10%; animation-delay: -5s; }
-.orb-3 { width: 30vw; height: 30vw; background: rgba(0, 95, 115, 0.2); top: 40%; left: 40%; animation-delay: -10s; }
+.nebula-2 {
+  background: radial-gradient(circle, rgba(249, 212, 35, 0.1) 0%, transparent 60%);
+  right: -10%; bottom: -10%; animation-delay: -5s;
+}
 
-@keyframes floatOrb {
+@keyframes floatNebula {
   0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(8vw, 8vh) scale(1.2); }
+  100% { transform: translate(10vw, 10vh) scale(1.2); }
 }
 
-/* ════════ WELCOME SCREEN ════════ */
-#welcome-screen { position: fixed; inset: 0; z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #020617; overflow: hidden; transition: opacity 0.8s ease; }
-.welcome-bg { position: absolute; inset: 0; background: radial-gradient(circle at 20% 80%, rgba(10,147,150,0.3) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,215,0,0.2) 0%, transparent 40%); animation: bgPulse 4s ease-in-out infinite alternate; }
-@keyframes bgPulse { from { opacity: 0.6; } to { opacity: 1; transform: scale(1.05); } }
+/* ════════ WELCOME SCREEN & AI LOAD ════════ */
+#welcome-screen { position: fixed; inset: 0; z-index: 5000; background: var(--cosmic-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease; }
+.mandala-loader { position: relative; width: 200px; height: 200px; animation: spin 15s linear infinite; }
+.mandala-loader svg { width: 100%; height: 100%; filter: drop-shadow(0 0 15px var(--cyan-glow)); }
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-.feather-container { position: absolute; left: 8%; top: 50%; transform: translateY(-50%); animation: featherFloat 4s ease-in-out infinite; }
-@keyframes featherFloat { 0%,100% { transform: translateY(-50%) rotate(-3deg); filter: drop-shadow(0 0 20px rgba(10,147,150,0.6)); } 50% { transform: translateY(-53%) rotate(3deg); filter: drop-shadow(0 0 35px rgba(10,147,150,0.9)); } }
-.peacock-feather { width: 110px; height: 320px; }
+.loading-text { font-family: var(--font-display); color: var(--cyan-glow); letter-spacing: 5px; margin-top: 30px; animation: pulseText 2s infinite; text-transform: uppercase; }
+@keyframes pulseText { 0%, 100% { opacity: 0.5; text-shadow: 0 0 10px transparent; } 50% { opacity: 1; text-shadow: 0 0 20px var(--cyan-glow); } }
 
-.chakra-container { position: absolute; right: 8%; top: 50%; transform: translateY(-50%); animation: chakraSpin 8s linear infinite; filter: drop-shadow(0 0 25px rgba(255,215,0,0.6)); }
-@keyframes chakraSpin { from { transform: translateY(-50%) rotate(0deg); } to { transform: translateY(-50%) rotate(360deg); } }
-.sudarshana-chakra { width: 150px; height: 150px; }
+.welcome-content { display: none; text-align: center; flex-direction: column; align-items: center; animation: fadeInUp 1s ease forwards; }
+.welcome-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--gold-glow); text-shadow: 0 0 30px rgba(249,212,35,0.5); margin-bottom: 10px; }
+.welcome-subtitle { font-size: 1.2rem; color: var(--cyan-glow); letter-spacing: 3px; margin-bottom: 40px; }
 
-.welcome-text { text-align: center; z-index: 2; padding: 20px; animation: fadeInUp 1.2s ease 0.3s both; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-.sanskrit-welcome { font-family: var(--font-serif); font-size: clamp(18px, 3vw, 24px); color: var(--gold-light); letter-spacing: 0.25em; margin-bottom: 12px; font-style: italic; text-shadow: var(--glow-gold); }
-.welcome-name { font-family: var(--font-display); font-size: clamp(32px, 5vw, 60px); color: #fff; letter-spacing: 0.05em; margin-bottom: 8px; text-shadow: 0 0 40px rgba(255,215,0,0.5); }
-.english-welcome { font-family: var(--font-serif); font-size: clamp(18px, 2.5vw, 24px); color: var(--gold); margin-bottom: 6px; letter-spacing: 0.15em; }
-.welcome-subtitle { font-size: clamp(13px, 1.8vw, 16px); color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 40px; }
-.enter-btn { display: inline-flex; align-items: center; gap: 10px; background: rgba(255, 215, 0, 0.1); border: 1px solid var(--gold); color: var(--gold); padding: 14px 40px; font-family: var(--font-body); font-size: 16px; font-weight: 600; border-radius: 50px; cursor: pointer; letter-spacing: 0.1em; transition: var(--transition); backdrop-filter: blur(5px); }
-.enter-btn:hover { background: var(--gold); color: var(--bg-dark); box-shadow: var(--glow-gold); transform: scale(1.05); }
+.voice-toggle-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0,229,255,0.3); }
+.voice-switch { position: relative; width: 50px; height: 24px; background: #333; border-radius: 24px; cursor: pointer; transition: 0.3s; }
+.voice-switch.active { background: var(--cyan-glow); box-shadow: 0 0 15px var(--cyan-glow); }
+.voice-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: 0.3s; }
+.voice-switch.active::after { transform: translateX(26px); }
+
+.enter-btn { padding: 15px 40px; background: transparent; border: 2px solid var(--gold-glow); color: var(--gold-glow); font-family: var(--font-body); font-size: 1.2rem; border-radius: 50px; cursor: pointer; transition: 0.4s; letter-spacing: 2px; text-transform: uppercase; overflow: hidden; position: relative; }
+.enter-btn:hover { background: var(--gold-glow); color: #000; box-shadow: 0 0 30px var(--gold-glow); }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ════════ NAVBAR ════════ */
-#navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 48px; background: rgba(5, 11, 20, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); transition: var(--transition); }
-.nav-logo { font-family: var(--font-display); font-size: 22px; color: var(--gold); display: flex; align-items: center; gap: 8px; text-shadow: var(--glow-gold); }
-.nav-chakra { font-size: 24px; animation: chakraSpin 8s linear infinite; display: inline-block; }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a { font-size: 13px; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.3s; }
-.nav-links a:hover { color: var(--gold); text-shadow: var(--glow-gold); }
-.nav-actions { display: flex; align-items: center; gap: 16px; }
-.translate-btn, .admin-nav-btn { background: rgba(255,215,0,0.05); color: var(--gold); border: 1px solid var(--glass-border); padding: 8px 18px; font-size: 13px; border-radius: 20px; cursor: pointer; font-weight: 600; transition: var(--transition); backdrop-filter: blur(4px); }
-.translate-btn:hover, .admin-nav-btn:hover { background: var(--gold); color: var(--bg-dark); box-shadow: var(--glow-gold); }
-.admin-nav-btn { font-size: 18px; padding: 4px 14px; }
-.nav-toggle { display: none; background: none; border: none; color: var(--gold); font-size: 26px; cursor: pointer; }
+nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 100; backdrop-filter: blur(10px); background: rgba(5,5,10,0.8); border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+.nav-logo { font-family: var(--font-display); font-size: 1.5rem; color: var(--cyan-glow); display: flex; align-items: center; gap: 10px; }
+.nav-logo i { animation: spin 10s linear infinite; }
+.nav-links { display: flex; gap: 30px; list-style: none; }
+.nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+.nav-links a:hover { color: var(--gold-glow); text-shadow: 0 0 10px var(--gold-glow); }
 
-/* ════════ HERO ════════ */
-#hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; text-align: center; padding: 120px 24px 60px; }
-.hero-chakra-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.bg-chakra-svg { width: min(800px, 120vw); height: min(800px, 120vw); animation: chakraSpin 60s linear infinite; }
-.hero-content { position: relative; z-index: 2; max-width: 800px; padding: 40px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-.hero-feather-mini { font-size: 54px; margin-bottom: 20px; animation: featherFloat 4s ease-in-out infinite; }
-.hero-sanskrit { font-family: var(--font-serif); font-size: clamp(20px, 3vw, 28px); color: var(--gold-light); font-style: italic; margin-bottom: 12px; letter-spacing: 0.15em; }
-.hero-name { font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px); color: #fff; margin-bottom: 12px; line-height: 1.1; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
-.hero-title { font-family: var(--font-serif); font-size: clamp(20px, 3vw, 32px); color: var(--peacock-teal); font-weight: 300; letter-spacing: 0.1em; margin-bottom: 18px; }
-.hero-location { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; letter-spacing: 0.05em; }
-.hero-awards { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-.award-badge { padding: 10px 22px; background: rgba(255,215,0,0.05); border: 1px solid var(--glass-border); border-radius: 30px; color: var(--gold); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-.hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.btn-primary, .btn-secondary { padding: 14px 36px; border-radius: 50px; font-weight: 600; font-size: 15px; text-decoration: none; transition: var(--transition); letter-spacing: 0.05em; }
-.btn-primary { background: var(--gold); color: var(--bg-dark); border: none; box-shadow: var(--glow-gold); cursor: pointer; }
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(255,215,0,0.6); }
-.btn-secondary { background: rgba(255,255,255,0.03); color: #fff; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); cursor: pointer; }
-.btn-secondary:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+.nav-actions { display: flex; gap: 15px; align-items: center; }
+.lang-select { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--cyan-glow); padding: 8px 15px; border-radius: 20px; font-family: var(--font-body); cursor: pointer; outline: none; }
+.lang-select option { background: var(--cosmic-bg); color: #fff; }
+.icon-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+.icon-btn:hover { background: var(--cyan-glow); color: #000; box-shadow: 0 0 15px var(--cyan-glow); border-color: var(--cyan-glow); }
+.nav-toggle { display: none; }
 
-/* ════════ SECTIONS (GLASSMORPHISM) ════════ */
-.glass-section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
-.section-label { font-family: var(--font-body); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; color: var(--gold-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-.section-label::after { content: ''; height: 1px; width: 60px; background: var(--gold-dark); }
-.section-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); color: #fff; margin-bottom: 50px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+/* ════════ HERO SECTION ════════ */
+#hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 20px; text-align: center; position: relative; }
+.hero-content { background: var(--cosmic-surface); padding: 50px; border-radius: 30px; border: 1px solid rgba(0,229,255,0.2); backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 900px; z-index: 2; position: relative; overflow: hidden; }
+.hero-content::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background: conic-gradient(transparent, rgba(0,229,255,0.1), transparent 30%); animation: spin 10s linear infinite; z-index: -1; }
+.hero-name { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); color: #fff; margin-bottom: 10px; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+.hero-title { font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--gold-glow); font-weight: 300; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+.hero-location { color: var(--text-muted); margin-bottom: 30px; letter-spacing: 1px; }
 
-/* ════════ ABOUT ════════ */
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-.about-text p { font-size: 17px; line-height: 1.8; color: var(--text-main); margin-bottom: 20px; font-weight: 300; }
-.about-langs { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
-.lang-chip { padding: 8px 16px; background: rgba(10,147,150,0.1); border: 1px solid rgba(10,147,150,0.3); border-radius: 20px; font-size: 13px; color: var(--peacock-teal); font-weight: 500; }
-.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.stat-card { padding: 32px 24px; background: var(--glass-bg); backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid var(--glass-border); text-align: center; transition: var(--transition); }
-.stat-card:hover { transform: translateY(-5px); border-color: var(--glass-border-hover); box-shadow: var(--glow-gold); }
-.stat-num { display: block; font-family: var(--font-display); font-size: 42px; color: var(--gold); margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-.stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 600; }
+/* ════════ SECTIONS & CARDS ════════ */
+.section { padding: 100px 50px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+.section-title { font-family: var(--font-display); font-size: 3rem; color: var(--cyan-glow); text-align: center; margin-bottom: 50px; text-shadow: 0 0 20px rgba(0,229,255,0.3); }
 
-/* ════════ SKILLS ════════ */
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-.skill-category { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 32px; transition: var(--transition); }
-.skill-category:hover { border-color: var(--glass-border-hover); box-shadow: 0 10px 30px rgba(0,0,0,0.3); transform: translateY(-5px); }
-.skill-cat-title { font-family: var(--font-serif); font-size: 20px; color: var(--gold); margin-bottom: 20px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
-.skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.skill-tag { padding: 6px 14px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; font-size: 13px; font-weight: 400; transition: 0.3s; }
-.skill-category:hover .skill-tag { border-color: rgba(10,147,150,0.4); color: var(--peacock-teal); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.glass-card { background: var(--cosmic-surface); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; transition: 0.4s; overflow: hidden; position: relative; }
+.glass-card:hover { transform: translateY(-10px); border-color: var(--gold-glow); box-shadow: 0 10px 30px rgba(249,212,35,0.2); }
+.glass-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); transition: 0.5s; }
+.glass-card:hover::after { left: 150%; }
 
-/* ════════ EXPERIENCE TIMELINE ════════ */
-.timeline { position: relative; padding-left: 50px; }
-.timeline::before { content: ''; position: absolute; left: 16px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--gold), rgba(255,215,0,0.1)); }
-.timeline-item { position: relative; margin-bottom: 60px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); padding: 32px; border-radius: 20px; transition: var(--transition); }
-.timeline-item:hover { border-color: var(--glass-border-hover); box-shadow: 0 10px 40px rgba(0,0,0,0.4); transform: translateX(10px); }
-.timeline-item::before { content: ''; position: absolute; left: -43px; top: 35px; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 4px solid var(--bg-dark); box-shadow: 0 0 10px var(--gold); }
-.timeline-header { margin-bottom: 20px; }
-.timeline-company { font-family: var(--font-display); font-size: 22px; color: var(--gold); margin-bottom: 6px; }
-.timeline-role { font-size: 16px; color: #fff; font-weight: 500; margin-bottom: 8px; letter-spacing: 0.05em; }
-.timeline-period { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-.timeline-points { list-style: none; padding: 0; }
-.timeline-points li { padding: 10px 0 10px 24px; position: relative; font-size: 15px; color: var(--text-main); line-height: 1.8; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 300; }
-.timeline-points li:last-child { border-bottom: none; }
-.timeline-points li::before { content: '◈'; position: absolute; left: 0; color: var(--peacock-teal); font-size: 12px; top: 14px; }
+.card-title { font-size: 1.5rem; color: var(--gold-glow); margin-bottom: 15px; font-family: var(--font-display); }
+.card-text { font-size: 1rem; color: var(--text-main); line-height: 1.6; font-weight: 300; }
 
-/* ════════ ACHIEVEMENTS & CERTIFICATIONS ════════ */
-.achievements-grid, .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-.achievement-card, .cert-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 32px; transition: var(--transition); display: flex; flex-direction: column; }
-.achievement-card:hover, .cert-card:hover { transform: translateY(-5px); border-color: var(--glass-border-hover); box-shadow: var(--glow-gold); }
-.achievement-icon, .cert-icon { font-size: 38px; margin-bottom: 18px; color: var(--gold); }
-.cert-card { flex-direction: row; align-items: center; gap: 20px; padding: 24px; }
-.cert-icon { margin-bottom: 0; }
-.achievement-title, .cert-title { font-family: var(--font-serif); font-size: 20px; color: var(--gold-light); margin-bottom: 12px; font-weight: 600; letter-spacing: 0.05em; }
-.cert-title { margin-bottom: 6px; font-size: 18px; }
-.achievement-desc { font-size: 15px; color: var(--text-main); line-height: 1.7; font-weight: 300; }
-.cert-org { font-size: 14px; color: var(--text-muted); font-weight: 500; }
-.cert-year { font-size: 12px; color: var(--peacock-teal); margin-top: 6px; letter-spacing: 0.1em; }
+/* Timeline */
+.timeline { border-left: 2px solid var(--cyan-glow); padding-left: 30px; margin-left: 20px; }
+.timeline-item { position: relative; margin-bottom: 40px; }
+.timeline-item::before { content: ''; position: absolute; left: -38px; top: 5px; width: 14px; height: 14px; border-radius: 50%; background: var(--cosmic-bg); border: 2px solid var(--cyan-glow); box-shadow: 0 0 10px var(--cyan-glow); }
 
-/* ════════ PROJECTS ════════ */
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-.project-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 32px; transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; }
-.project-card:hover { transform: translateY(-5px); border-color: var(--glass-border-hover); box-shadow: 0 10px 30px rgba(0,147,150,0.3); }
-.project-title { font-family: var(--font-serif); font-size: 22px; color: var(--gold); margin-bottom: 14px; font-weight: 600; }
-.project-desc { font-size: 15px; color: var(--text-main); line-height: 1.8; margin-bottom: 20px; font-weight: 300; flex-grow: 1; }
-.project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-.project-tag { padding: 5px 12px; background: rgba(10,147,150,0.1); color: var(--peacock-teal); border: 1px solid rgba(10,147,150,0.3); border-radius: 10px; font-size: 12px; font-weight: 500; }
-.project-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gold-light); font-size: 14px; text-decoration: none; font-weight: 500; transition: 0.3s; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; margin-top: auto; }
-.project-link:hover { color: var(--gold); letter-spacing: 0.05em; }
-
-/* ════════ CONTACT ════════ */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.contact-links { display: flex; flex-direction: column; gap: 20px; }
-.contact-card { display: flex; align-items: center; gap: 20px; padding: 24px 30px; background: var(--glass-bg); backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid var(--glass-border); text-decoration: none; transition: var(--transition); }
-.contact-card:hover { transform: translateX(10px); border-color: var(--glass-border-hover); box-shadow: var(--glow-gold); }
-.contact-card i { font-size: 26px; color: var(--gold); width: 30px; text-align: center; }
-.contact-type { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 4px; }
-.contact-value { font-size: 16px; font-weight: 500; color: #fff; }
-.contact-note { text-align: center; background: var(--glass-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--glass-border); }
-.contact-feather { font-size: 70px; margin-bottom: 24px; animation: featherFloat 4s ease-in-out infinite; }
-#contact-quote { font-family: var(--font-serif); font-size: 26px; font-style: italic; color: #fff; margin-bottom: 16px; line-height: 1.5; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.contact-sanskrit { font-family: var(--font-serif); font-size: 20px; color: var(--gold); }
-
-/* ════════ FOOTER ════════ */
-footer { background: #030712; text-align: center; padding: 60px 24px; border-top: 1px solid rgba(255,215,0,0.1); position: relative; z-index: 2; }
-.footer-chakra { font-size: 40px; color: var(--gold); display: inline-block; margin-bottom: 16px; animation: chakraSpin 15s linear infinite; opacity: 0.7; }
-.footer-copy { font-family: var(--font-serif); font-size: 18px; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.05em; }
-.footer-sub { font-size: 13px; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; }
-
-/* ════════ ADMIN PANEL ════════ */
-#admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
-.admin-panel { background: #0f172a; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; border-radius: 16px; border: 1px solid var(--gold); padding: 24px; color: #fff; }
-.admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,215,0,0.2); padding-bottom: 16px; margin-bottom: 20px; }
-.admin-close { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
-.admin-login { text-align: center; padding: 40px 0; }
-.admin-login input { padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--gold); background: #1e293b; color: #fff; width: 250px; }
-.admin-login button { padding: 12px 24px; background: var(--gold); color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-.admin-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-.tab-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 8px 16px; border-radius: 8px; transition: 0.3s; }
-.tab-btn.active, .tab-btn:hover { background: rgba(255,215,0,0.1); color: var(--gold); }
-.admin-item { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 12px; margin-bottom: 8px; border-radius: 8px; }
-.admin-content input, .admin-content textarea { width: 100%; margin-bottom: 12px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,215,0,0.2); color: #fff; border-radius: 8px; font-family: var(--font-body); }
-.admin-save-btn { padding: 12px 24px; background: rgba(255,215,0,0.1); border: 1px solid var(--gold); color: var(--gold); border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; width: 100%; margin-top: 10px; }
-.admin-save-btn:hover { background: var(--gold); color: #000; }
-.admin-actions { display: flex; gap: 10px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-.save-all-btn { flex: 1; padding: 12px; background: var(--peacock-teal); border: none; color: #fff; border-radius: 8px; cursor: pointer; }
-.reset-btn { flex: 1; padding: 12px; background: #991b1b; border: none; color: #fff; border-radius: 8px; cursor: pointer; }
-
-/* ════════ TOAST ════════ */
-.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--gold); color: var(--gold); padding: 12px 24px; border-radius: 30px; z-index: 10000; box-shadow: var(--glow-gold); animation: fadeInUp 0.3s ease; }
-
-/* ════════ SCROLL REVEAL ════════ */
-.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+/* Language Specific Fonts */
+body[data-lang="kn"] .translate, body[data-lang="kn"] .hover-speak { font-family: var(--font-kn); }
+body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family: var(--font-sa); font-size: 110%; }
 
 /* ════════ NARADA CHATBOT ════════ */
-.narada-chat { position: fixed; bottom: 20px; right: 20px; z-index: 2000; width: 320px; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.chat-header { background: rgba(255,215,0,0.15); backdrop-filter: blur(10px); border: 1px solid var(--gold); border-bottom: none; color: var(--gold); padding: 12px 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; }
-.chat-body { background: rgba(5,11,20,0.95); backdrop-filter: blur(10px); border: 1px solid var(--gold); border-top: none; display: flex; flex-direction: column; height: 350px; }
-.chat-messages { flex: 1; padding: 16px; overflow-y: auto; font-size: 14px; }
-#chat-input { width: 100%; padding: 14px; background: rgba(0,0,0,0.5); color: #fff; border: none; border-top: 1px solid rgba(255,215,0,0.2); outline: none; }
-#chat-input::placeholder { color: rgba(255,255,255,0.4); }
+.narada-bot { position: fixed; bottom: 30px; right: 30px; z-index: 1000; width: 350px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.8); border: 1px solid var(--gold-glow); transform: translateY(120%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.narada-bot.active { transform: translateY(0); }
+.narada-header { background: rgba(249,212,35,0.1); padding: 15px 20px; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(249,212,35,0.3); display: flex; justify-content: space-between; align-items: center; color: var(--gold-glow); font-family: var(--font-display); cursor: pointer; }
+.narada-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: var(--cosmic-surface); border: 2px solid var(--gold-glow); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--gold-glow); cursor: pointer; z-index: 999; box-shadow: 0 0 20px rgba(249,212,35,0.3); transition: 0.3s; }
+.narada-toggle-btn:hover { transform: scale(1.1); background: var(--gold-glow); color: #000; }
+.chat-body { background: rgba(5,5,10,0.95); height: 350px; display: flex; flex-direction: column; }
+.chat-msgs { flex: 1; padding: 15px; overflow-y: auto; font-size: 0.9rem; }
+.chat-input { padding: 15px; background: rgba(0,0,0,0.5); border: none; border-top: 1px solid rgba(255,255,255,0.1); color: #fff; width: 100%; outline: none; }
+.msg { margin-bottom: 10px; padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; }
+.msg-bot { background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: var(--cyan-glow); align-self: flex-start; border-bottom-left-radius: 2px; }
+.msg-user { background: rgba(255,255,255,0.1); color: #fff; margin-left: auto; border-bottom-right-radius: 2px; text-align: right; border: 1px solid rgba(255,255,255,0.2); }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .glass-section { padding: 80px 24px; }
-  #navbar { padding: 16px 20px; }
+/* ════════ ADMIN PANEL ════════ */
+#admin-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
+.admin-panel { background: #0a0a14; width: 90%; max-width: 600px; padding: 30px; border-radius: 20px; border: 1px solid var(--cyan-glow); box-shadow: 0 0 50px rgba(0,229,255,0.2); }
+.admin-input { width: 100%; padding: 15px; margin: 15px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 10px; font-family: var(--font-body); outline: none; }
+.admin-input:focus { border-color: var(--cyan-glow); }
+.admin-btn { width: 100%; padding: 15px; background: var(--cyan-glow); color: #000; border: none; border-radius: 10px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+.admin-btn:hover { box-shadow: 0 0 20px var(--cyan-glow); }
+
+/* Scroll Reveal */
+.reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 15px 20px; }
   .nav-links { display: none; }
-  .nav-toggle { display: block; }
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-  .feather-container, .chakra-container { display: none; }
+  .section { padding: 80px 20px; }
 }
 </style>
 </head>
-<body>
+<body data-lang="en">
 
+<!-- BACKGROUND ELEMENTS -->
+<div class="stars"></div>
+<div class="nebula"></div>
+<div class="nebula nebula-2"></div>
+
+<!-- WELCOME SCREEN & AI LOAD -->
 <div id="welcome-screen">
-  <div class="welcome-bg"></div>
-
-  <div class="feather-container">
-    <svg class="peacock-feather" viewBox="0 0 120 340" xmlns="http://www.w3.org/2000/svg">
-      <line x1="60" y1="340" x2="60" y2="60" stroke="#FFD700" stroke-width="2.5"/>
-      <g stroke="#0A9396" stroke-width="1.5" opacity="0.8">
-        <line x1="60" y1="300" x2="20" y2="270"/><line x1="60" y1="280" x2="15" y2="245"/>
-        <line x1="60" y1="260" x2="12" y2="225"/><line x1="60" y1="240" x2="10" y2="205"/>
-        <line x1="60" y1="220" x2="12" y2="185"/><line x1="60" y1="200" x2="15" y2="168"/>
-        <line x1="60" y1="180" x2="20" y2="152"/><line x1="60" y1="160" x2="25" y2="138"/>
-        <line x1="60" y1="140" x2="30" y2="125"/><line x1="60" y1="120" x2="35" y2="110"/>
-        <line x1="60" y1="100" x2="40" y2="95"/>
-      </g>
-      <g stroke="#0A9396" stroke-width="1.5" opacity="0.8">
-        <line x1="60" y1="300" x2="100" y2="270"/><line x1="60" y1="280" x2="105" y2="245"/>
-        <line x1="60" y1="260" x2="108" y2="225"/><line x1="60" y1="240" x2="110" y2="205"/>
-        <line x1="60" y1="220" x2="108" y2="185"/><line x1="60" y1="200" x2="105" y2="168"/>
-        <line x1="60" y1="180" x2="100" y2="152"/><line x1="60" y1="160" x2="95" y2="138"/>
-        <line x1="60" y1="140" x2="90" y2="125"/><line x1="60" y1="120" x2="85" y2="110"/>
-        <line x1="60" y1="100" x2="80" y2="95"/>
-      </g>
-      <ellipse cx="60" cy="65" rx="28" ry="38" fill="none" stroke="#2D6A4F" stroke-width="2"/>
-      <ellipse cx="60" cy="65" rx="20" ry="28" fill="none" stroke="#0A9396" stroke-width="2"/>
-      <ellipse cx="60" cy="65" rx="13" ry="18" fill="#005F73" opacity="0.9"/>
-      <ellipse cx="60" cy="65" rx="8" ry="11" fill="#0A2535"/>
-      <ellipse cx="60" cy="58" rx="3" ry="2" fill="#FFD700" opacity="1"/>
-      <ellipse cx="60" cy="65" rx="27" ry="37" fill="none" stroke="#FFD700" stroke-width="1" opacity="0.8"/>
+  <div class="mandala-loader" id="loader-gfx">
+    <!-- SVG Sacred Geometry/Circuit Hybrid -->
+    <svg viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="#00E5FF" stroke-width="1" opacity="0.5"/>
+      <circle cx="50" cy="50" r="35" fill="none" stroke="#F9D423" stroke-width="2" stroke-dasharray="10 5"/>
+      <path d="M50 5 L95 50 L50 95 L5 50 Z" fill="none" stroke="#00E5FF" stroke-width="1"/>
+      <circle cx="50" cy="50" r="15" fill="#F9D423" opacity="0.8"/>
     </svg>
   </div>
+  <div class="loading-text" id="loader-txt">Summoning Narada AI...</div>
 
-  <div class="chakra-container">
-    <svg class="sudarshana-chakra" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="chakraGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#FFF5B8"/>
-          <stop offset="50%" stop-color="#FFD700"/>
-          <stop offset="100%" stop-color="#B8860B"/>
-        </radialGradient>
-      </defs>
-      <g id="spokes" transform="translate(100,100)">
-        <g class="spoke-group">
-          <line x1="0" y1="-88" x2="0" y2="88" stroke="url(#chakraGrad)" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="-88" y1="0" x2="88" y2="0" stroke="url(#chakraGrad)" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="-62" y1="-62" x2="62" y2="62" stroke="url(#chakraGrad)" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="62" y1="-62" x2="-62" y2="62" stroke="url(#chakraGrad)" stroke-width="3.5" stroke-linecap="round"/>
-        </g>
-      </g>
-      <circle cx="100" cy="100" r="90" fill="none" stroke="#FFD700" stroke-width="5"/>
-      <circle cx="100" cy="100" r="82" fill="none" stroke="#FF8C00" stroke-width="1.5" opacity="0.6"/>
-      <g id="tips" transform="translate(100,100)">
-        <polygon points="0,-92 -6,-82 6,-82" fill="#FFD700"/>
-        <polygon points="46,-80 37,-74 42,-64" fill="#FFD700"/>
-        <polygon points="80,-46 74,-37 64,-42" fill="#FFD700"/>
-        <polygon points="92,0 82,-6 82,6" fill="#FFD700"/>
-        <polygon points="80,46 64,42 74,37" fill="#FFD700"/>
-        <polygon points="46,80 42,64 37,74" fill="#FFD700"/>
-        <polygon points="0,92 6,82 -6,82" fill="#FFD700"/>
-        <polygon points="-46,80 -37,74 -42,64" fill="#FFD700"/>
-        <polygon points="-80,46 -74,37 -64,42" fill="#FFD700"/>
-        <polygon points="-92,0 -82,6 -82,-6" fill="#FFD700"/>
-        <polygon points="-80,-46 -64,-42 -74,-37" fill="#FFD700"/>
-        <polygon points="-46,-80 -42,-64 -37,-74" fill="#FFD700"/>
-      </g>
-      <circle cx="100" cy="100" r="20" fill="url(#chakraGrad)" stroke="#8B6914" stroke-width="2"/>
-      <circle cx="100" cy="100" r="10" fill="#0A2535"/>
-      <text x="100" y="106" text-anchor="middle" font-size="11" fill="#FFD700" font-family="serif">ॐ</text>
-    </svg>
-  </div>
-
-  <div class="welcome-text">
-    <p class="sanskrit-welcome">स्वागतम् • सुस्वागतम्</p>
-    <h1 class="welcome-name">Sourabh Satish Shet</h1>
-    <p class="english-welcome">Welcome to my Portfolio</p>
-    <p class="welcome-subtitle">Pricing & Quotation Specialist</p>
-    <button class="enter-btn" onclick="enterSite()">
-      <span>Enter Journey</span>
-    </button>
-  </div>
-</div>
-
-<div id="main-site" style="display:none;">
-  
-  <div class="main-ambient-bg">
-    <div class="ambient-orb orb-1"></div>
-    <div class="ambient-orb orb-2"></div>
-    <div class="ambient-orb orb-3"></div>
-  </div>
-
-  <nav id="navbar">
-    <div class="nav-logo">
-      <span class="nav-chakra">☸</span> SS
-    </div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#certifications">Certifications</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="nav-actions">
-      <button class="translate-btn" onclick="toggleTranslation()" title="Translate to Sanskrit">
-        <span class="translate-icon">🕉</span> Sanskrit
-      </button>
-      <button onclick="openAdmin()" title="Admin Panel" class="admin-nav-btn">☸</button>
-      <button class="nav-toggle" onclick="toggleNav()">☰</button>
-    </div>
-  </nav>
-
-  <section id="hero">
-    <div class="hero-chakra-bg">
-      <svg viewBox="0 0 400 400" class="bg-chakra-svg">
-        <circle cx="200" cy="200" r="180" fill="none" stroke="#FFD700" stroke-width="1.5" opacity="0.15"/>
-        <circle cx="200" cy="200" r="140" fill="none" stroke="#0A9396" stroke-width="1" opacity="0.2"/>
-        <g transform="translate(200,200)" opacity="0.1">
-          <line x1="0" y1="-175" x2="0" y2="175" stroke="#FFD700" stroke-width="2"/>
-          <line x1="-175" y1="0" x2="175" y2="0" stroke="#FFD700" stroke-width="2"/>
-        </g>
-      </svg>
-    </div>
-    <div class="hero-content">
-      <div class="hero-feather-mini">🦚</div>
-      <p class="hero-sanskrit" id="hero-sanskrit">सौरभ सतीश शेट</p>
-      <h1 class="hero-name" id="hero-name">Sourabh Satish Shet</h1>
-      <h2 class="hero-title" id="hero-title">Pricing & Quotation Specialist</h2>
-      <p class="hero-location" id="hero-location">📍 Yelahanka, Bangalore · Electronics Components Supply Chain</p>
-      <div class="hero-awards">
-        <span class="award-badge">⭐ Rising Star 2025</span>
-        <span class="award-badge">🏆 Star Performer Q1 2026</span>
-      </div>
-      <div class="hero-cta">
-        <a href="#contact" class="btn-primary">Connect with Me</a>
-        <a href="#experience" class="btn-secondary">View Experience</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="section glass-section">
-    <div class="section-label">01 · About</div>
-    <h2 class="section-title" id="about-title">About Me</h2>
-    <div class="about-grid">
-      <div class="about-text">
-        <p id="about-p1"></p>
-        <p id="about-p2"></p>
-        <div class="about-langs">
-          <span class="lang-chip">🇬🇧 English</span>
-          <span class="lang-chip">🇮🇳 Kannada</span>
-          <span class="lang-chip">🇮🇳 Hindi</span>
-          <span class="lang-chip">🕉 Sanskrit</span>
-          <span class="lang-chip">🇮🇳 Konkani</span>
-        </div>
-      </div>
-      <div class="about-stats">
-        <div class="stat-card"><span class="stat-num">1+</span><span class="stat-label">Years at Mouser</span></div>
-        <div class="stat-card"><span class="stat-num">2</span><span class="stat-label">Awards Won</span></div>
-        <div class="stat-card"><span class="stat-num">5</span><span class="stat-label">Languages</span></div>
-        <div class="stat-card"><span class="stat-num">∞</span><span class="stat-label">Accuracy Focus</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills" class="section glass-section">
-    <div class="section-label">02 · Skills</div>
-    <h2 class="section-title" id="skills-title">Skills & Expertise</h2>
-    <div class="skills-grid" id="skills-container"></div>
-  </section>
-
-  <section id="experience" class="section glass-section">
-    <div class="section-label">03 · Experience</div>
-    <h2 class="section-title" id="exp-title">Work Experience</h2>
-    <div class="timeline" id="experience-container"></div>
-  </section>
-
-  <section id="achievements" class="section glass-section">
-    <div class="section-label">04 · Achievements</div>
-    <h2 class="section-title">Achievements</h2>
-    <div class="achievements-grid" id="achievements-container"></div>
-  </section>
-
-  <section id="certifications" class="section glass-section">
-    <div class="section-label">05 · Certifications</div>
-    <h2 class="section-title">Certifications</h2>
-    <div class="certs-grid" id="certs-container"></div>
-  </section>
-
-  <section id="projects" class="section glass-section">
-    <div class="section-label">06 · Projects</div>
-    <h2 class="section-title" id="projects-title">Projects</h2>
-    <div class="projects-grid" id="projects-container"></div>
-  </section>
-
-  <section id="contact" class="section glass-section">
-    <div class="section-label">07 · Contact</div>
-    <h2 class="section-title">Get In Touch</h2>
-    <div class="contact-grid">
-      <div class="contact-links">
-        <a href="mailto:sourabhshet95@gmail.com" class="contact-card"><i class="fas fa-envelope"></i><div><span class="contact-type">Email</span><span class="contact-value">sourabhshet95@gmail.com</span></div></a>
-        <a href="tel:+919019215348" class="contact-card"><i class="fas fa-phone"></i><div><span class="contact-type">Phone</span><span class="contact-value">+91 9019215348</span></div></a>
-      </div>
-      <div class="contact-note">
-        <div class="contact-feather">🦚</div>
-        <p id="contact-quote">"Precision in pricing, excellence in delivery."</p>
-        <p class="contact-sanskrit">यथा कार्यं तथा फलम्</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="footer-chakra">☸</div>
-    <p class="footer-copy">© <span id="year"></span> Sourabh Satish Shet. All Rights Reserved.</p>
-    <p class="footer-sub">Designed & Developed with 🦚 by Sourabh</p>
-  </footer>
-
-  <div id="narada-bot" class="narada-chat">
-    <div class="chat-header" onclick="toggleChat()">
-      <span>🦚 Narada AI</span>
-      <span>▼</span>
-    </div>
-    <div id="chat-body" class="chat-body" style="display:none;">
-      <div class="chat-messages" id="msg-container">
-        <div class="bot-msg" style="color:var(--gold-dark); margin:5px; padding:8px; background:rgba(255,215,0,0.1); border-radius:8px;"><b>Narada:</b> Hari Om! I am Narada. How can I assist you in exploring Sourabh's portfolio?</div>
-      </div>
-      <input type="text" id="chat-input" placeholder="Say hi or ask about his experience..." onkeypress="handleChat(event)">
-    </div>
-  </div>
-
-</div>
-
-<div id="admin-overlay" style="display:none;">
-  <div class="admin-panel">
-    <div class="admin-header">
-      <h2>☸ Admin Panel</h2>
-      <button class="admin-close" onclick="closeAdmin()">✕</button>
+  <div class="welcome-content" id="welcome-content">
+    <h1 class="welcome-title hover-speak">Awakening Complete</h1>
+    <p class="welcome-subtitle hover-speak">Welcome to the Cosmic Portfolio of Sourabh</p>
+    
+    <div class="voice-toggle-wrap hover-speak">
+      <span>Enable AI Voice Assistant</span>
+      <div class="voice-switch" id="init-voice-toggle" onclick="toggleVoice()"></div>
     </div>
     
-    <div class="admin-login" id="admin-login">
-      <p style="margin-bottom: 15px; color: var(--text-muted);">Enter password to edit portfolio (Hint: sourabh@2025)</p>
-      <input type="password" id="admin-pass" placeholder="Password" />
-      <button onclick="checkAdminPass()">Login</button>
+    <button class="enter-btn hover-speak" onclick="enterCosmos()">Enter The Cosmos</button>
+  </div>
+</div>
+
+<!-- MAIN SITE -->
+<nav id="navbar" style="opacity:0; pointer-events:none;">
+  <div class="nav-logo hover-speak">
+    <i class="fas fa-dharmachakra"></i> <span data-i18n="nav_logo">Sourabh</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about" class="hover-speak translate" data-i18n="nav_about">About</a></li>
+    <li><a href="#skills" class="hover-speak translate" data-i18n="nav_skills">Skills</a></li>
+    <li><a href="#experience" class="hover-speak translate" data-i18n="nav_experience">Experience</a></li>
+  </ul>
+  <div class="nav-actions">
+    <select class="lang-select hover-speak" onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="kn">ಕನ್ನಡ (Kannada)</option>
+      <option value="sa">संस्कृतम् (Sanskrit)</option>
+    </select>
+    <button class="icon-btn hover-speak" onclick="toggleVoice()" title="Toggle Voice"><i class="fas fa-volume-up" id="nav-vol-icon"></i></button>
+    <button class="icon-btn hover-speak" onclick="openAdmin()" title="Admin"><i class="fas fa-user-shield"></i></button>
+  </div>
+</nav>
+
+<main id="main-content" style="opacity:0; pointer-events:none; transition: 1s ease;">
+  
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content reveal active">
+      <h1 class="hero-name hover-speak translate" data-i18n="hero_name">Sourabh Satish Shet</h1>
+      <h2 class="hero-title hover-speak translate" data-i18n="hero_title">Pricing & Quotation Specialist</h2>
+      <p class="hero-location hover-speak translate" data-i18n="hero_location">📍 Yelahanka, Bangalore | Electronics Supply Chain</p>
     </div>
+  </section>
 
-    <div class="admin-content" id="admin-content" style="display:none;">
-      <div class="admin-tabs">
-        <button class="tab-btn active" onclick="switchTab('about-tab', this)">About</button>
-        <button class="tab-btn" onclick="switchTab('skills-tab', this)">Skills</button>
-        <button class="tab-btn" onclick="switchTab('exp-tab', this)">Experience</button>
-        <button class="tab-btn" onclick="switchTab('ach-tab', this)">Achievements</button>
-        <button class="tab-btn" onclick="switchTab('certs-tab', this)">Certs</button>
-        <button class="tab-btn" onclick="switchTab('projects-tab', this)">Projects</button>
-      </div>
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <h2 class="section-title hover-speak translate" data-i18n="title_about">About Me</h2>
+    <div class="glass-card reveal hover-speak">
+      <p class="card-text translate" data-i18n="about_desc" id="about-text-ui">
+        Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. Experienced in multiple sourcing portals and BOM scrubbing.
+      </p>
+    </div>
+  </section>
 
-      <div id="about-tab" class="tab-content" style="display:block;">
-        <h3 style="margin-bottom: 15px;">Edit About Text</h3>
-        <textarea id="about-edit-p1" rows="4"></textarea>
-        <textarea id="about-edit-p2" rows="4"></textarea>
-        <button class="admin-save-btn" onclick="saveAbout()">Save About</button>
-      </div>
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <h2 class="section-title hover-speak translate" data-i18n="title_skills">Core Expertise</h2>
+    <div class="grid" id="skills-grid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
 
-      <div id="skills-tab" class="tab-content" style="display:none;">
-        <h3 style="margin-bottom: 15px;">Manage Skills</h3>
-        <div id="skills-admin-list"></div>
-        <div style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1)">
-          <input type="text" id="new-skill-cat" placeholder="Category name (e.g. Tools)" />
-          <textarea id="new-skill-items" placeholder="Skill 1, Skill 2, Skill 3 (Comma separated)"></textarea>
-          <button class="admin-save-btn" id="btn-skill" onclick="saveSkill()">+ Save Skill</button>
-        </div>
-      </div>
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <h2 class="section-title hover-speak translate" data-i18n="title_experience">Cosmic Journey</h2>
+    <div class="timeline" id="exp-timeline">
+      <!-- Injected by JS -->
+    </div>
+  </section>
 
-      <div id="exp-tab" class="tab-content" style="display:none;">
-        <h3 style="margin-bottom: 15px;">Manage Experience</h3>
-        <div id="exp-admin-list"></div>
-        <div style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1)">
-          <input type="text" id="new-exp-role" placeholder="Role (e.g. Specialist I)" />
-          <input type="text" id="new-exp-company" placeholder="Company" />
-          <input type="text" id="new-exp-period" placeholder="Period (e.g. Sep 2024 - Present)" />
-          <input type="text" id="new-exp-location" placeholder="Location" />
-          <textarea id="new-exp-points" placeholder="Bullet 1, Bullet 2 (Comma separated)"></textarea>
-          <button class="admin-save-btn" id="btn-exp" onclick="saveExperience()">+ Save Experience</button>
-        </div>
-      </div>
+</main>
 
-      <div id="ach-tab" class="tab-content" style="display:none;">
-        <h3 style="margin-bottom: 15px;">Manage Achievements</h3>
-        <div id="achievements-admin-list"></div>
-        <div style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1)">
-          <input type="text" id="new-ach-title" placeholder="Achievement title" />
-          <textarea id="new-ach-desc" placeholder="Description"></textarea>
-          <button class="admin-save-btn" id="btn-ach" onclick="saveAchievement()">+ Save Achievement</button>
-        </div>
-      </div>
+<!-- NARADA AI CHATBOT -->
+<div class="narada-toggle-btn hover-speak" onclick="toggleChatbot()" title="Summon Narada AI">
+  <i class="fas fa-robot"></i>
+</div>
 
-      <div id="certs-tab" class="tab-content" style="display:none;">
-        <h3 style="margin-bottom: 15px;">Manage Certifications</h3>
-        <div id="certs-admin-list"></div>
-        <div style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1)">
-          <input type="text" id="new-cert-title" placeholder="Certification name" />
-          <input type="text" id="new-cert-org" placeholder="Issuing organization" />
-          <input type="text" id="new-cert-year" placeholder="Year" />
-          <button class="admin-save-btn" id="btn-cert" onclick="saveCertification()">+ Save Certification</button>
-        </div>
-      </div>
+<div class="narada-bot" id="narada-bot">
+  <div class="narada-header" onclick="toggleChatbot()">
+    <span class="hover-speak">🦚 Narada Oracle AI</span>
+    <i class="fas fa-times"></i>
+  </div>
+  <div class="chat-body">
+    <div class="chat-msgs" id="chat-msgs">
+      <div class="msg msg-bot hover-speak">Greetings traveler. I am Narada AI. How may I guide you through Sourabh's universe?</div>
+    </div>
+    <input type="text" class="chat-input hover-speak" id="chat-input" placeholder="Ask a question..." onkeypress="handleChat(event)">
+  </div>
+</div>
 
-      <div id="projects-tab" class="tab-content" style="display:none;">
-        <h3 style="margin-bottom: 15px;">Manage Projects</h3>
-        <div id="projects-admin-list"></div>
-        <div style="margin-top:20px; padding-top:20px; border-top: 1px solid rgba(255,255,255,0.1)">
-          <input type="text" id="new-proj-title" placeholder="Project title" />
-          <textarea id="new-proj-desc" placeholder="Project description"></textarea>
-          <input type="text" id="new-proj-tags" placeholder="Tags: Excel, Python (Comma separated)" />
-          <input type="url" id="new-proj-link" placeholder="Project URL (optional)" />
-          <button class="admin-save-btn" id="btn-proj" onclick="saveProject()">+ Save Project</button>
-        </div>
-      </div>
-
-      <div class="admin-actions">
-        <button class="save-all-btn" onclick="closeAdmin()">💾 Close Admin</button>
-        <button class="reset-btn" onclick="resetAll()">↺ Reset to Default</button>
-      </div>
+<!-- ADMIN PANEL -->
+<div id="admin-overlay">
+  <div class="admin-panel hover-speak">
+    <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
+      <h2 style="color:var(--cyan-glow); font-family:var(--font-display);">Admin Access</h2>
+      <button onclick="closeAdmin()" style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    <div id="admin-login-view">
+      <!-- Notice: NO hint text here -->
+      <input type="password" id="admin-pass" class="admin-input" placeholder="Enter Authorization Code">
+      <button class="admin-btn" onclick="checkAdmin()">Authenticate</button>
+    </div>
+    <div id="admin-edit-view" style="display:none;">
+      <h3 style="color:var(--gold-glow); margin-bottom:10px;">Edit About Section (English)</h3>
+      <textarea id="admin-about-text" class="admin-input" rows="5"></textarea>
+      <button class="admin-btn" onclick="saveAdmin()">Save Changes</button>
     </div>
   </div>
 </div>
 
-<div id="toast" class="toast" style="display:none;"></div>
-
+<!-- SCRIPTS -->
 <script>
 /* ═══════════════════════════════════════════
-   DATA & STATE MANAGEMENT
+   DATA & TRANSLATION DICTIONARY
 ════════════════════════════════════════════ */
-const LOCAL_STORAGE_KEY = 'sourabh_portfolio_data';
-
-const DEFAULT_DATA = {
-  about: {
-    p1: 'Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. B.Tech in Electronics & Communication Engineering with 1+ years of experience at Mouser Electronics.',
-    p2: 'Managing daily workflows through IQS application and multiple sourcing portals (Global, Matrix). Skilled in BOM scrubbing, pricing analysis, margin optimization, and tracking critical supply chain parameters including lead times, country of origin, and MOQ requirements.'
-  },
+const portfolioData = {
+  aboutEn: "Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. Experienced in multiple sourcing portals and BOM scrubbing.",
   skills: [
-    { icon: '📦', title: 'Supply Chain & Quoting', items: ['RFQ Processing & Management', 'Quote Development', 'Multi-Portal Management', 'IQS Application', 'BOM Scrubbing', 'Lead Time Analysis'] },
-    { icon: '📊', title: 'Pricing & Analytics', items: ['Pricing Analysis & Optimization', 'Margin Calculation', 'Customer-Specific Pricing Rules', 'Vendor Pricing'] },
-    { icon: '🔩', title: 'Component & Tech Knowledge', items: ['Component Identification', 'Obsolescence Management', 'Product Lifecycle Analysis', 'Technical Datasheet Analysis'] },
-    { icon: '💻', title: 'Tools & Technology', items: ['Microsoft Office Suite', 'Power BI', 'Database Management', 'Python'] }
+    { title: "Supply Chain", text: "RFQ Processing, Quote Development, Lead Time Analysis." },
+    { title: "Pricing Analytics", text: "Margin Calculation, Vendor Pricing, Rule Sets." },
+    { title: "Tools & Tech", text: "IQS, Global Matrix, Power BI, Advanced Excel." }
   ],
   experience: [
-    { company: 'Mouser Electronics (TTI Inc)', role: 'Specialist I – Quote Management', period: 'September 2024 – Present', location: 'Bengaluru, India', points: [
-        'Processed high-volume RFQs daily from multiple sourcing portals including Global and Matrix platforms.',
-        'Configured customer RFQs in IQS tool by setting quote parameters and technical specifications.',
-        'Performed BOM scrubbing and data validation to identify unresolved part numbers.',
-        'Calculated competitive pricing margins by applying customer-specific rule sets.',
-        'Managed supply chain parameters including lead time analysis and MOQ.',
-        'Awarded Rising Star Award (2025) and Star Performer of Q1 2026.'
-      ] }
-  ],
-  achievements: [
-    { icon: '⭐', title: 'Rising Star Award 2025', desc: 'Awarded at Mouser Electronics for exceptional performance in quote processing accuracy and efficiency.' },
-    { icon: '🏆', title: 'Star Performer Q1 2026', desc: 'Recognized for consistently meeting critical turnaround deadlines and delivering high-quality quotations.' },
-    { icon: '🎯', title: 'SPOC for Complex BOM Scrubbing', desc: 'Served as the go-to Single Point of Contact for complex BOM scrubbing processes.' }
-  ],
-  certifications: [
-    { icon: '📊', title: 'Business Analytics with Excel & Power BI', org: 'Simplilearn', year: '2024' },
-    { icon: '📈', title: 'Data Analytics', org: 'Accenture (Forage)', year: '2024' },
-    { icon: '🔵', title: 'Power BI Analytics', org: 'J2J Institute', year: '2024' }
-  ],
-  projects: [
-    { title: 'BOM Scrubbing Automation', desc: 'Developed a systematic approach for scrubbing Bills of Materials (BOMs), streamlining the identification and resolution of unresolved part numbers.', tags: ['Excel', 'IQS', 'Process Improvement'], link: '' },
-    { title: 'Pricing Margin Optimization', desc: 'Analyzed and applied customer-specific pricing rule sets to consistently deliver competitive margins while maintaining profitability.', tags: ['Pricing Analysis', 'Excel', 'Data Analytics'], link: '' },
-    { title: 'Supply Chain Data Dashboard', desc: 'Built Power BI dashboards to visualize lead times, country of origin data, and MOQ trends.', tags: ['Power BI', 'Data Analytics', 'Supply Chain'], link: '' }
+    { role: "Specialist I – Quote Management", company: "Mouser Electronics", period: "Sep 2024 – Present", desc: "Processed high-volume RFQs, performed BOM scrubbing, applied customer pricing rules." }
   ]
 };
 
-let siteData = {};
-let isTranslated = false;
-let editState = { skill: -1, exp: -1, ach: -1, cert: -1, proj: -1 };
-
-// Load data strictly from Local Storage for instant updates
-function loadData() {
-  try {
-    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (saved) {
-      siteData = JSON.parse(saved);
-    } else {
-      siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-    }
-  } catch (e) {
-    console.error("Local load failed", e);
-    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+const translations = {
+  en: {
+    nav_logo: "Sourabh", nav_about: "About", nav_skills: "Skills", nav_experience: "Experience",
+    hero_name: "Sourabh Satish Shet", hero_title: "Pricing & Quotation Specialist", hero_location: "📍 Yelahanka, Bangalore | Electronics Supply Chain",
+    title_about: "About Me", title_skills: "Core Expertise", title_experience: "Cosmic Journey",
+    about_desc: portfolioData.aboutEn
+  },
+  kn: {
+    nav_logo: "ಸೌರಭ್", nav_about: "ಬಗ್ಗೆ", nav_skills: "ಕೌಶಲ್ಯಗಳು", nav_experience: "ಅನುಭವ",
+    hero_name: "ಸೌರಭ್ ಸತೀಶ್ ಶೇಟ್", hero_title: "ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ", hero_location: "📍 ಯಲಹಂಕ, ಬೆಂಗಳೂರು | ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಪೂರೈಕೆ ಸರಪಳಿ",
+    title_about: "ನನ್ನ ಬಗ್ಗೆ", title_skills: "ಮೂಲ ಪರಿಣತಿ", title_experience: "ವೃತ್ತಿಪರ ಪ್ರಯಾಣ",
+    about_desc: "ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಘಟಕಗಳಿಗಾಗಿ RFQ ಪ್ರಕ್ರಿಯೆ ಮತ್ತು ಉಲ್ಲೇಖ ನಿರ್ವಹಣೆಯಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿರುವ ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ."
+  },
+  sa: {
+    nav_logo: "सौरभ", nav_about: "परिचयः", nav_skills: "कौशल्यानि", nav_experience: "कार्यानुभवः",
+    hero_name: "सौरभ सतीश शेट", hero_title: "मूल्य-उद्धरण विशेषज्ञः", hero_location: "📍 येलहंका, बंगळूरु | इलेक्ट्रॉनिक्स आपूर्ति श्रृंखला",
+    title_about: "मम परिचयः", title_skills: "कौशल्यानि", title_experience: "कार्यानुभवः",
+    about_desc: "विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः।"
   }
-}
+};
 
-function saveData() {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(siteData));
-  } catch (e) {
-    console.error("Failed to save to local storage", e);
-    showToast('⚠️ Save failed.');
-  }
+let currentLang = 'en';
+
+/* ═══════════════════════════════════════════
+   INITIALIZATION & AI LOAD ANIMATION
+════════════════════════════════════════════ */
+window.onload = () => {
+  // Simulate AI Loading
+  setTimeout(() => {
+    document.getElementById('loader-gfx').style.display = 'none';
+    document.getElementById('loader-txt').style.display = 'none';
+    document.getElementById('welcome-content').style.display = 'flex';
+  }, 2500);
+
+  renderData();
+};
+
+function enterCosmos() {
+  const welcome = document.getElementById('welcome-screen');
+  welcome.style.opacity = '0';
+  setTimeout(() => {
+    welcome.style.display = 'none';
+    document.getElementById('navbar').style.opacity = '1';
+    document.getElementById('navbar').style.pointerEvents = 'auto';
+    document.getElementById('main-content').style.opacity = '1';
+    document.getElementById('main-content').style.pointerEvents = 'auto';
+    initScrollReveal();
+  }, 1000);
 }
 
 /* ═══════════════════════════════════════════
-   CORE INITIALIZATION
+   VOICE ASSISTANT (TEXT TO SPEECH)
 ════════════════════════════════════════════ */
-document.body.style.overflow = 'hidden';
+let isVoiceEnabled = false;
+const synth = window.speechSynthesis;
 
-function enterSite() {
-  const ws = document.getElementById('welcome-screen');
-  const ms = document.getElementById('main-site');
-  if(ws) {
-    ws.style.opacity = '0';
-    setTimeout(() => {
-      ws.style.display = 'none';
-      if(ms) ms.style.display = 'block';
-      document.body.style.overflow = 'auto';
-      initSite();
-    }, 800);
-  }
-}
-
-function initSite() {
-  loadData(); 
-  renderAllUI();
+function toggleVoice() {
+  isVoiceEnabled = !isVoiceEnabled;
   
-  const yr = document.getElementById('year');
-  if(yr) yr.textContent = new Date().getFullYear();
-  
-  initReveal();
-  initNavScroll();
-  setTimeout(() => { 
-    const cb = document.getElementById('chat-body');
-    if(cb) cb.style.display = 'flex'; 
-  }, 2000);
-}
+  // Update toggle UI on Welcome Screen
+  const switchEl = document.getElementById('init-voice-toggle');
+  if(switchEl) switchEl.classList.toggle('active', isVoiceEnabled);
 
-/* ═══════════════════════════════════════════
-   RENDER UI
-════════════════════════════════════════════ */
-function renderAllUI() {
-  if (!isTranslated) {
-    const p1 = document.getElementById('about-p1');
-    const p2 = document.getElementById('about-p2');
-    if(p1) p1.textContent = siteData.about.p1;
-    if(p2) p2.textContent = siteData.about.p2;
-  } else {
-    toggleTranslation(); 
-    toggleTranslation(); 
+  // Update nav icon
+  const navIcon = document.getElementById('nav-vol-icon');
+  if(navIcon) {
+    navIcon.className = isVoiceEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+    navIcon.style.color = isVoiceEnabled ? 'var(--cyan-glow)' : 'var(--text-main)';
   }
 
-  const sc = document.getElementById('skills-container');
-  if(sc) sc.innerHTML = siteData.skills.map(cat => `
-    <div class="skill-category reveal visible">
-      <div class="skill-cat-title"><span class="skill-cat-icon">${cat.icon || '🔹'}</span>${cat.title}</div>
-      <div class="skill-tags">${cat.items.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
-    </div>`).join('');
-
-  const ec = document.getElementById('experience-container');
-  if(ec) ec.innerHTML = siteData.experience.map(exp => `
-    <div class="timeline-item reveal visible">
-      <div class="timeline-header">
-        <div class="timeline-company">${exp.company}</div>
-        <div class="timeline-role">${exp.role}</div>
-        <div class="timeline-period">📅 ${exp.period} · 📍 ${exp.location}</div>
-      </div>
-      <ul class="timeline-points">${exp.points.map(p => `<li>${p}</li>`).join('')}</ul>
-    </div>`).join('');
-
-  const ac = document.getElementById('achievements-container');
-  if(ac) ac.innerHTML = siteData.achievements.map(a => `
-    <div class="achievement-card reveal visible">
-      <div class="achievement-icon">${a.icon || '✨'}</div>
-      <div class="achievement-title">${a.title}</div>
-      <div class="achievement-desc">${a.desc}</div>
-    </div>`).join('');
-
-  const cc = document.getElementById('certs-container');
-  if(cc) cc.innerHTML = siteData.certifications.map(c => `
-    <div class="cert-card reveal visible">
-      <span class="cert-icon">${c.icon || '🎓'}</span>
-      <div>
-        <div class="cert-title">${c.title}</div>
-        <div class="cert-org">${c.org}</div>
-        <div class="cert-year">${c.year}</div>
-      </div>
-    </div>`).join('');
-
-  const pc = document.getElementById('projects-container');
-  if(pc) pc.innerHTML = siteData.projects.map(p => {
-    const tags = p.tags && p.tags.length ? p.tags.map(t => `<span class="project-tag">${t}</span>`).join('') : '';
-    const link = p.link ? `<a href="${p.link}" class="project-link" target="_blank">View Project →</a>` : '';
-    return `
-      <div class="project-card reveal visible">
-        <div class="project-title">${p.title}</div>
-        <div class="project-desc">${p.desc}</div>
-        <div class="project-tags">${tags}</div>
-        ${link}
-      </div>`;
-  }).join('');
+  if(!isVoiceEnabled) synth.cancel();
+  else speak("Voice Assistant Activated.");
 }
+
+function speak(text) {
+  if (!isVoiceEnabled || !synth) return;
+  synth.cancel(); // Stop current speech
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  // Set language based on current UI selection
+  if(currentLang === 'kn') utterance.lang = 'kn-IN';
+  else if(currentLang === 'sa') utterance.lang = 'hi-IN'; // Fallback for Sanskrit
+  else utterance.lang = 'en-IN';
+  
+  utterance.rate = 1.05;
+  synth.speak(utterance);
+}
+
+// Attach Hover Listeners
+document.addEventListener('mouseover', (e) => {
+  if(!isVoiceEnabled) return;
+  const target = e.target.closest('.hover-speak');
+  if(target) {
+    // Prevent re-triggering constantly on the same element
+    if(target.dataset.speaking === "true") return;
+    target.dataset.speaking = "true";
+    
+    // Read the text content, or the value if it's an input
+    speak(target.innerText || target.value);
+    
+    target.addEventListener('mouseleave', () => {
+      target.dataset.speaking = "false";
+    }, {once:true});
+  }
+});
 
 /* ═══════════════════════════════════════════
-   SCROLL, NAV, & TRANSLATE
+   TRANSLATION & RENDERING
 ════════════════════════════════════════════ */
-function initReveal() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-}
-
-function initNavScroll() {
-  window.addEventListener('scroll', () => {
-    const nav = document.getElementById('navbar');
-    if(!nav) return;
-    if (window.scrollY > 50) {
-      nav.style.padding = '12px 48px';
-      nav.style.background = 'rgba(5, 11, 20, 0.9)';
-    } else {
-      nav.style.padding = '16px 48px';
-      nav.style.background = 'rgba(5, 11, 20, 0.6)';
+function changeLanguage(lang) {
+  currentLang = lang;
+  document.body.setAttribute('data-lang', lang);
+  
+  const elements = document.querySelectorAll('.translate[data-i18n]');
+  elements.forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.innerText = translations[lang][key];
     }
   });
+
+  if(isVoiceEnabled) speak("Language changed");
 }
 
-function toggleNav() { 
-  const links = document.querySelector('.nav-links');
-  if(links) links.classList.toggle('open'); 
-}
-
-function toggleTranslation() {
-  isTranslated = !isTranslated;
-  const tBtn = document.querySelector('.translate-btn');
-  if(tBtn) {
-    tBtn.style.background = isTranslated ? 'var(--gold)' : 'rgba(255,215,0,0.05)';
-    tBtn.style.color = isTranslated ? 'var(--bg-dark)' : 'var(--gold)';
+function renderData() {
+  // Load saved local data if exists
+  const savedAbout = localStorage.getItem('cosmic_about');
+  if(savedAbout) {
+    portfolioData.aboutEn = savedAbout;
+    translations.en.about_desc = savedAbout;
   }
+  
+  // Render Skills
+  const skillGrid = document.getElementById('skills-grid');
+  skillGrid.innerHTML = portfolioData.skills.map(s => `
+    <div class="glass-card reveal hover-speak">
+      <h3 class="card-title">${s.title}</h3>
+      <p class="card-text">${s.text}</p>
+    </div>
+  `).join('');
 
-  const elementsToTranslate = {
-    'hero-name': { en: 'Sourabh Satish Shet', sk: 'सौरभ सतीश शेट' },
-    'hero-title': { en: 'Pricing & Quotation Specialist', sk: 'मूल्य-उद्धरण विशेषज्ञः' },
-    'hero-location': { en: '📍 Yelahanka, Bangalore · Electronics Components Supply Chain', sk: '📍 येलहंका, बंगळूरु · इलेक्ट्रॉनिक्स आपूर्ति श्रृंखला' },
-    'about-title': { en: 'About Me', sk: 'मम परिचयः' },
-    'skills-title': { en: 'Skills & Expertise', sk: 'कौशल्यानि' },
-    'exp-title': { en: 'Work Experience', sk: 'कार्यानुभवः' },
-    'projects-title': { en: 'Projects', sk: 'परियोजनाः' },
-    'about-p1': { en: siteData.about.p1, sk: 'विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः। B.Tech इलेक्ट्रॉनिक्स एवं संचार अभियांत्रिकी १+ वर्षस्य अनुभवेन सह।' },
-    'about-p2': { en: siteData.about.p2, sk: 'IQS अनुप्रयोगेन एवं बहुविध स्रोत-पोर्टल्स द्वारा दैनिक कार्यप्रवाहस्य प्रबंधनम्। BOM विश्लेषण, मूल्य-अनुकूलन, एवं आपूर्ति श्रृंखला प्रबंधने कुशलः।' }
-  };
-
-  for (const [id, texts] of Object.entries(elementsToTranslate)) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = isTranslated ? texts.sk : texts.en;
-  }
-  showToast(isTranslated ? '🕉 संस्कृत भाषायाम् अनुवादितम्' : '🌐 Switched back to English');
+  // Render Experience
+  const expTime = document.getElementById('exp-timeline');
+  expTime.innerHTML = portfolioData.experience.map(e => `
+    <div class="timeline-item reveal glass-card hover-speak">
+      <h3 class="card-title">${e.role}</h3>
+      <p style="color:var(--cyan-glow); margin-bottom:10px;">${e.company} | ${e.period}</p>
+      <p class="card-text">${e.desc}</p>
+    </div>
+  `).join('');
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL LOGIC
+   SCROLL REVEAL
 ════════════════════════════════════════════ */
-function openAdmin() { 
-  const ov = document.getElementById('admin-overlay');
-  if(ov) { ov.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-}
-function closeAdmin() { 
-  const ov = document.getElementById('admin-overlay');
-  if(ov) { ov.style.display = 'none'; document.body.style.overflow = 'auto'; }
-}
-
-function checkAdminPass() {
-  const pass = document.getElementById('admin-pass');
-  if (pass && pass.value === 'sourabh@2025') {
-    document.getElementById('admin-login').style.display = 'none';
-    document.getElementById('admin-content').style.display = 'block';
-    loadAdminUI();
-  } else { showToast('❌ Wrong password!'); }
-}
-
-function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  
-  const target = document.getElementById(tabId);
-  if(target) target.style.display = 'block';
-  if(btn) btn.classList.add('active');
-}
-
-function loadAdminUI() {
-  const ap1 = document.getElementById('about-edit-p1');
-  const ap2 = document.getElementById('about-edit-p2');
-  if(ap1) ap1.value = siteData.about.p1;
-  if(ap2) ap2.value = siteData.about.p2;
-
-  const mkList = (arr, tKey, editFunc, delFunc) => arr.map((item, i) => `
-    <div class="admin-item">
-      <span>${item[tKey]}</span>
-      <div>
-        <button onclick="${editFunc}(${i})" style="background:none; border:none; cursor:pointer; font-size:16px; margin-right:10px;" title="Edit">✏️</button>
-        <button onclick="${delFunc}(${i})" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:16px;" title="Delete">🗑</button>
-      </div>
-    </div>`).join('');
-  
-  document.getElementById('skills-admin-list').innerHTML = mkList(siteData.skills, 'title', 'editSkill', 'delSkill');
-  document.getElementById('exp-admin-list').innerHTML = mkList(siteData.experience, 'role', 'editExp', 'delExp');
-  document.getElementById('achievements-admin-list').innerHTML = mkList(siteData.achievements, 'title', 'editAch', 'delAch');
-  document.getElementById('certs-admin-list').innerHTML = mkList(siteData.certifications, 'title', 'editCert', 'delCert');
-  document.getElementById('projects-admin-list').innerHTML = mkList(siteData.projects, 'title', 'editProj', 'delProj');
-}
-
-function syncAndSave() {
-  saveData();
-  renderAllUI();
-  loadAdminUI();
-  showToast('✅ Saved Successfully!');
-}
-
-function saveAbout() {
-  siteData.about.p1 = document.getElementById('about-edit-p1').value;
-  siteData.about.p2 = document.getElementById('about-edit-p2').value;
-  syncAndSave();
-}
-
-/* ─── SKILLS ─── */
-function editSkill(i) {
-  const item = siteData.skills[i];
-  document.getElementById('new-skill-cat').value = item.title;
-  document.getElementById('new-skill-items').value = item.items.join(', ');
-  editState.skill = i;
-  document.getElementById('btn-skill').textContent = "Update Skill";
-}
-function saveSkill() {
-  const t = document.getElementById('new-skill-cat').value.trim();
-  const i = document.getElementById('new-skill-items').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(!t) return showToast("⚠️ Title required");
-  if(editState.skill > -1) {
-    siteData.skills[editState.skill].title = t;
-    siteData.skills[editState.skill].items = i;
-    editState.skill = -1;
-    document.getElementById('btn-skill').textContent = "+ Save Skill";
-  } else { siteData.skills.push({icon:'🔹', title:t, items:i}); }
-  document.getElementById('new-skill-cat').value=''; document.getElementById('new-skill-items').value=''; 
-  syncAndSave();
-}
-function delSkill(i) { siteData.skills.splice(i,1); syncAndSave(); }
-
-/* ─── EXPERIENCE ─── */
-function editExp(i) {
-  const item = siteData.experience[i];
-  document.getElementById('new-exp-role').value = item.role;
-  document.getElementById('new-exp-company').value = item.company;
-  document.getElementById('new-exp-period').value = item.period;
-  document.getElementById('new-exp-location').value = item.location;
-  document.getElementById('new-exp-points').value = item.points.join(', ');
-  editState.exp = i;
-  document.getElementById('btn-exp').textContent = "Update Experience";
-}
-function saveExperience() {
-  const r = document.getElementById('new-exp-role').value.trim();
-  const c = document.getElementById('new-exp-company').value.trim();
-  const p = document.getElementById('new-exp-period').value;
-  const l = document.getElementById('new-exp-location').value;
-  const pts = document.getElementById('new-exp-points').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(!r || !c) return showToast("⚠️ Role & Company required");
-  if(editState.exp > -1) {
-    siteData.experience[editState.exp] = {role: r, company: c, period: p, location: l, points: pts};
-    editState.exp = -1;
-    document.getElementById('btn-exp').textContent = "+ Save Experience";
-  } else { siteData.experience.push({role: r, company: c, period: p, location: l, points: pts}); }
-  document.getElementById('new-exp-role').value=''; document.getElementById('new-exp-company').value=''; document.getElementById('new-exp-period').value=''; document.getElementById('new-exp-location').value=''; document.getElementById('new-exp-points').value=''; 
-  syncAndSave();
-}
-function delExp(i) { siteData.experience.splice(i,1); syncAndSave(); }
-
-/* ─── ACHIEVEMENTS ─── */
-function editAch(i) {
-  const item = siteData.achievements[i];
-  document.getElementById('new-ach-title').value = item.title;
-  document.getElementById('new-ach-desc').value = item.desc;
-  editState.ach = i;
-  document.getElementById('btn-ach').textContent = "Update Achievement";
-}
-function saveAchievement() {
-  const t = document.getElementById('new-ach-title').value.trim();
-  const d = document.getElementById('new-ach-desc').value.trim();
-  if(!t) return showToast("⚠️ Title required");
-  if(editState.ach > -1) {
-    siteData.achievements[editState.ach].title = t;
-    siteData.achievements[editState.ach].desc = d;
-    editState.ach = -1;
-    document.getElementById('btn-ach').textContent = "+ Save Achievement";
-  } else { siteData.achievements.push({icon:'✨', title:t, desc:d}); }
-  document.getElementById('new-ach-title').value=''; document.getElementById('new-ach-desc').value=''; 
-  syncAndSave();
-}
-function delAch(i) { siteData.achievements.splice(i,1); syncAndSave(); }
-
-/* ─── CERTIFICATIONS ─── */
-function editCert(i) {
-  const item = siteData.certifications[i];
-  document.getElementById('new-cert-title').value = item.title;
-  document.getElementById('new-cert-org').value = item.org;
-  document.getElementById('new-cert-year').value = item.year;
-  editState.cert = i;
-  document.getElementById('btn-cert').textContent = "Update Certification";
-}
-function saveCertification() {
-  const t = document.getElementById('new-cert-title').value.trim();
-  const o = document.getElementById('new-cert-org').value.trim();
-  const y = document.getElementById('new-cert-year').value.trim();
-  if(!t) return showToast("⚠️ Title required");
-  if(editState.cert > -1) {
-    siteData.certifications[editState.cert].title = t;
-    siteData.certifications[editState.cert].org = o;
-    siteData.certifications[editState.cert].year = y;
-    editState.cert = -1;
-    document.getElementById('btn-cert').textContent = "+ Save Certification";
-  } else { siteData.certifications.push({icon:'🎓', title:t, org:o, year:y}); }
-  document.getElementById('new-cert-title').value=''; document.getElementById('new-cert-org').value=''; document.getElementById('new-cert-year').value='';
-  syncAndSave();
-}
-function delCert(i) { siteData.certifications.splice(i,1); syncAndSave(); }
-
-/* ─── PROJECTS ─── */
-function editProj(i) {
-  const item = siteData.projects[i];
-  document.getElementById('new-proj-title').value = item.title;
-  document.getElementById('new-proj-desc').value = item.desc;
-  document.getElementById('new-proj-tags').value = item.tags.join(', ');
-  document.getElementById('new-proj-link').value = item.link || '';
-  editState.proj = i;
-  document.getElementById('btn-proj').textContent = "Update Project";
-}
-function saveProject() {
-  const t = document.getElementById('new-proj-title').value.trim();
-  const d = document.getElementById('new-proj-desc').value.trim();
-  const tg = document.getElementById('new-proj-tags').value.split(',').map(s=>s.trim()).filter(Boolean);
-  const l = document.getElementById('new-proj-link').value.trim();
-  if(!t) return showToast("⚠️ Title required");
-  if(editState.proj > -1) {
-    siteData.projects[editState.proj] = {title:t, desc:d, tags:tg, link:l};
-    editState.proj = -1;
-    document.getElementById('btn-proj').textContent = "+ Save Project";
-  } else { siteData.projects.push({title:t, desc:d, tags:tg, link:l}); }
-  document.getElementById('new-proj-title').value=''; document.getElementById('new-proj-desc').value=''; document.getElementById('new-proj-tags').value=''; document.getElementById('new-proj-link').value=''; 
-  syncAndSave();
-}
-function delProj(i) { siteData.projects.splice(i,1); syncAndSave(); }
-
-function resetAll() {
-  if (confirm('Reset all data to defaults? Cannot be undone.')) {
-    siteData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-    syncAndSave();
-    showToast('↺ Reset to default');
-  }
+function initScrollReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.classList.add('active');
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
 }
 
 /* ═══════════════════════════════════════════
    NARADA CHATBOT
 ════════════════════════════════════════════ */
-function toggleChat() { 
-  const cb = document.getElementById('chat-body');
-  if(cb) {
-    if(cb.style.display === 'none' || cb.classList.contains('hidden')) {
-      cb.style.display = 'flex';
-      cb.classList.remove('hidden');
-    } else {
-      cb.style.display = 'none';
-    }
+function toggleChatbot() {
+  const bot = document.getElementById('narada-bot');
+  bot.classList.toggle('active');
+  if(bot.classList.contains('active') && isVoiceEnabled) {
+    speak("I am listening.");
   }
 }
 
 function handleChat(e) {
-  if (e.key === 'Enter') {
+  if(e.key === 'Enter') {
     const input = document.getElementById('chat-input');
-    const container = document.getElementById('msg-container');
-    if(!input || !container) return;
-    
-    const msg = input.value.toLowerCase().trim();
-    if (!msg) return;
-    
-    container.innerHTML += `<div style="text-align:right; margin:8px 0; color:#E2E8F0; padding:10px 14px; background:rgba(255,255,255,0.1); border-radius:12px 12px 0px 12px; display:inline-block; float:right; clear:both; border: 1px solid rgba(255,255,255,0.2);">${input.value}</div>`;
-    
-    let reply = "I am pondering this... Ask me about Sourabh's Experience, Skills, Projects, or Certifications.";
-    
-    if (msg === 'hi' || msg === 'hello' || msg.includes('hare krishna')) {
-        reply = "Hare Krishna! 🙏 How can I assist you with Sourabh's portfolio today?";
-    } else if (msg.includes('skill') || msg.includes('know')) {
-        reply = "Sourabh specializes in: " + siteData.skills.map(s => s.title).join(', ') + ".";
-    } else if (msg.includes('experience') || msg.includes('work') || msg.includes('job')) {
-        reply = `He currently works at ${siteData.experience[0].company} as a ${siteData.experience[0].role}.`;
-    } else if (msg.includes('project')) {
-        reply = `He has built impactful projects like: ${siteData.projects.map(p=>p.title).join(', ')}.`;
-    } else if (msg.includes('certif')) {
-        reply = `He holds certifications in: ${siteData.certifications.map(c=>c.title).join(', ')}.`;
-    } else if (msg.includes('achieve') || msg.includes('award')) {
-        reply = `His achievements include: ${siteData.achievements.map(a=>a.title).join(', ')}.`;
-    } else if (msg.includes('contact') || msg.includes('email') || msg.includes('hire')) {
-        reply = "You can email him at sourabhshet95@gmail.com or call +91 9019215348.";
-    }
+    const msgBox = document.getElementById('chat-msgs');
+    const text = input.value.trim();
+    if(!text) return;
 
-    setTimeout(() => {
-      container.innerHTML += `<div style="color:var(--gold); margin:8px 0; padding:10px 14px; background:rgba(255,215,0,0.1); border-radius:12px 12px 12px 0px; display:inline-block; float:left; clear:both; border: 1px solid rgba(255,215,0,0.2);"><b>Narada:</b> ${reply}</div>`;
-      container.scrollTop = container.scrollHeight;
-    }, 400);
-
+    // User Message
+    msgBox.innerHTML += `<div class="msg msg-user hover-speak">${text}</div>`;
     input.value = '';
-    container.scrollTop = container.scrollHeight;
+    msgBox.scrollTop = msgBox.scrollHeight;
+
+    // Bot Response Logic
+    setTimeout(() => {
+      let reply = "The cosmos is vast. Ask me about his Skills or Experience.";
+      const lower = text.toLowerCase();
+      if(lower.includes('skill')) reply = "He excels in Supply Chain, Pricing Analytics, and Data Tools like IQS and Power BI.";
+      else if(lower.includes('exp') || lower.includes('work')) reply = "He works at Mouser Electronics as a Specialist I in Quote Management.";
+      else if(lower.includes('hello') || lower.includes('hi')) reply = "Namaste. How may I enlighten you today?";
+
+      msgBox.innerHTML += `<div class="msg msg-bot hover-speak">${reply}</div>`;
+      msgBox.scrollTop = msgBox.scrollHeight;
+      
+      if(isVoiceEnabled) speak(reply);
+    }, 600);
   }
 }
 
 /* ═══════════════════════════════════════════
-   TOAST
+   ADMIN PANEL
 ════════════════════════════════════════════ */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  if(!t) return;
-  t.textContent = msg; 
-  t.style.display = 'block';
-  setTimeout(() => { t.style.display = 'none'; }, 3000);
+function openAdmin() {
+  document.getElementById('admin-overlay').style.display = 'flex';
+}
+function closeAdmin() {
+  document.getElementById('admin-overlay').style.display = 'none';
+  document.getElementById('admin-login-view').style.display = 'block';
+  document.getElementById('admin-edit-view').style.display = 'none';
+  document.getElementById('admin-pass').value = '';
+}
+function checkAdmin() {
+  const pass = document.getElementById('admin-pass').value;
+  if(pass === 'sourabh@2025') { // Password Check
+    document.getElementById('admin-login-view').style.display = 'none';
+    document.getElementById('admin-edit-view').style.display = 'block';
+    document.getElementById('admin-about-text').value = portfolioData.aboutEn;
+    if(isVoiceEnabled) speak("Access Granted");
+  } else {
+    alert("Invalid Authorization");
+    if(isVoiceEnabled) speak("Access Denied");
+  }
+}
+function saveAdmin() {
+  const newAbout = document.getElementById('admin-about-text').value;
+  portfolioData.aboutEn = newAbout;
+  translations.en.about_desc = newAbout;
+  localStorage.setItem('cosmic_about', newAbout);
+  
+  if(currentLang === 'en') {
+    document.getElementById('about-text-ui').innerText = newAbout;
+  }
+  closeAdmin();
+  if(isVoiceEnabled) speak("Database Updated");
 }
 </script>
 </body>
