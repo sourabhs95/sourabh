@@ -1,32 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sourabh Satish Shet | Under Maintenance</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sourabh Satish Shet — Pricing &amp; Quotation Specialist</title>
+<meta name="description" content="Portfolio of Sourabh Satish Shet, Senior Pricing & Quotation Specialist in electronics component supply chain.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <main class="maintenance-container">
-    <div class="content fade-in">
-      <div class="chakra-spinner">☸</div>
-      <h1>Under Maintenance</h1>
-      <p>My portfolio is currently undergoing scheduled upgrades.</p>
-      <p class="subtitle">We will be back soon.</p>
-      
-      <div class="contact-info">
-        <p>Need to reach me urgently?</p>
-        <a href="mailto:sourabhshet95@gmail.com">sourabhshet95@gmail.com</a>
+<div class="grain"></div>
+
+<!-- Circuit rail: signature scroll element, desktop only -->
+<div class="rail" id="rail" aria-hidden="true">
+  <div class="rail-track"></div>
+  <div class="rail-fill" id="railFill"></div>
+  <div class="rail-dots" id="railDots"></div>
+</div>
+
+<header class="topbar">
+  <a href="#top" class="brand" data-edit-skip>SSS<span class="brand-dot">●</span></a>
+  <nav class="nav">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="resume-btn" id="resumeBtn" href="resume.pdf" download data-edit-skip>Resume ↓</a>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-circuit" aria-hidden="true">
+      <svg viewBox="0 0 600 600" class="hero-svg">
+        <g class="hero-traces">
+          <path d="M40 480 L40 320 L140 220 L140 90" />
+          <path d="M560 520 L560 360 L460 260 L460 60" />
+          <path d="M40 320 L160 320 L220 380 L380 380 L440 320 L560 320" />
+          <path d="M140 220 L300 220 L300 130" />
+        </g>
+        <g class="hero-pads">
+          <circle cx="40" cy="480" r="6" style="--d:0"/>
+          <circle cx="40" cy="320" r="6" style="--d:1"/>
+          <circle cx="140" cy="220" r="6" style="--d:2"/>
+          <circle cx="140" cy="90" r="6" style="--d:3"/>
+          <circle cx="560" cy="520" r="6" style="--d:1"/>
+          <circle cx="560" cy="360" r="6" style="--d:2"/>
+          <circle cx="460" cy="260" r="6" style="--d:3"/>
+          <circle cx="460" cy="60" r="6" style="--d:4"/>
+          <circle cx="300" cy="220" r="6" style="--d:2"/>
+          <circle cx="300" cy="130" r="6" style="--d:3"/>
+          <circle cx="220" cy="380" r="6" style="--d:1"/>
+          <circle cx="380" cy="380" r="6" style="--d:2"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-inner reveal-stagger">
+      <p class="eyebrow mono" id="heroEyebrow" data-edit="hero.eyebrow"></p>
+      <h1 class="hero-name" id="heroName" data-edit="hero.name"></h1>
+      <p class="hero-title" id="heroTitle" data-edit="hero.title"></p>
+      <p class="hero-subtitle mono" id="heroSubtitle" data-edit="hero.subtitle"></p>
+
+      <div class="status-led">
+        <span class="led"></span>
+        <span class="mono" id="heroStatus" data-edit="hero.status"></span>
+      </div>
+
+      <p class="hero-tagline" id="heroTagline" data-edit="hero.tagline"></p>
+
+      <div class="hero-ctas">
+        <a href="#experience" class="btn btn-primary">View Experience</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+
+      <div class="hero-contacts mono" id="heroContacts"></div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <section class="stats" id="stats"></section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about" data-rail-node data-rail-label="About">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">01 · Profile</p>
+      <h2 class="section-heading" id="aboutHeading" data-edit="about.heading"></h2>
+      <p class="about-text" id="aboutText" data-edit="about.text"></p>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience" data-rail-node data-rail-label="Experience">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">02 · Track Record</p>
+      <h2 class="section-heading">Experience</h2>
+      <div id="experienceList" class="experience-list"></div>
+    </div>
+  </section>
+
+  <!-- SKILLS / COMPETENCIES -->
+  <section class="section" id="skills" data-rail-node data-rail-label="Skills">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">03 · Competency Map</p>
+      <h2 class="section-heading">Core Competencies</h2>
+      <div id="competencyList" class="competency-grid"></div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section class="section" id="achievements" data-rail-node data-rail-label="Achievements">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">04 · Recognition</p>
+      <h2 class="section-heading">Key Achievements</h2>
+      <div id="achievementList" class="achievement-grid"></div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS + EDUCATION -->
+  <section class="section" id="credentials" data-rail-node data-rail-label="Credentials">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">05 · Credentials</p>
+      <h2 class="section-heading">Certifications &amp; Education</h2>
+      <div class="credentials-grid">
+        <div>
+          <h3 class="sub-heading mono">Certifications</h3>
+          <ul id="certList" class="cert-list"></ul>
+        </div>
+        <div>
+          <h3 class="sub-heading mono">Education</h3>
+          <div id="eduList" class="edu-list"></div>
+          <h3 class="sub-heading mono lang-heading">Languages</h3>
+          <div id="langList" class="lang-tags"></div>
+        </div>
       </div>
     </div>
-  </main>
+  </section>
 
-  <script src="app.js"></script>
+  <!-- CONTACT -->
+  <section class="section contact-section" id="contact" data-rail-node data-rail-label="Contact">
+    <div class="section-inner reveal">
+      <p class="section-eyebrow mono">06 · Connect</p>
+      <h2 class="section-heading">Let's talk pricing</h2>
+      <p class="contact-lead">Hiring for a quoting, pricing, or supply chain role? I respond fastest by email.</p>
+      <div class="contact-grid mono" id="contactGrid"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p class="mono" id="footerText" data-edit="footer.text"></p>
+  <p class="mono footer-built">Built with circuits, copper, and a few hundred quotes.</p>
+</footer>
+
+<!-- ============== ADMIN PANEL ============== -->
+<button class="testpoint" id="testpointBtn" aria-label="Open admin panel" title="Admin">
+  <span class="testpoint-ring"></span>●
+</button>
+
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel" id="adminPanel" role="dialog" aria-modal="true" aria-label="Admin panel">
+
+    <div class="admin-lock" id="adminLock">
+      <p class="mono admin-eyebrow">RESTRICTED ACCESS</p>
+      <h3>Admin Panel</h3>
+      <p class="admin-help">Enter the site password to edit content directly on the page.</p>
+      <input type="password" id="adminPassword" class="admin-input" placeholder="Password" autocomplete="off">
+      <button class="btn btn-primary" id="adminUnlockBtn">Unlock</button>
+      <p class="admin-hint mono" id="adminError"></p>
+      <p class="admin-help small">Default password is <code>admin123</code>. Change it in <code>script.js</code> (search for <code>ADMIN_PASSWORD</code>) before you publish.</p>
+    </div>
+
+    <div class="admin-content" id="adminContent" hidden>
+      <div class="admin-header">
+        <h3>Edit Mode</h3>
+        <button class="admin-close" id="adminCloseBtn" aria-label="Close">✕</button>
+      </div>
+      <p class="admin-help">Click any underlined text on the page and type to change it. List sections (experience bullets, skills, achievements, certifications, languages) have <strong>+ add</strong> and <strong>✕ remove</strong> controls when edit mode is on.</p>
+
+      <label class="admin-toggle">
+        <input type="checkbox" id="editModeToggle">
+        <span>Enable inline editing on the page</span>
+      </label>
+
+      <div class="admin-actions">
+        <button class="btn btn-ghost" id="saveLocalBtn">Save in this browser</button>
+        <button class="btn btn-ghost" id="exportBtn">Export data.js</button>
+        <button class="btn btn-ghost" id="importBtn">Import data.js</button>
+        <button class="btn btn-ghost danger" id="resetBtn">Reset to original</button>
+      </div>
+      <input type="file" id="importFile" accept=".js,.json" hidden>
+
+      <p class="admin-help small">
+        <strong>Save in this browser</strong> previews changes for you only.<br>
+        <strong>Export data.js</strong> downloads the updated file — replace <code>data.js</code> in your GitHub repo and push to publish the change for every visitor.
+      </p>
+      <p class="admin-status mono" id="adminStatus"></p>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
