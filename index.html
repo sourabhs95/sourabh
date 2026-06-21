@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sourabh Satish Shet | Enterprise AI Portfolio</title>
   
-  <!-- Fonts: Inter (similar to Salesforce Sans) and regional fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Kannada&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 <style>
@@ -171,12 +169,10 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 </head>
 <body data-lang="en">
 
-<!-- BACKGROUND ELEMENTS -->
 <canvas id="ai-canvas"></canvas>
 <div class="glow-orb"></div>
 <div class="glow-orb purple"></div>
 
-<!-- INITIALIZATION SCREEN -->
 <div id="welcome-screen">
   <div class="ai-core">
     <div class="ai-ring"></div>
@@ -196,7 +192,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   </div>
 </div>
 
-<!-- MAIN SITE NAVIGATION -->
 <nav id="navbar" style="opacity:0; pointer-events:none;">
   <div class="nav-logo hover-speak">
     <i class="fas fa-cloud"></i> <span class="translate" data-i18n="nav_logo">Sourabh Shet</span>
@@ -220,7 +215,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 
 <main id="main-content" style="opacity:0; pointer-events:none; transition: 1s ease;">
   
-  <!-- HERO -->
   <section id="hero">
     <div class="hero-content reveal active">
       <h1 class="hero-name hover-speak translate" data-i18n="hero_name">SOURABH SATISH SHET<span class="cite"></span></h1>
@@ -237,7 +231,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
     </div>
   </section>
 
-  <!-- SUMMARY -->
   <section id="about" class="section">
     <h2 class="section-title hover-speak translate" data-i18n="title_about">Executive Summary</h2>
     <div class="saas-card reveal hover-speak">
@@ -247,23 +240,18 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
     </div>
   </section>
 
-  <!-- SKILLS -->
   <section id="skills" class="section">
     <h2 class="section-title hover-speak translate" data-i18n="title_skills">Core Capabilities</h2>
     <div class="grid grid-2" id="skills-grid">
-      <!-- Injected by JS -->
-    </div>
+      </div>
   </section>
 
-  <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <h2 class="section-title hover-speak translate" data-i18n="title_experience">Professional Experience</h2>
     <div class="timeline" id="exp-timeline">
-      <!-- Injected by JS -->
-    </div>
+      </div>
   </section>
 
-  <!-- EDUCATION & CERTIFICATIONS -->
   <section id="achievements" class="section">
     <h2 class="section-title hover-speak translate" data-i18n="title_edu">Education & Certifications</h2>
     <div class="grid grid-2">
@@ -298,7 +286,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 
 </main>
 
-<!-- NARADA AI CHATBOT (Enterprise Style) -->
 <button class="narada-toggle-btn hover-speak" onclick="toggleChatbot()" title="Initialize Narada AI Core">
   <i class="fas fa-robot"></i>
 </button>
@@ -318,7 +305,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="admin-overlay">
   <div class="admin-panel hover-speak">
     <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
@@ -326,7 +312,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
       <button onclick="closeAdmin()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer;">&times;</button>
     </div>
     <div id="admin-login-view">
-      <!-- NO password hint included -->
       <input type="password" id="admin-pass" class="admin-input" placeholder="Enter Security Key">
       <button class="admin-btn" onclick="checkAdmin()">Authenticate</button>
     </div>
@@ -338,10 +323,9 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   </div>
 </div>
 
-<!-- SCRIPTS -->
 <script>
 /* ═══════════════════════════════════════════
-   DATA & TRANSLATION DICTIONARY (From [source: 1])
+   DATA & TRANSLATION DICTIONARY 
 ════════════════════════════════════════════ */
 const defaultAbout = "Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. B.Tech in Electronics & Communication Engineering with 1+ years of experience at Mouser Electronics, managing daily workflows through IQS application and multiple sourcing portals (Global, Matrix). Skilled in BOM scrubbing, pricing analysis, margin optimization, and tracking critical supply chain parameters including lead times, country of origin, and MOQ requirements. Recognized with Rising Star Award (2025) and Star Performer Q1 2026 for accuracy, efficiency, and meeting critical turnaround deadlines.";
 
@@ -529,7 +513,7 @@ function speak(text) {
   if (!isVoiceEnabled || !synth) return;
   synth.cancel(); 
   
-  // FIXED: Clean up citations and HTML for speech
+  // FIXED: Completely removed the broken regex and use safe cleanup
   let cleanText = text.replace(/<[^>]*>?/gm, "").replace(/\/g, "");
   
   const utterance = new SpeechSynthesisUtterance(cleanText);
@@ -665,7 +649,7 @@ function handleChat(e) {
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN PANEL (No Password Hint)
+   ADMIN PANEL 
 ════════════════════════════════════════════ */
 function openAdmin() {
   document.getElementById('admin-overlay').style.display = 'flex';
@@ -682,7 +666,7 @@ function checkAdmin() {
     document.getElementById('admin-login-view').style.display = 'none';
     document.getElementById('admin-edit-view').style.display = 'block';
     
-    // FIXED: Remove cite tags safely for raw editing view
+    // FIXED: Cleaned up the broken regex entirely here as well
     document.getElementById('admin-about-text').value = portfolioData.aboutEn.replace(/<[^>]*>?/gm, "").replace(/\/g, "");
     
     if(isVoiceEnabled) speak("Authentication Successful.");
@@ -693,7 +677,7 @@ function checkAdmin() {
 }
 function saveAdmin() {
   let newAbout = document.getElementById('admin-about-text').value;
-  // Re-append citation string at end (simple approach) to maintain prompt rules.
+  
   if(!newAbout.includes("")) newAbout += "";
   
   portfolioData.aboutEn = newAbout;
