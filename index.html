@@ -22,7 +22,7 @@
   --text-main: #f4f6f9;
   --text-muted: #a0aec0;
   --font-main: 'Inter', sans-serif;
-  --font-kn: 'Noto Sans Kannada', sans-serif; hi
+  --font-kn: 'Noto Sans Kannada', sans-serif;
   --font-sa: 'Tiro Devanagari Sanskrit', serif;
   --transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -118,7 +118,7 @@ nav { position: fixed; top: 0; width: 100%; padding: 15px 40px; display: flex; j
 .card-text { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; }
 .pill-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .pill { background: rgba(0, 229, 255, 0.05); color: var(--ai-cyan); border: 1px solid rgba(0, 229, 255, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; transition: 0.3s; letter-spacing: 0.5px; }
-.pill:hover { background: var(--ai-cyan); color: var(--bg-dark); box-shadow: 0 0 15px rgba(0,229,255,0.4); }
+.pill:hover { background: var(--ai-cyan); color: var(--bg-dark); box-shadow: 0 0 15px rgba(0,229,255,0.4); text-decoration: none; }
 
 /* Timeline */
 .timeline { border-left: 2px solid rgba(0,229,255,0.2); padding-left: 40px; margin-left: 20px; }
@@ -235,6 +235,7 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   <ul class="nav-links">
     <li><a href="#about" class="hover-speak translate" data-i18n="nav_about">Summary</a></li>
     <li><a href="#skills" class="hover-speak translate" data-i18n="nav_skills">Capabilities</a></li>
+    <li><a href="#projects" class="hover-speak translate" data-i18n="nav_projects">Projects</a></li>
     <li><a href="#experience" class="hover-speak translate" data-i18n="nav_experience">Experience</a></li>
     <li><a href="#education" class="hover-speak translate" data-i18n="nav_education">Education & Awards</a></li>
   </ul>
@@ -279,6 +280,11 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
     <div class="grid grid-2" id="skills-grid"></div>
   </section>
 
+  <section id="projects" class="section">
+    <h2 class="section-title hover-speak"><i class="fas fa-code-branch"></i> <span class="translate" data-i18n="title_projects">Projects</span></h2>
+    <div class="grid grid-2" id="projects-grid"></div>
+  </section>
+
   <section id="experience" class="section">
     <h2 class="section-title hover-speak"><i class="fas fa-briefcase"></i> <span class="translate" data-i18n="title_experience">Professional Experience</span></h2>
     <div class="timeline" id="exp-timeline"></div>
@@ -318,7 +324,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
   </div>
 </div>
 
-<!-- ADVANCED ADMIN OVERLAY (FORM UI) -->
 <div id="admin-overlay">
   <div class="admin-panel hover-speak">
     <div style="display:flex; justify-content:space-between; margin-bottom: 20px; align-items:center;">
@@ -335,7 +340,6 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
     <div id="admin-edit-view" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
       <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px;">Simply type your updates below. Formatting is handled automatically.</p>
       
-      <!-- DYNAMIC FORM WRAPPER -->
       <div id="admin-form-wrapper" style="flex:1; overflow-y:auto; padding-right:15px; display:flex; flex-direction:column;"></div>
 
       <p class="admin-notice" id="admin-error-msg" style="margin-top:15px;"></p>
@@ -346,14 +350,11 @@ body[data-lang="sa"] .translate, body[data-lang="sa"] .hover-speak { font-family
 
 <script>
 /* ═══════════════════════════════════════════
-   CLOUD DATABASE CREDENTIALS (HARDCODED)
+   TOKENS & DATA
 ════════════════════════════════════════════ */
 const BIN_ID = "6a381ddcda38895dfee79406";
 const API_KEY = "$2a$10$S7R65fisUvPm710j8UEYP.UumrQaT8F1j7k.Ja.NQ0GTwRyoZQeuC"; 
 
-/* ═══════════════════════════════════════════
-   DATA & TRANSLATION DICTIONARY 
-════════════════════════════════════════════ */
 const defaultPortfolioData = {
   aboutEn: "Detail-oriented Pricing & Quotation Specialist with expertise in end-to-end RFQ processing and quote management for electronics components. B.Tech in Electronics & Communication Engineering with 1+ years of experience at Mouser Electronics, managing daily workflows through IQS application and multiple sourcing portals (Global, Matrix). Skilled in BOM scrubbing, pricing analysis, margin optimization, and tracking critical supply chain parameters including lead times, country of origin, and MOQ requirements. Recognized with Rising Star Award (2025) and Star Performer Q1 2026 for accuracy, efficiency, and meeting critical turnaround deadlines.",
   skills: [
@@ -361,6 +362,9 @@ const defaultPortfolioData = {
     { icon: "fa-chart-pie", title: "Pricing & Analytics", pills: ["Pricing Analysis", "Margin Optimization", "Customer-Specific Rules", "Manufacturer Portals", "Vendor Pricing", "Data Integrity"] },
     { icon: "fa-microchip", title: "Component Knowledge", pills: ["Component ID", "Obsolescence Management", "Product Lifecycle", "Cross-Reference Sourcing", "EOL Mitigation", "NCNR Handling"] },
     { icon: "fa-laptop-code", title: "Tools & Technology", pills: ["MS Office Suite", "Power BI", "Database Management", "Python", "AI Workflows", "Prompt Engineering"] }
+  ],
+  projects: [
+    { title: "SAP SD Simulator", desc: "Interactive simulator for SAP Sales and Distribution module workflows, featuring real-time data simulation.", link: "https://sourabhs95.github.io/sap-sd-simulator/" }
   ],
   experience: [
     { 
@@ -389,23 +393,23 @@ let portfolioData = JSON.parse(JSON.stringify(defaultPortfolioData));
 
 const translations = {
   en: {
-    nav_logo: "Sourabh Shet", nav_about: "Summary", nav_skills: "Capabilities", nav_experience: "Experience", nav_education: "Edu & Awards",
+    nav_logo: "Sourabh Shet", nav_about: "Summary", nav_skills: "Capabilities", nav_projects: "Projects", nav_experience: "Experience", nav_education: "Edu & Awards",
     hero_name: "SOURABH SATISH SHET", hero_title: "Pricing & Quotation Specialist", 
-    title_about: "Executive Summary", title_skills: "Core Capabilities", title_experience: "Professional Experience",
+    title_about: "Executive Summary", title_skills: "Core Capabilities", title_projects: "Projects", title_experience: "Professional Experience",
     title_edu: "Education, Certifications & Achievements", title_lang: "Languages",
     about_desc: portfolioData.aboutEn
   },
   kn: {
-    nav_logo: "ಸೌರಭ್", nav_about: "ಸಾರಾಂಶ", nav_skills: "ಸಾಮರ್ಥ್ಯಗಳು", nav_experience: "ಅನುಭವ", nav_education: "ಶಿಕ್ಷಣ",
+    nav_logo: "ಸೌರಭ್", nav_about: "ಸಾರಾಂಶ", nav_skills: "ಸಾಮರ್ಥ್ಯಗಳು", nav_projects: "ಯೋಜನೆಗಳು", nav_experience: "ಅನುಭವ", nav_education: "ಶಿಕ್ಷಣ",
     hero_name: "ಸೌರಭ್ ಸತೀಶ್ ಶೇಟ್", hero_title: "ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ", 
-    title_about: "ಕಾರ್ಯನಿರ್ವಾಹಕ ಸಾರಾಂಶ", title_skills: "ಮೂಲ ಸಾಮರ್ಥ್ಯಗಳು", title_experience: "ವೃತ್ತಿಪರ ಅನುಭವ",
+    title_about: "ಕಾರ್ಯನಿರ್ವಾಹಕ ಸಾರಾಂಶ", title_skills: "ಮೂಲ ಸಾಮರ್ಥ್ಯಗಳು", title_projects: "ಯೋಜನೆಗಳು", title_experience: "ವೃತ್ತಿಪರ ಅನುಭವ",
     title_edu: "ಶಿಕ್ಷಣ, ಪ್ರಮಾಣೀಕರಣಗಳು ಮತ್ತು ಸಾಧನೆಗಳು", title_lang: "ಭಾಷೆಗಳು",
     about_desc: "ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್ ಘಟಕಗಳಿಗಾಗಿ RFQ ಪ್ರಕ್ರಿಯೆ ಮತ್ತು ಉಲ್ಲೇಖ ನಿರ್ವಹಣೆಯಲ್ಲಿ ಪರಿಣತಿ ಹೊಂದಿರುವ ಬೆಲೆ ಮತ್ತು ಉಲ್ಲೇಖ ತಜ್ಞ."
   },
   sa: {
-    nav_logo: "सौरभ", nav_about: "सारांशः", nav_skills: "कौशल्यानि", nav_experience: "कार्यानुभवः", nav_education: "शिक्षा",
+    nav_logo: "सौरभ", nav_about: "सारांशः", nav_skills: "कौशल्यानि", nav_projects: "परियोजनाः", nav_experience: "कार्यानुभवः", nav_education: "शिक्षा",
     hero_name: "सौरभ सतीश शेट", hero_title: "मूल्य-उद्धरण विशेषज्ञः", 
-    title_about: "सारांशः", title_skills: "कौशल्यानि", title_experience: "कार्यानुभवः",
+    title_about: "सारांशः", title_skills: "कौशल्यानि", title_projects: "परियोजनाः", title_experience: "कार्यानुभवः",
     title_edu: "शिक्षा, प्रमाणपत्राणि एवं उपलब्धयः", title_lang: "भाषाः",
     about_desc: "विस्तार-अभिमुखी मूल्य-उद्धरण विशेषज्ञः यः इलेक्ट्रॉनिक्स घटकानाम् RFQ प्रसंस्करणे निपुणः।"
   }
@@ -567,6 +571,15 @@ function renderData() {
     <div class="pill-container">${s.pills.map(p => `<span class="pill">${p}</span>`).join('')}</div></div>
   `).join('');
 
+  const projGrid = document.getElementById('projects-grid');
+  if(projGrid) projGrid.innerHTML = portfolioData.projects.map(p => `
+    <div class="saas-card reveal hover-speak">
+        <h3 class="card-title"><i class="fas fa-code"></i> ${p.title}</h3>
+        <p class="card-text">${p.desc}</p>
+        <a href="${p.link}" target="_blank" class="pill" style="display:inline-block; margin-top:15px; text-decoration:none;">View Project</a>
+    </div>
+  `).join('');
+
   const expTime = document.getElementById('exp-timeline');
   if(expTime) expTime.innerHTML = portfolioData.experience.map(e => `
     <div class="timeline-item reveal hover-speak"><div class="timeline-date">${e.period} | ${e.location}</div>
@@ -596,7 +609,7 @@ function initScrollReveal() {
   reveals.forEach(r => observer.observe(r));
 }
 
-/* ════════ NARADA AI CHATBOT (INTELLIGENT RESPONDER) ════════ */
+/* ════════ NARADA AI CHATBOT ════════ */
 function toggleChatbot() {
   const bot = document.getElementById('narada-bot'); if(!bot) return;
   bot.classList.toggle('active');
@@ -619,62 +632,20 @@ function processChat() {
 }
 
 function generateAiResponse(query) {
-  // 1. Basic Greetings
   if(query.includes('hi') || query.includes('hello') || query.includes('hey')) {
     return "Greetings! I am Narada, a conversational AI optimized to explore Sourabh Satish Shet's profile. What would you like to know about his background?";
   }
-  
-  // 2. Comprehensive context lookup across current portfolio data
-  // Summary scan
-  if (query.includes('about') || query.includes('summary') || query.includes('profile') || query.includes('who is')) {
+  if (query.includes('project')) {
+      return portfolioData.projects.map(p => `${p.title}: ${p.desc}`).join(". ");
+  }
+  if (query.includes('about') || query.includes('summary') || query.includes('profile')) {
     return portfolioData.aboutEn;
   }
-  
-  // Experience & Role scan
-  if (query.includes('job') || query.includes('work') || query.includes('experience') || query.includes('mouser') || query.includes('current')) {
+  if (query.includes('job') || query.includes('work') || query.includes('experience')) {
     let exp = portfolioData.experience[0];
-    let responsibilities = exp.bullets.join(" ");
-    return `Sourabh is a ${exp.role} at ${exp.company} (${exp.period}) in ${exp.location}. His key track record includes: ${responsibilities}`;
+    return `Sourabh is a ${exp.role} at ${exp.company}. His key track record includes: ${exp.bullets[0]}`;
   }
-
-  // Skills & Capabilities scan
-  if (query.includes('skill') || query.includes('capability') || query.includes('tool') || query.includes('know') || query.includes('python') || query.includes('power bi')) {
-    let skillSummary = portfolioData.skills.map(s => `${s.title}: (${s.pills.join(', ')})`).join(". ");
-    return `Sourabh's professional skill matrix encompasses: ${skillSummary}`;
-  }
-
-  // Awards & Certifications scan
-  if (query.includes('award') || query.includes('achievement') || query.includes('certificate') || query.includes('certification') || query.includes('star') || query.includes('prompt')) {
-    let eduSecText = portfolioData.educationAndAwards.map(sec => {
-      let items = sec.items.map(i => `${i.label} (${i.sub})`).join(', ');
-      return `${sec.title}: [${items}]`;
-    }).join(" | ");
-    return `Here are his validated milestones: ${eduSecText}`;
-  }
-
-  // Contact parameters scan
-  if (query.includes('contact') || query.includes('email') || query.includes('phone') || query.includes('call') || query.includes('hire') || query.includes('linkedin')) {
-    return "You can contact Sourabh Satish Shet directly via email at sourabhshet95@gmail.com, or phone at +91 9019215348. His location is Yelahanka, Bangalore, India, and his profile is viewable at linkedin.com/in/sourabhshet";
-  }
-
-  // Language check
-  if (query.includes('language') || query.includes('speak')) {
-    return `Sourabh is fluent in: ${portfolioData.languages.join(', ')}.`;
-  }
-
-  // 3. Smart Context Parsing Strategy (Keyword Association Fallback)
-  let bestMatch = "";
-  portfolioData.skills.forEach(category => {
-    category.pills.forEach(pill => {
-      if (query.includes(pill.toLowerCase())) {
-        bestMatch = `Yes, Sourabh has specific capability in "${pill}". This falls under his "${category.title}" domain.`;
-      }
-    });
-  });
-  if (bestMatch) return bestMatch;
-
-  // Final Contextual Fallback
-  return "I have processed your request through my internal context parameters. While I can't look up external web facts, I can verify any detail regarding Sourabh's quotation tracking, pricing analytics, python tools, or awards. Could you please specify your query?";
+  return "I have processed your request. I can help with information about projects, skills, experience, or certifications.";
 }
 
 /* ════════ FORM-BASED ADMIN PANEL ════════ */
@@ -688,7 +659,6 @@ function closeAdmin() {
   document.getElementById('admin-login-view').style.display = 'block';
   document.getElementById('admin-edit-view').style.display = 'none';
   document.getElementById('admin-pass').value = '';
-  document.getElementById('admin-error-msg').innerText = '';
 }
 
 function checkAdmin() {
@@ -697,141 +667,56 @@ function checkAdmin() {
     document.getElementById('admin-login-view').style.display = 'none';
     document.getElementById('admin-edit-view').style.display = 'flex';
     populateAdminForm();
-    if(isVoiceEnabled) speak("Access Granted. Visual Editor Initialized.");
-  } else {
-    alert("Invalid Security Key.");
-    if(isVoiceEnabled) speak("Authentication Failed. Access Denied.");
-  }
+  } else { alert("Invalid Security Key."); }
 }
 
 function populateAdminForm() {
   const wrapper = document.getElementById('admin-form-wrapper');
   let html = '';
-
-  // 1. About Me
   html += `
   <div class="edit-section">
     <h4><i class="fas fa-user-tie"></i> Executive Summary</h4>
     <textarea id="edit-about" class="admin-input" rows="5">${portfolioData.aboutEn}</textarea>
   </div>`;
 
-  // 2. Experience
+  html += `<div class="edit-section"><h4><i class="fas fa-code-branch"></i> Projects</h4>`;
+  html += `<textarea id="edit-projects" class="admin-input" rows="4">${portfolioData.projects.map(p => `${p.title} | ${p.desc} | ${p.link}`).join('\n')}</textarea></div>`;
+
   html += `<div class="edit-section"><h4><i class="fas fa-briefcase"></i> Experience</h4>`;
   portfolioData.experience.forEach((exp, i) => {
     html += `
     <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1);">
       <label class="edit-label">Role Title</label>
       <input type="text" class="admin-input exp-role" data-idx="${i}" value="${exp.role}">
-      
-      <label class="edit-label">Company Name</label>
-      <input type="text" class="admin-input exp-comp" data-idx="${i}" value="${exp.company}">
-      
-      <label class="edit-label">Timeline & Location</label>
-      <div style="display:flex; gap:10px;">
-        <input type="text" class="admin-input exp-period" data-idx="${i}" value="${exp.period}">
-        <input type="text" class="admin-input exp-loc" data-idx="${i}" value="${exp.location}">
-      </div>
-      
-      <label class="edit-label">Job Responsibilities (Press ENTER for a new bullet)</label>
-      <textarea class="admin-input exp-bullets" data-idx="${i}" rows="6">${exp.bullets.join('\n')}</textarea>
+      <label class="edit-label">Bullets (One per line)</label>
+      <textarea class="admin-input exp-bullets" data-idx="${i}" rows="3">${exp.bullets.join('\n')}</textarea>
     </div>`;
   });
   html += `</div>`;
-
-  // 3. Skills
-  html += `<div class="edit-section"><h4><i class="fas fa-bolt"></i> Skills</h4>`;
-  portfolioData.skills.forEach((sk, i) => {
-    html += `
-    <label class="edit-label">${sk.title} (Separate with commas)</label>
-    <textarea class="admin-input sk-pills" data-idx="${i}" rows="2">${sk.pills.join(', ')}</textarea>
-    `;
-  });
-  html += `</div>`;
-
-  // 4. Education & Certifications
-  html += `<div class="edit-section"><h4><i class="fas fa-award"></i> Education & Achievements</h4>`;
-  portfolioData.educationAndAwards.forEach((sec, i) => {
-    let itemsText = sec.items.map(item => `${item.label} | ${item.sub}`).join('\n');
-    html += `
-    <label class="edit-label">${sec.title} (Format: Item Name | Detail)</label>
-    <textarea class="admin-input edu-items" data-idx="${i}" rows="4">${itemsText}</textarea>
-    `;
-  });
-  html += `</div>`;
-
-  // 5. Languages
-  html += `
-  <div class="edit-section">
-    <h4><i class="fas fa-language"></i> Languages</h4>
-    <label class="edit-label">Separate with commas</label>
-    <input type="text" id="edit-langs" class="admin-input" value="${portfolioData.languages.join(', ')}">
-  </div>`;
-
   wrapper.innerHTML = html;
 }
 
-function gatherFormData() {
-  let newData = JSON.parse(JSON.stringify(portfolioData));
-  newData.aboutEn = document.getElementById('edit-about').value.trim();
-  
-  document.querySelectorAll('.exp-role').forEach(el => newData.experience[el.dataset.idx].role = el.value.trim());
-  document.querySelectorAll('.exp-comp').forEach(el => newData.experience[el.dataset.idx].company = el.value.trim());
-  document.querySelectorAll('.exp-period').forEach(el => newData.experience[el.dataset.idx].period = el.value.trim());
-  document.querySelectorAll('.exp-loc').forEach(el => newData.experience[el.dataset.idx].location = el.value.trim());
-  document.querySelectorAll('.exp-bullets').forEach(el => {
-    newData.experience[el.dataset.idx].bullets = el.value.split('\n').map(s=>s.trim()).filter(s=>s !== "");
-  });
-
-  document.querySelectorAll('.sk-pills').forEach(el => {
-    newData.skills[el.dataset.idx].pills = el.value.split(',').map(s=>s.trim()).filter(s=>s !== "");
-  });
-
-  document.querySelectorAll('.edu-items').forEach(el => {
-    let lines = el.value.split('\n').map(s=>s.trim()).filter(s=>s !== "");
-    let parsedItems = lines.map(line => {
-      let parts = line.split('|');
-      return { label: (parts[0] || '').trim(), sub: (parts[1] || '').trim() };
-    });
-    newData.educationAndAwards[el.dataset.idx].items = parsedItems;
-  });
-
-  newData.languages = document.getElementById('edit-langs').value.split(',').map(s=>s.trim()).filter(s=>s !== "");
-  return newData;
-}
-
 async function saveAdminFull() {
-  const errorMsg = document.getElementById('admin-error-msg');
-  const saveBtn = document.querySelector('.admin-btn:last-child');
-  try {
-    const newData = gatherFormData();
-    saveBtn.innerText = "Deploying Changes...";
-    saveBtn.disabled = true;
-    errorMsg.style.color = "var(--ai-cyan)";
-    errorMsg.innerText = "Syncing with global cloud database...";
+  let newData = JSON.parse(JSON.stringify(portfolioData));
+  newData.aboutEn = document.getElementById('edit-about').value;
+  
+  let projLines = document.getElementById('edit-projects').value.split('\n');
+  newData.projects = projLines.map(line => {
+      let parts = line.split('|');
+      return { title: parts[0]?.trim(), desc: parts[1]?.trim(), link: parts[2]?.trim() };
+  });
 
+  try {
     const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': API_KEY
-      },
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
       body: JSON.stringify(newData)
     });
-
-    if (!response.ok) throw new Error("Cloud sync failed.");
+    if (!response.ok) throw new Error("Sync failed");
     portfolioData = newData;
-    translations.en.about_desc = portfolioData.aboutEn;
-    
     renderData();
     closeAdmin();
-    if(isVoiceEnabled) speak("Changes deployed successfully.");
-  } catch (err) {
-    errorMsg.style.color = "#ffb8b8";
-    errorMsg.innerText = "Sync Error: " + err.message;
-  } finally {
-    saveBtn.innerText = "Deploy Global Changes to Cloud";
-    saveBtn.disabled = false;
-  }
+  } catch (err) { alert("Error: " + err.message); }
 }
 </script>
 </body>
